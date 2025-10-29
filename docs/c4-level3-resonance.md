@@ -1,5 +1,4 @@
-
-**`docs/c4-level3-resonance.md`**
+# C4 Level-3 — Resonance
 
 ```mermaid
 flowchart LR

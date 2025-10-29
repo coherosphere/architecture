@@ -1,5 +1,4 @@
-
-**`docs/c4-level3-governance.md`**
+# C4 Level-3 — Governance
 
 ```mermaid
 flowchart LR

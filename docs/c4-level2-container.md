@@ -1,5 +1,4 @@
-
-**`docs/c4-level2-container.md`**
+# C4 Level-2 — Container
 
 ```mermaid
 flowchart LR
