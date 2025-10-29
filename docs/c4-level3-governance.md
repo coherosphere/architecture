@@ -4,10 +4,6 @@
 # C4 Level-3 — Governance Service (Components)
 
 ```mermaid
----
-config:
-  layout: dagre
----
 flowchart LR
  subgraph RS["Resonance Service (Container)"]
         API["API Controller<br>(REST/gRPC)"]

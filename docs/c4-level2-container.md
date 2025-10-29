@@ -4,10 +4,6 @@
 # C4 Level-2 — Container Diagram
 
 ```mermaid
----
-config:
-  layout: dagre
----
 flowchart LR
  subgraph FE["Frontend Layer"]
         WEBSITE["Website<br>(coherosphere.com)"]
