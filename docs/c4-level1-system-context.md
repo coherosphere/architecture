@@ -1,10 +1,6 @@
 # C4 Level-1 — System Context
 
 ```mermaid
----
-config:
-  layout: dagre
----
 flowchart TD
  subgraph CORE["coherosphere core system"]
         RS["Operational Layer<br>(Resonance, Governance, Identity)"]
