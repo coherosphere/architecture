@@ -1,7 +1,5 @@
 
 **`docs/c4-level2-container.md`**
-```markdown
-# C4 Level-2 — Container Diagram
 
 ```mermaid
 flowchart LR

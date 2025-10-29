@@ -1,7 +1,5 @@
 
 **`docs/c4-level3-governance.md`**
-```markdown
-# C4 Level-3 — Governance Service (Components)
 
 ```mermaid
 flowchart LR

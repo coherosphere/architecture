@@ -1,7 +1,5 @@
 
 **`docs/c4-level3-resonance.md`**
-```markdown
-# C4 Level-3 — Resonance Service (Components)
 
 ```mermaid
 flowchart LR
