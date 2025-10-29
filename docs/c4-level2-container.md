@@ -93,4 +93,3 @@ flowchart LR
     classDef worm fill:#F3E5F5,stroke:#AB47BC,color:#4A148C
     classDef actor fill:#A3D4FF,stroke:#4C9FFF,color:#003366,font-weight:bold
     classDef operator fill:#FFB347,stroke:#CC7A00,color:#4A2C00,font-weight:bold
-[PASTE HIER DEIN L2 MERMAID CODE MIT FARBTHEMA]
