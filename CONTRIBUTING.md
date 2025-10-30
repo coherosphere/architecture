@@ -15,6 +15,7 @@ docs/
 ├─ c4-level2-container.md
 ├─ c4-level3-resonance.md
 ├─ c4-level3-governance.md
+└─ assets/
 └─ templates/
 └─ mermaid-template.md
 
