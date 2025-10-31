@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 import sys, json, pathlib
-
 BASE = pathlib.Path("assets/specs/events")
 BASE_ID = "https://schemas.coherosphere.io/events/"
 ok = True
-
 for path in BASE.rglob("*.json"):
     if "_meta" in path.parts and path.name == "README.md":
         continue
@@ -29,7 +27,6 @@ for path in BASE.rglob("*.json"):
     except Exception as e:
         print(f"⚠️ error reading {path}: {e}")
         ok = False
-
 if not ok:
     print("\n❌ Event schema validation failed.")
     sys.exit(1)
