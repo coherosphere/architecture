@@ -1,96 +1,121 @@
-# coherosphere — Architecture Repository
+# Coherosphere — Architecture Repository
 
-This repository is the **single source of truth** for the *coherosphere* system architecture —
-a model-driven, open specification using the **C4 model** (Context → Containers → Components → Code),
-extended with **Domain-Driven Design (DDD)**, **State Machines (SM)**, and **OpenAPI + Event Schemas**.
-
-> **Canonical domains**
-> - Landing: https://coherosphere.com
-> - App (C2-12 UI): https://app.coherosphere.com
-> - Docs: https://docs.coherosphere.io
-> - API base: https://api.coherosphere.io
+This repository is the **single source of truth** for the *Coherosphere* system architecture.  
+It provides a complete, machine-readable specification of the system using the **C4 model**  
+(Context → Containers → Components → Code), extended with **Domain-Driven Design (DDD)**,  
+**State Machines (SM)**, and **OpenAPI / Event / Infrastructure specifications**.
 
 ---
 
-## Structure
+## 1. Structure
 
 | Level | Folder | Focus | Content |
-|------|--------|-------|---------|
-| **C1 – System Context** | [assets/diagrams/C1_system/](assets/diagrams/C1_system) | External actors, trust zones, boundaries | System, Stakeholders, Trust Boundaries |
-| **C2 – Containers** | [assets/diagrams/C2_containers/](assets/diagrams/C2_containers) | Core services, data flow, deployment | 12 core containers (C2-01…C2-12) |
-| **C3 – Components & States** | [assets/diagrams/C3_states/](assets/diagrams/C3_states) | Internal logic, state machines, data models | 16 state machines (SM-01.01…SM-10.02) |
-| **C4 – Sequences** | [assets/diagrams/C4_sequences/](assets/diagrams/C4_sequences) | Behavioral flows across containers | 30+ end-to-end flows (C4-01…C4-34) |
-| **OpenAPI Specs** | [assets/specs/openapi/](assets/specs/openapi) | Public & inter-service APIs | C2-01…C2-11 REST/gRPC/GraphQL definitions |
-| **Event Schemas** | [assets/specs/events/](assets/specs/events) | CloudEvents 1.0 + JSON Schema 2020-12 | Machine-readable contracts |
-| **Docs** | [assets/docs/](assets/docs) | Explanations & design notes | Event Catalog, Parameter Governance SOP, SLO Table |
+|--------|---------|--------|----------|
+| C1 – System Context | `assets/diagrams/C1_system/` | External actors, trust zones, boundaries | System, Stakeholders, Trust Boundaries |
+| C2 – Containers | `assets/diagrams/C2_containers/` | Core services and interconnections | 12 core containers (C2-01 … C2-12) |
+| C3 – Components & States | `assets/diagrams/C3_components/`, `assets/diagrams/C3_states/` | Internal service logic and state machines | 16+ component/state machine diagrams |
+| C4 – Sequences | `assets/diagrams/C4_sequences/` | Behavioral flows across containers | 30+ end-to-end interaction flows |
+| DDD – Domain Design | `assets/diagrams/DDD/` | Context maps, subdomains, contracts | Strategic & tactical DDD diagrams |
+| Specs | `assets/specs/` | APIs, Events, SLOs, Governance Parameters | OpenAPI / CloudEvents / JSON Schema |
+| Infra Config | `assets/config/` | Infrastructure and security configuration | CORS, DNS, CI Rules |
+| Docs | `assets/docs/` | Architectural documentation | Markdown specifications and usage guides |
 
-All diagrams are authored in **Mermaid**, render directly on GitHub,
-and map 1:1 to code-level artifacts.
-
----
-
-## Core Model
-
-- **C1** – Context: actors, systems, and trust boundaries  
-- **C2** – Containers: services (Resonance, PoC, Governance, Treasury, Identity, …)  
-- **C3** – Components & States: internal logic and state machines (ERDs, behaviors)  
-- **C4** – Sequences and interactions across containers  
-- **SM-xx.xx** – State Machines per container  
-- **OpenAPI** – Live interface specs (versioned under `assets/specs/openapi`)  
-- **Events** – CloudEvents + JSON Schema (under `assets/specs/events`)  
-- **DDD** – Bounded contexts, subdomains, contracts, and team alignment
+All diagrams are authored in **Mermaid**, render directly on GitHub,  
+and map one-to-one to code-level or service-level artifacts.
 
 ---
 
-## Domain & Security Policy
+## 2. Related Repositories
 
-- **API must use** `https://api.coherosphere.io` (enforced via CI).  
-- **App** is hosted at `https://app.coherosphere.com` (Base44).  
-- **Docs** live at `https://docs.coherosphere.io`.
-- **CORS allowlist:** `app.coherosphere.com`, `docs.coherosphere.io` only.
-
-See: `assets/config/base44/` and `.github/workflows/validate-api-domain.yml`.
-
----
-
-## CI / Governance
-
-- **API domain validation**: blocks PRs if any OpenAPI spec lacks the `https://api.coherosphere.io` server entry.  
-- **Contracts validation (planned)**: JSON Schema + OpenAPI linting.
-- **Deployment (app)**: see `deploy-base44.yml` in the app repo.
+| Repository | Purpose | Deployment Target |
+|-------------|----------|--------------------|
+| `coherosphere/architecture` | System specification and design | Source of Truth |
+| `coherosphere/api` | API layer, OpenAPI / gRPC / GraphQL federation | `api.coherosphere.io` |
+| `coherosphere/app` | Frontend / member platform / governance UI | `app.coherosphere.com` |
+| `coherosphere/docs` (planned) | Developer documentation and SDKs | `docs.coherosphere.io` |
 
 ---
 
-## Related Repositories
+## 3. Core Models and Artifacts
 
-- **API (service code):** https://github.com/coherosphere/api  
-- **App (member UI):** https://github.com/coherosphere/app
-
----
-
-## Developer Guide
-
-### View diagrams locally
-```bash
-brew install mermaid-cli
-mmdc -i assets/diagrams/C3_states/C3-StateMachineOverview.mmd -o state-overview.svg
-```
-
-### Validate OpenAPI domains locally
-```bash
-pip install pyyaml
-python scripts/validate_api_domain.py
-```
-
-Expected output:
-```
-✅ All OpenAPI specs use the correct domain: https://api.coherosphere.io
-```
+- **C1–C4** – Context, Container, Component, and Sequence models  
+- **DDD** – Domain-Driven Design: Context Maps, Subdomains, Team Alignment  
+- **SM-xx.xx** – State Machines for all major entities  
+- **OpenAPI** – Public and inter-service APIs  
+- **Events** – CloudEvents 1.0-compliant event schemas  
+- **CORS Policy** – Unified access control policy (`assets/config/cors/cors-policy.json`)  
+- **DNS Config** – Machine-readable DNS records and Terraform/BIND templates (`assets/config/dns/`)  
+- **CI Rules** – Automated validation workflows for API, Events, and Domains (`.github/workflows/`)  
 
 ---
 
+## 4. Design Principles
 
-## Connect
+- **Clarity over complexity** – one abstraction per level  
+- **Resonant modularity** – autonomy at the edge, coherence in the whole  
+- **Transparency** – inspectable APIs, schemas, and governance parameters  
+- **Evolvability** – all parameters and states evolve through governance  
+- **Open specification** – everything under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+---
+
+## 5. Validation and CI
+
+Each commit is automatically validated through GitHub Actions:
+
+- Mermaid diagram syntax validation  
+- OpenAPI schema validation  
+- Event schema validation  
+- Domain whitelist enforcement (CORS + DNS consistency)  
+- Version compliance checks across specs  
+
+Scripts and workflows are defined in:
+- `.github/workflows/`
+- `scripts/validate_api_domain.py`
+- `scripts/validate_event_schemas.py`
+
+---
+
+## 6. Build and Reproduction
+
+A fully automated or AI-assisted build of the system should follow the dependency order:
+
+1. Parse all C1–C4 and DDD diagrams  
+2. Validate API, Event, and Governance specs  
+3. Generate service scaffolds per container (C2 → C3)  
+4. Apply infrastructure configurations (CORS, DNS, CI Rules)  
+5. Export documentation to `docs.coherosphere.io`
+
+All dependencies and tasks are listed in  
+[`AI_build_checklist_v4.md`](AI_build_checklist_v4.md).
+
+---
+
+## 7. Deployment Domains
+
+| Domain | Purpose | Host / Platform |
+|---------|----------|----------------|
+| `coherosphere.com` | Landing page | Base44 |
+| `app.coherosphere.com` | Application / Member interface | Base44 |
+| `api.coherosphere.io` | Main API gateway | Cloud / Container |
+| `docs.coherosphere.io` | Documentation site | GitHub Pages |
+| `schemas.coherosphere.io` | Public JSON Schemas | CDN / S3 |
+| `governance.coherosphere.io` | DAO and proposal interface | App microfrontend |
+| `status.coherosphere.io` | System uptime and metrics | UptimeRobot |
+| `chat.coherosphere.io` | AI Copilot | OpenAI / Custom |
+| `data.coherosphere.io` | Data lake | Parquet / Athena |
+| `ai.coherosphere.io` | ML / Semantic layer | Vector DB + RAG |
+
+---
+
+## 8. License and Attribution
+
+All contents are licensed under **Creative Commons Attribution 4.0 (CC BY 4.0)**.  
+You are free to share, adapt, and reuse the material with attribution to the Coherosphere Collective.
+
+---
+
+## 9. Connect
 
 - Website: [coherosphere.com](https://coherosphere.com)  
 - GitHub: [github.com/coherosphere](https://github.com/coherosphere)  
@@ -99,4 +124,4 @@ Expected output:
 ---
 
 **Technology that serves life. Governance that learns. Money that remembers truth.**  
-*— The coherosphere collective, 2025*
+*— The Coherosphere Collective, 2025*
