@@ -1,0 +1,104 @@
+---
+config:
+  layout: elk
+---
+flowchart LR
+ %% ===================== Bounded Contexts =====================
+ subgraph GOV["Governance BC"]
+   GOVAPI["Proposal & Voting\n(quorum • threshold • sublinear weights)"]
+ end
+
+ subgraph CONTRIB["Contribution & Evaluation BC"]
+   POC["Proof of Contribution\nR = I × A × e^(−λ·Δt)\nContribution Points CP_i"]
+   FILTERS["Resonance Filters\n(alignment checks)"]
+   ENGINE["Resonance Engine\n(weight W_i • SRI inputs)"]
+ end
+
+ subgraph ID["Identity & Reputation BC"]
+   POCI["PoCI Identity\n(reputation ledger • attestations)"]
+ end
+
+ subgraph TREAS["Treasury & Funding BC"]
+   QF["Quadratic Funding\n(resonant allocation)"]
+   RESERVE["Treasury Reserve\n(sound money policy)"]
+ end
+
+ subgraph HUBS["Projects & Local Hubs BC"]
+   PROJ["Projects & Grants\n(lifecycle • milestones)"]
+   LH["Local Hubs\n(semi-autonomous units)"]
+ end
+
+ subgraph METAGOV["Meta-Governance & Audit BC"]
+   PARAMS["Rule Versioning\n(λ, α, q, θ)"]
+   AUDIT["Audits & Anomaly Detection"]
+ end
+
+ subgraph OBS["Metrics & Observability BC"]
+   KPIs["KPI System\n(A_j • R_j • CP_i • W_i • SRI)"]
+   BOARD["Resonance Board UI\n(live dashboards)"]
+ end
+
+ %% ===================== Domain Events / Relations =====================
+ %% Contribution → Metrics / Gov
+ CONTRIB -- "Publishes: ContributionSubmitted, ImpactScored, AlignmentChecked, ResonanceUpdated" --> KPIs
+ CONTRIB -- "Publishes: ContributionSubmitted" --> GOVAPI
+
+ %% Governance → Metrics / Treasury / Hubs
+ GOVAPI -- "Publishes: GovernanceProposalCreated, VoteCast, VoteTallied, DecisionRecorded" --> KPIs
+ GOVAPI -- "Publishes: GrantApproved, PolicyChanged" --> QF
+ GOVAPI -- "Publishes: ProjectApproved" --> PROJ
+
+ %% Hubs/Projects → Metrics / Treasury
+ PROJ -- "Publishes: ProjectCreated, MilestoneReported" --> KPIs
+ LH -- "Publishes: HubSignal" --> KPIs
+ PROJ -- "Publishes: ResourceRequest" --> TREAS
+
+ %% Identity → Contrib / Gov
+ POCI -- "Publishes: IdentityVerified, ReputationUpdated, AttestationIssued" --> POC
+ POCI -- "Publishes: IdentityVerified" --> GOVAPI
+
+ %% Treasury → Metrics / Gov
+ TREAS -- "Publishes: FundingAllocated, TreasuryTxPosted" --> KPIs
+ TREAS -- "Publishes: BudgetSignal" --> GOVAPI
+
+ %% MetaGov → Gov / Contrib / Treasury / ID
+ METAGOV -- "Publishes: ParamsVersioned, AuditFindings, AnomalyDetected" --> GOVAPI
+ PARAMS -- "Publishes: ParamsVersioned" --> POC
+ PARAMS -- "Publishes: ParamsVersioned" --> TREAS
+ METAGOV -- "Publishes: ParamSpec" --> POCI
+
+ %% Observability → Gov / Treasury / Hubs
+ KPIs -- "Publishes: KPIUpdated, SRIComputed" --> GOVAPI
+ KPIs -- "Publishes: KPIUpdated" --> TREAS
+ KPIs -- "Publishes: KPIUpdated" --> PROJ
+ KPIs -- "Publishes: KPIUpdated" --> LH
+
+ %% Customer–Supplier (Metrics serving Gov/Treasury)
+ KPIs -- "Customer–Supplier" --> GOVAPI
+ KPIs -- "Customer–Supplier" --> TREAS
+
+ %% Anti-Corruption / Sybil Guards
+ FILTERS -. "Anti-Corruption Layer" .-> GOVAPI
+ POCI -. "Anti-Sybil ACL" .-> GOVAPI
+ POCI -. "Anti-Sybil ACL" .-> POC
+
+ %% Conformist relationships
+ TREAS -- "Conformist to Governance: PolicyChanged" --> GOVAPI
+ PROJ -- "Conformist to Governance: ProjectApproved" --> GOVAPI
+
+ %% Shared Kernel links
+ KPIs --- |"Shared Kernel: metric schema and ids"| ENGINE
+ GOVAPI --- |"Shared Kernel: decision ids & proposal refs"| TREAS
+
+ %% Additional flows
+ GOVAPI --> QF
+ GOVAPI --> PROJ
+ TREAS --> PROJ
+ LH --- |"coordination & status sync"| PROJ
+ LH -. "periodic sync" .-> PARAMS
+
+ %% UI
+ KPIs --> BOARD
+ BOARD --> GOVAPI
+ BOARD --> PROJ
+ BOARD --> LH
