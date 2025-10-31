@@ -10,12 +10,12 @@ and extended with **Domain-Driven Design (DDD)**, **State Machines**, and **Open
 
 | Level | Folder | Focus | Content |
 |--------|---------|--------|----------|
-| **C1 – System Context** | [`/assets/diagrams/C1_system/`](assets/diagrams/C1_system) | External actors, trust zones, boundaries | System, Stakeholders, Trust Boundaries |
-| **C2 – Containers** | [`/assets/diagrams/C2_containers/`](assets/diagrams/C2_containers) | Core services, data flow, deployment | 12 core containers (C2-01…C2-12) |
-| **C3 – Components & States** | [`/assets/diagrams/C3_states/`](assets/diagrams/C3_states) | Internal logic, state machines, data models | 16 state machines (SM-01.01…SM-10.02) |
-| **C4 – Sequences** | [`/assets/diagrams/C4_sequences/`](assets/diagrams/C4_sequences) | Behavioral flows across containers | 30+ end-to-end flows (C4-01…C4-34) |
-| **OpenAPI Specs** | [`/assets/specs/openapi/`](assets/specs/openapi) | Public & inter-service APIs | C2-01…C2-11 REST/gRPC/GraphQL definitions |
-| **Docs** | [`/assets/docs/`](assets/docs) | Explanations & design notes | API Surface, Domain Model, Governance Rules |
+| **C1 – System Context** | [`docs//assets/diagrams/C1_system/`](assets/diagrams/C1_system) | External actors, trust zones, boundaries | System, Stakeholders, Trust Boundaries |
+| **C2 – Containers** | [`docs//assets/diagrams/C2_containers/`](assets/diagrams/C2_containers) | Core services, data flow, deployment | 12 core containers (C2-01…C2-12) |
+| **C3 – Components & States** | [`docs//assets/diagrams/C3_states/`](assets/diagrams/C3_states) | Internal logic, state machines, data models | 16 state machines (SM-01.01…SM-10.02) |
+| **C4 – Sequences** | [`docs//assets/diagrams/C4_sequences/`](assets/diagrams/C4_sequences) | Behavioral flows across containers | 30+ end-to-end flows (C4-01…C4-34) |
+| **OpenAPI Specs** | [`docs//assets/specs/openapi/`](assets/specs/openapi) | Public & inter-service APIs | C2-01…C2-11 REST/gRPC/GraphQL definitions |
+| **Docs** | [`docs//assets/docs/`](assets/docs) | Explanations & design notes | API Surface, Domain Model, Governance Rules |
 
 All diagrams are written in **Mermaid**, render directly on GitHub,  
 and map 1:1 to code-level artifacts.
