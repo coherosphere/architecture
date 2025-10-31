@@ -14,7 +14,7 @@ and extended with **Domain-Driven Design (DDD)**, **State Machines (SM)**, and *
 | **C2 – Containers** | [assets/diagrams/C2_containers/](assets/diagrams/C2_containers) | Core services, data flow, deployment | 12 core containers (C2-01…C2-12) |
 | **C3 – Components & States** | [assets/diagrams/C3_states/](assets/diagrams/C3_states) | Internal logic, state machines, data models | 16 state machines (SM-01.01…SM-10.02) |
 | **C4 – Sequences** | [assets/diagrams/C4_sequences/](assets/diagrams/C4_sequences) | Behavioral flows across containers | 30+ end-to-end flows (C4-01…C4-34) |
-| **DDD – Domain-Driven Design** | [assets/diagrams/DDD/](assets/diagrams/DDD) | Strategic & Tactical domain design | Subdomains, Team Alignments, Contracts, Aggregates |
+| **DDD – Domain-Driven Design** | [assets/diagrams/ddd/](assets/diagrams/ddd) | Strategic & Tactical domain design | Subdomains, Team Alignments, Contracts, Aggregates |
 | **OpenAPI Specs** | [assets/specs/openapi/](assets/specs/openapi) | Public & inter-service APIs | C2-01…C2-11 REST/gRPC/GraphQL definitions |
 | **Docs** | [assets/docs/](assets/docs) | Explanations & design notes | API Surface, Domain Model, Governance Rules |
 
@@ -45,19 +45,19 @@ The DDD layer complements the C4 model by connecting **strategic intent**
 
 | Diagram | Description | Path |
 |----------|--------------|------|
-| 🧩 **Subdomain Map** | Core / Supporting / Generic subdomains | [`assets/diagrams/DDD/Strategic/Subdomains.mmd`](assets/diagrams/DDD/Strategic/Subdomains.mmd) |
-| 🧩 **Team ↔ Context Alignment** | Conway’s Law & Team Topologies mapping | [`assets/diagrams/DDD/Strategic/Teams-Contexts.mmd`](assets/diagrams/DDD/Strategic/Teams-Contexts.mmd) |
-| 🧩 **Contract Types Overview** | Relationships between bounded contexts (Shared Kernel, ACL, etc.) | [`assets/diagrams/DDD/Strategic/Contracts.mmd`](assets/diagrams/DDD/Strategic/Contracts.mmd) |
+| 🧩 **Subdomain Map** | Core / Supporting / Generic subdomains | [`assets/diagrams/ddd/Strategic/Subdomains.mmd`](assets/diagrams/DDD/Strategic/Subdomains.mmd) |
+| 🧩 **Team ↔ Context Alignment** | Conway’s Law & Team Topologies mapping | [`assets/diagrams/ddd/Strategic/Teams-Contexts.mmd`](assets/diagrams/DDD/Strategic/Teams-Contexts.mmd) |
+| 🧩 **Contract Types Overview** | Relationships between bounded contexts (Shared Kernel, ACL, etc.) | [`assets/diagrams/ddd/Strategic/Contracts.mmd`](assets/diagrams/DDD/Strategic/Contracts.mmd) |
 
 ### Tactical Design
 
 | Diagram | Description | Example Path |
 |----------|--------------|---------------|
-| 🧱 **Aggregates** | Aggregate roots, invariants, and entities per BC | `assets/diagrams/DDD/Tactical/Governance/Aggregates.mmd` |
-| 🧱 **Entities & Value Objects** | Detailed entity relationships and value objects | `assets/diagrams/DDD/Tactical/PoC/Entities-VOs.mmd` |
-| 📜 **Policies & Rules** | Domain policies, thresholds, and constraints | `assets/docs/DDD/Tactical/Governance/Policies.md` |
-| 🔁 **Event Storming** | Commands, events, and policies across the domain | `assets/diagrams/DDD/Behavior/Governance/EventStorming.mmd` |
-| 🔄 **Sagas / Process Managers** | Long-running processes (e.g. Funding Round, Appeal Flow) | `assets/diagrams/DDD/Behavior/Treasury/Saga-FundingRound.mmd` |
+| 🧱 **Aggregates** | Aggregate roots, invariants, and entities per BC | `assets/diagrams/ddd/Tactical/Governance/Aggregates.mmd` |
+| 🧱 **Entities & Value Objects** | Detailed entity relationships and value objects | `assets/diagrams/ddd/Tactical/PoC/Entities-VOs.mmd` |
+| 📜 **Policies & Rules** | Domain policies, thresholds, and constraints | `assets/docs/ddd/Tactical/Governance/Policies.md` |
+| 🔁 **Event Storming** | Commands, events, and policies across the domain | `assets/diagrams/ddd/Behavior/Governance/EventStorming.mmd` |
+| 🔄 **Sagas / Process Managers** | Long-running processes (e.g. Funding Round, Appeal Flow) | `assets/diagrams/ddd/Behavior/Treasury/Saga-FundingRound.mmd` |
 
 Together, these diagrams and docs describe **how Coherosphere’s subdomains collaborate**  
 through clear contracts, shared language, and governed evolution.
