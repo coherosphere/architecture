@@ -1,0 +1,87 @@
+---
+title: "DDD Strategic — Contract Types Overview (Coherosphere, with C2 and C4 refs)"
+config:
+  layout: elk
+---
+flowchart LR
+  %% ===== Styles =====
+  classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+  classDef support fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef generic fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ===== Core Subdomains (C2 mapping) =====
+  subgraph CORE["Core Subdomains"]
+    GOV["C2-03 Governance and DAO"]:::core
+    POC["C2-02 Proof of Contribution"]:::core
+    RES["C2-01 Resonance Service"]:::core
+    TRE["C2-04 Treasury and Funding"]:::core
+    ETH["C2-08 Manifesto and Ethics Guard"]:::core
+  end
+
+  %% ===== Supporting =====
+  subgraph SUPPORT["Supporting Subdomains"]
+    ID["C2-05 Identity and Reputation PoCI"]:::support
+    HUB["C2-06 Local Hub and Federation"]:::support
+    MET["C2-07 Metrics and Analytics"]:::support
+    KNOW["C2-09 Knowledge Graph and Collective Intelligence"]:::support
+  end
+
+  %% ===== Generic =====
+  subgraph GENERIC["Generic and Infrastructure"]
+    API["C2-11 Public API Gateway"]:::generic
+    SEC["C2-10 Security and Audit"]:::generic
+    UI["C2-12 Resonance Board UI"]:::generic
+  end
+
+  %% ===== Shared Kernel =====
+  GOV ---|Shared Kernel decision IDs and proposal refs| TRE
+  POC ---|Shared Kernel metric schema and IDs| MET
+  RES ---|Shared Kernel SRI formula params| MET
+
+  %% ===== Anti Corruption Layers =====
+  ID -. Anti Sybil ACL .-> POC
+  ID -. Anti Sybil ACL .-> GOV
+  ETH -. Ethics Filter ACL .-> POC
+  ETH -. Ethics Filter ACL .-> RES
+  HUB -. Federation ACL .-> GOV
+  HUB -. Federation ACL .-> TRE
+
+  %% ===== Published Language edges (one event per edge, ASCII labels) =====
+  %% MET -> GOV / TRE
+  MET -->|Published KPIUpdated DDD EVT 26 C4 17| GOV
+  MET -->|Published SRIComputed DDD EVT 27 C4 01 C4 17| GOV
+  MET -->|Published KPIUpdated DDD EVT 26 C4 17| TRE
+
+  %% GOV -> MET
+  GOV -->|Published GovernanceProposalCreated DDD EVT 05 C4 02| MET
+  GOV -->|Published VoteCast DDD EVT 06 C4 02| MET
+  GOV -->|Published VoteTallied DDD EVT 07 C4 02| MET
+  GOV -->|Published DecisionRecorded DDD EVT 08 C4 02| MET
+
+  %% POC -> MET
+  POC -->|Published ContributionSubmitted DDD EVT 01 C4 01| MET
+  POC -->|Published ImpactScored DDD EVT 02 C4 01| MET
+  POC -->|Published AlignmentChecked DDD EVT 03 C4 21| MET
+
+  %% ===== Conformist edges with event refs =====
+  TRE -->|Conformist PolicyChanged DDD EVT 10 C4 09| GOV
+  HUB -->|Conformist ProjectApproved DDD EVT 11 C4 14| GOV
+  RES -->|Conformist EthicsRubric policy reference| ETH
+
+  %% ===== Open Host Service =====
+  API -->|Open Host REST gRPC GraphQL| GOV
+  API -->|Open Host REST gRPC GraphQL| POC
+  API -->|Open Host REST gRPC GraphQL| TRE
+  API -->|Open Host REST gRPC GraphQL| ID
+  API -->|Open Host REST gRPC GraphQL| MET
+  UI -->|Consumes Open Host APIs| API
+
+  %% ===== Legend =====
+  subgraph LEGEND["Legend"]
+    SK["--- Shared Kernel"]:::core
+    ACL["-. Anti Corruption Layer .->"]:::support
+    PUB["--> Published Language with DDD EVT and C4"]:::support
+    CONF["--> Conformist with DDD EVT and C4"]:::generic
+    OHS["--> Open Host Service"]:::generic
+  end

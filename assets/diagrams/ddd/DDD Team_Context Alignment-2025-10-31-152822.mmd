@@ -1,0 +1,93 @@
+---
+title: "DDD Strategic — Team ↔ Context Alignment (Conway / Team Topologies, with C2 IDs)"
+config:
+  layout: elk
+---
+flowchart LR
+  %% ===== Styles =====
+  classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;        %% Core subdomains
+  classDef support fill:#fde68a,stroke:#b45309,color:#1f2937;                 %% Supporting subdomains
+  classDef generic fill:#e5e7eb,stroke:#9ca3af,color:#111827;                 %% Generic or infrastructure subdomains
+  classDef stream fill:#0ea5e9,stroke:#075985,color:#fff,font-weight:bold;    %% Stream aligned team
+  classDef platform fill:#8b5cf6,stroke:#4c1d95,color:#fff,font-weight:bold;  %% Platform team
+  classDef enabling fill:#22c55e,stroke:#065f46,color:#083344,font-weight:bold;%% Enabling team
+  classDef comp fill:#f59e0b,stroke:#7c2d12,color:#1f2937,font-weight:bold;   %% Complicated subsystem team
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ===== Teams (left) =====
+  subgraph TEAMS["Teams"]
+    direction TB
+    T_GOV["Governance Team\ntype Stream aligned"]:::stream
+    T_RES["Resonance Core Team\ntype Complicated subsystem"]:::comp
+    T_POCID["PoC and Identity Team\ntype Stream aligned"]:::stream
+    T_TRE["Treasury Ops Team\ntype Stream aligned"]:::stream
+    T_HUB["Federation and Hubs Team\ntype Stream aligned"]:::stream
+    T_METKG["Metrics and Knowledge Team\ntype Stream aligned"]:::stream
+    T_SEC["Security and Audit Team\ntype Enabling"]:::enabling
+    T_APIUI["API Gateway and UI Team\ntype Platform"]:::platform
+    T_DEVOPS["DevOps and Platform Eng\ntype Platform"]:::platform
+  end
+
+  %% ===== Contexts (right) with C2 IDs =====
+  subgraph CONTEXTS["Bounded Contexts and Subdomains"]
+    direction TB
+    C_GOV["C2-03 Governance and DAO"]:::core
+    C_RES["C2-01 Resonance"]:::core
+    C_POC["C2-02 Proof of Contribution"]:::core
+    C_TRE["C2-04 Treasury and Funding"]:::core
+    C_ETH["C2-08 Manifesto and Ethics Guard"]:::core
+
+    C_ID["C2-05 Identity and Reputation PoCI"]:::support
+    C_HUB["C2-06 Local Hub and Federation"]:::support
+    C_MET["C2-07 Metrics and Analytics"]:::support
+    C_KG["C2-09 Knowledge Graph and Collective Intelligence"]:::support
+
+    C_API["C2-11 Public API Gateway"]:::generic
+    C_UI["C2-12 Resonance Board UI"]:::generic
+    C_SEC["C2-10 Security and Audit"]:::generic
+    C_OPS["Ops and Deployment Layer\nnot a C2 container"]:::generic
+  end
+
+  %% ===== Primary Ownership (solid) =====
+  T_GOV -->|Owns| C_GOV
+  T_RES -->|Owns Complicated| C_RES
+  T_POCID -->|Owns| C_POC
+  T_TRE -->|Owns| C_TRE
+  T_HUB -->|Owns| C_HUB
+  T_METKG -->|Owns| C_MET
+  T_METKG -->|Owns| C_KG
+  T_APIUI -->|Owns Platform| C_API
+  T_APIUI -->|Owns Platform| C_UI
+  T_SEC -->|Owns Shared| C_SEC
+  T_DEVOPS -->|Owns Platform| C_OPS
+
+  %% ===== Secondary Collaboration Modes (dashed) =====
+  %% Team Topologies modes: Collaboration, XaaS, Facilitating, Support
+  T_GOV -. Collaboration .-> C_ETH
+  T_GOV -. Collaboration .-> C_TRE
+  T_POCID -. Collaboration .-> C_ID
+  T_POCID -. Collaboration .-> C_ETH
+  T_TRE -. Collaboration .-> C_SEC
+  T_HUB -. Collaboration .-> C_ID
+  T_HUB -. Collaboration .-> C_MET
+
+  %% Platform consumption XaaS
+  T_GOV -. XaaS .-> C_API
+  T_POCID -. XaaS .-> C_API
+  T_TRE -. XaaS .-> C_API
+  T_HUB -. XaaS .-> C_API
+  T_METKG -. XaaS .-> C_API
+  T_RES -. XaaS .-> C_OPS
+  T_TRE -. XaaS .-> C_OPS
+
+  %% Enabling Facilitating
+  T_SEC -. Facilitating .-> C_GOV
+  T_SEC -. Facilitating .-> C_POC
+  T_SEC -. Facilitating .-> C_TRE
+  T_DEVOPS -. Facilitating .-> C_API
+  T_DEVOPS -. Facilitating .-> C_UI
+  T_DEVOPS -. Facilitating .-> C_RES
+
+  %% Complicated subsystem support lines
+  T_RES -. Support .-> C_MET
+  T_RES -. Support .-> C_GOV
