@@ -1,0 +1,16 @@
+name: Validate Event Schemas
+on:
+  pull_request:
+    paths:
+      - "assets/specs/events/**"
+  push:
+    branches: [ main ]
+    paths:
+      - "assets/specs/events/**"
+jobs:
+  validate-events:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON Schemas
+        run: python scripts/validate_event_schemas.py
