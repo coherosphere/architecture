@@ -1,13 +1,15 @@
 {
-  "$id": "https://coherosphere.com/schemas/treasury/RoundOpened.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/treasury/RoundOpened.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Treasury.RoundOpened",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "roundId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "pool": {
-      "$ref": "../common.json#/$defs/Money"
+      "$ref": "../_meta/common.json#/$defs/Money"
     },
     "startsAt": {
       "type": "string",

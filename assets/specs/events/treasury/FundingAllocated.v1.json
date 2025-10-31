@@ -1,16 +1,18 @@
 {
-  "$id": "https://coherosphere.com/schemas/treasury/FundingAllocated.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/treasury/FundingAllocated.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Treasury.FundingAllocated",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "projectId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "amount": {
-      "$ref": "../common.json#/$defs/Money"
+      "$ref": "../_meta/common.json#/$defs/Money"
     },
     "roundId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "at": {
       "type": "string",

@@ -1,130 +1,23 @@
 openapi: 3.1.0
     info:
       title: C2-02 Proof-of-Contribution API
-      version: 1.0.0
+      version: "1.0.0"
+      description: >
+        OpenAPI specification for the Proof-of-Contribution. This spec is contracts-first and
+        references the canonical production API base at https://api.coherosphere.io.
     servers:
-      - url: https://api.coherosphere.com
-    tags:
-  - name: PoC
-paths:
+      - url: https://api.coherosphere.io
+        description: Production environment
+      - url: https://staging.api.coherosphere.io
+        description: Staging environment
+      - url: http://localhost:8080
+        description: Local development
 
-/v1/contributions:
-  post:
-    summary: Ingest contribution
-    tags: [PoC]
-    security: [{ oauth2: [poc:write] }]
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              memberId: { type: string }
-              projectId: { type: string }
-              uri: { type: string }
-              refs:
-                type: array
-                items: { type: string }
-            required: [memberId, uri]
-    responses:
-      "201": {{ description: Created, content: {{ application/json: {{ schema: {{ $ref: "#/components/schemas/IdResponse" }}}}} }}}
-      "400": {{ description: Validation error, content: {{ application/problem+json: {{ schema: {{ $ref: "#/components/schemas/Problem" }}}}} }}}
-/v1/contributions/{id}:
+    paths:
+
+/v1/poc/contributions:
   get:
-    summary: Get contribution
-    tags: [PoC]
-    security: [{ oauth2: [poc:read] }]
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema: {{ type: string }}
+    summary: Submit or list contributions
     responses:
-      "200":
-        description: Contribution
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id: { type: string }
-                memberId: { type: string }
-                projectId: { type: string }
-                status: { type: string }
-      "404": {{ description: Not found, content: {{ application/problem+json: {{ schema: {{ $ref: "#/components/schemas/Problem" }}}}} }}}
-/v1/members/{id}/scores:
-  get:
-    summary: Get member scores (CP/W)
-    tags: [PoC]
-    security: [{ oauth2: [poc:read] }]
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema: {{ type: string }}
-    responses:
-      "200":
-        description: Scores
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                cp: { type: number }
-                w: { type: number }
-/v1/snapshots/recompute:
-  post:
-    summary: Trigger recompute (admin)
-    tags: [PoC]
-    security: [{ oauth2: [poc:write] }]
-    responses:
-      "202": {{ description: Accepted }}
-
-
-components:
-  securitySchemes:
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://auth.coherosphere.com/oauth/authorize
-          tokenUrl: https://auth.coherosphere.com/oauth/token
-          scopes:
-            poc:read: Read PoC data
-            poc:write: Write PoC data
-            gov:read: Read governance data
-            gov:vote: Cast votes
-            gov:write: Create or manage proposals
-            treasury:read: Read treasury data
-            treasury:manage: Manage rounds and payouts
-            id:read: Read identity and reputation
-            id:issue: Issue credentials
-            id:verify: Verify credentials/evidence
-            metrics:read: Read KPIs and SRI
-            ethics:evaluate: Run ethics checks
-            hub:manage: Manage local hubs and projects
-            hub:read: Read hubs/projects
-            kg:ingest: Ingest knowledge
-            kg:query: Query knowledge
-            security:ingest: Send SIEM telemetry
-            security:manage: Manage incidents and reports
-    did_jwt:
-      type: http
-      scheme: bearer
-      bearerFormat: DID-JWT
-  schemas:
-    Problem:
-      type: object
-      properties:
-        type: { type: string }
-        title: { type: string }
-        status: { type: integer }
-        detail: { type: string }
-        instance: { type: string }
-      required: [type, title, status]
-    IdResponse:
-      type: object
-      properties:
-        id: { type: string }
-      required: [id]
+      '200':
+        description: OK

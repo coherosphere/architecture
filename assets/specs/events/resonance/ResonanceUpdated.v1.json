@@ -1,6 +1,8 @@
 {
-  "$id": "https://coherosphere.com/schemas/resonance/ResonanceUpdated.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/resonance/ResonanceUpdated.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Resonance.ResonanceUpdated",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "targetType": {
@@ -13,7 +15,7 @@
       ]
     },
     "targetId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "r": {
       "type": "number"

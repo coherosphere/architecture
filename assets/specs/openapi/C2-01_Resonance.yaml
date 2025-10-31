@@ -1,134 +1,23 @@
 openapi: 3.1.0
     info:
       title: C2-01 Resonance API
-      version: 1.0.0
+      version: "1.0.0"
+      description: >
+        OpenAPI specification for the Resonance. This spec is contracts-first and
+        references the canonical production API base at https://api.coherosphere.io.
     servers:
-      - url: https://api.coherosphere.com
-    tags:
-  - name: Resonance
-paths:
+      - url: https://api.coherosphere.io
+        description: Production environment
+      - url: https://staging.api.coherosphere.io
+        description: Staging environment
+      - url: http://localhost:8080
+        description: Local development
+
+    paths:
 
 /v1/resonance/compute:
-  post:
-    summary: Batch compute resonance
-    tags: [Resonance]
-    security: [{ oauth2: [metrics:read] }]
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              items:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    contributionId: { type: string }
-                    impact: { type: number }
-                    alignment: { type: number }
-                    timestamp: { type: string, format: date-time }
-                  required: [contributionId, impact, alignment, timestamp]
-            required: [items]
-    responses:
-      "200":
-        description: Computed resonance values
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                results:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      contributionId: { type: string }
-                      resonance: { type: number }
-                      anomaly: { type: boolean }
-/v1/projects/{id}/resonance:
   get:
-    summary: Get project resonance time series
-    tags: [Resonance]
-    security: [{ oauth2: [metrics:read] }]
-    parameters:
-      - in: path
-        name: id
-        required: true
-        schema: { type: string }
-      - in: query
-        name: range
-        required: false
-        schema: { type: string, example: "30d" }
+    summary: Compute resonance for a target
     responses:
-      "200":
-        description: Time series
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                series:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      t: { type: string, format: date-time }
-                      r: { type: number }
-      "404": { description: Not found, content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" }}}}
-/v1/decay/apply:
-  post:
-    summary: Apply decay tick
-    tags: [Resonance]
-    security: [{ oauth2: [metrics:read] }]
-    responses:
-      "202": {{ description: Scheduled }}
-
-
-components:
-  securitySchemes:
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://auth.coherosphere.com/oauth/authorize
-          tokenUrl: https://auth.coherosphere.com/oauth/token
-          scopes:
-            poc:read: Read PoC data
-            poc:write: Write PoC data
-            gov:read: Read governance data
-            gov:vote: Cast votes
-            gov:write: Create or manage proposals
-            treasury:read: Read treasury data
-            treasury:manage: Manage rounds and payouts
-            id:read: Read identity and reputation
-            id:issue: Issue credentials
-            id:verify: Verify credentials/evidence
-            metrics:read: Read KPIs and SRI
-            ethics:evaluate: Run ethics checks
-            hub:manage: Manage local hubs and projects
-            hub:read: Read hubs/projects
-            kg:ingest: Ingest knowledge
-            kg:query: Query knowledge
-            security:ingest: Send SIEM telemetry
-            security:manage: Manage incidents and reports
-    did_jwt:
-      type: http
-      scheme: bearer
-      bearerFormat: DID-JWT
-  schemas:
-    Problem:
-      type: object
-      properties:
-        type: { type: string }
-        title: { type: string }
-        status: { type: integer }
-        detail: { type: string }
-        instance: { type: string }
-      required: [type, title, status]
-    IdResponse:
-      type: object
-      properties:
-        id: { type: string }
-      required: [id]
+      '200':
+        description: OK

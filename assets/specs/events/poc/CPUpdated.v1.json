@@ -1,13 +1,15 @@
 {
-  "$id": "https://coherosphere.com/schemas/poc/CPUpdated.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/poc/CPUpdated.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PoC.CPUpdated",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "memberId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "contributionId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "cp": {
       "type": "number"

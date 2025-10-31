@@ -2,7 +2,7 @@
 
 ## Landing / Marketing
 - Base domain: https://coherosphere.com
-- Purpose: Public landing page and marketing site
+- Purpose: Public landing page
 
 ## App Layer
 - Base domain: https://app.coherosphere.com

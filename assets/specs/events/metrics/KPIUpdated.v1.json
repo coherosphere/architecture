@@ -1,6 +1,8 @@
 {
-  "$id": "https://coherosphere.com/schemas/metrics/KPIUpdated.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/metrics/KPIUpdated.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Metrics.KPIUpdated",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "kpi": {

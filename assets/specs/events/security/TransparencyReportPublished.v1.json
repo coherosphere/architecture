@@ -1,10 +1,12 @@
 {
-  "$id": "https://coherosphere.com/schemas/security/TransparencyReportPublished.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/security/TransparencyReportPublished.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Security.TransparencyReportPublished",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "reportId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "hash": {
       "type": "string"

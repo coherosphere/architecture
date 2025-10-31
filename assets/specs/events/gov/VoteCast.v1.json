@@ -1,16 +1,18 @@
 {
-  "$id": "https://coherosphere.com/schemas/gov/VoteCast.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/gov/VoteCast.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gov.VoteCast",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "voteId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "proposalId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "voterId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "weight": {
       "type": "number"

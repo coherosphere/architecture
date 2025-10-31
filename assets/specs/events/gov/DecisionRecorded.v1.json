@@ -1,10 +1,12 @@
 {
-  "$id": "https://coherosphere.com/schemas/gov/DecisionRecorded.v1.json",
+  "$id": "https://schemas.coherosphere.io/events/gov/DecisionRecorded.v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gov.DecisionRecorded",
+  "version": "1.0.0",
   "type": "object",
   "properties": {
     "proposalId": {
-      "$ref": "../common.json#/$defs/ID"
+      "$ref": "../_meta/common.json#/$defs/ID"
     },
     "outcome": {
       "type": "string",

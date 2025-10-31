@@ -1,79 +1,23 @@
 openapi: 3.1.0
     info:
-      title: C2-11 Public API Gateway
-      version: 1.0.0
+      title: C2-11 Public API Gateway API
+      version: "1.0.0"
+      description: >
+        OpenAPI specification for the Public API Gateway. This spec is contracts-first and
+        references the canonical production API base at https://api.coherosphere.io.
     servers:
-      - url: https://api.coherosphere.com
-    tags:
-  - name: Gateway
-paths:
+      - url: https://api.coherosphere.io
+        description: Production environment
+      - url: https://staging.api.coherosphere.io
+        description: Staging environment
+      - url: http://localhost:8080
+        description: Local development
 
-/v1/auth/token:
-  post:
-    summary: Issue token
-    tags: [Gateway]
-    security: []
-    responses:
-      "200": {{ description: Token response }}
-/v1/webhooks/register:
-  post:
-    summary: Register webhook
-    tags: [Gateway]
-    security: [{ oauth2: [] }]
-    responses:
-      "201": {{ description: Registered }}
-/v1/openapi.json:
+    paths:
+
+/v1/*:
   get:
-    summary: Get composite OpenAPI
-    tags: [Gateway]
-    security: []
+    summary: Gateway routed endpoint
     responses:
-      "200": {{ description: OpenAPI document }}
-
-
-components:
-  securitySchemes:
-    oauth2:
-      type: oauth2
-      flows:
-        authorizationCode:
-          authorizationUrl: https://auth.coherosphere.com/oauth/authorize
-          tokenUrl: https://auth.coherosphere.com/oauth/token
-          scopes:
-            poc:read: Read PoC data
-            poc:write: Write PoC data
-            gov:read: Read governance data
-            gov:vote: Cast votes
-            gov:write: Create or manage proposals
-            treasury:read: Read treasury data
-            treasury:manage: Manage rounds and payouts
-            id:read: Read identity and reputation
-            id:issue: Issue credentials
-            id:verify: Verify credentials/evidence
-            metrics:read: Read KPIs and SRI
-            ethics:evaluate: Run ethics checks
-            hub:manage: Manage local hubs and projects
-            hub:read: Read hubs/projects
-            kg:ingest: Ingest knowledge
-            kg:query: Query knowledge
-            security:ingest: Send SIEM telemetry
-            security:manage: Manage incidents and reports
-    did_jwt:
-      type: http
-      scheme: bearer
-      bearerFormat: DID-JWT
-  schemas:
-    Problem:
-      type: object
-      properties:
-        type: { type: string }
-        title: { type: string }
-        status: { type: integer }
-        detail: { type: string }
-        instance: { type: string }
-      required: [type, title, status]
-    IdResponse:
-      type: object
-      properties:
-        id: { type: string }
-      required: [id]
+      '200':
+        description: OK
