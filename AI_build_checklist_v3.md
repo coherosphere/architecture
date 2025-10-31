@@ -1,4 +1,4 @@
-# Coherosphere — AI Build Checklist (v4.0)
+# Coherosphere — AI Build Checklist (v3.0)
 
 Purpose:  
 Defines the complete dependency and build graph required for an AI or automated pipeline to reconstruct the full Coherosphere system from specification to deployable artifacts.
