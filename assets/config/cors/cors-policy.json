@@ -1,0 +1,92 @@
+{
+  "version": "1.2.0",
+  "description": "Single-source-of-truth CORS policy for Coherosphere API Gateway and edge",
+  "api": {
+    "host": "api.coherosphere.io",
+    "allowed_origins": [
+      "https://app.coherosphere.com",
+      "https://coherosphere.com",
+      "https://docs.coherosphere.io",
+      "https://schemas.coherosphere.io",
+      "https://governance.coherosphere.io",
+      "https://dev.coherosphere.io",
+      "https://events.coherosphere.io",
+      "https://metric.coherosphere.io",
+      "https://audit.coherosphere.io",
+      "https://status.coherosphere.io",
+      "https://chat.coherosphere.io",
+      "https://data.coherosphere.io",
+      "https://ai.coherosphere.io"
+    ],
+    "allowed_methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS"
+    ],
+    "allowed_headers": [
+      "Authorization",
+      "Content-Type",
+      "Accept",
+      "X-Request-Id",
+      "X-Idempotency-Key",
+      "X-Client-Version",
+      "If-None-Match"
+    ],
+    "exposed_headers": [
+      "ETag",
+      "X-Request-Id",
+      "X-RateLimit-Remaining",
+      "X-RateLimit-Reset"
+    ],
+    "allow_credentials": true,
+    "max_age_seconds": 86400
+  },
+  "api_staging": {
+    "host": "staging.api.coherosphere.io",
+    "allowed_origins": [
+      "https://app.coherosphere.com",
+      "https://coherosphere.com",
+      "https://docs.coherosphere.io",
+      "https://schemas.coherosphere.io",
+      "https://governance.coherosphere.io",
+      "https://dev.coherosphere.io",
+      "https://events.coherosphere.io",
+      "https://metric.coherosphere.io",
+      "https://audit.coherosphere.io",
+      "https://status.coherosphere.io",
+      "https://chat.coherosphere.io",
+      "https://data.coherosphere.io",
+      "https://ai.coherosphere.io",
+      "http://localhost:3000",
+      "http://localhost:5173"
+    ],
+    "allowed_methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS"
+    ],
+    "allowed_headers": [
+      "Authorization",
+      "Content-Type",
+      "Accept",
+      "X-Request-Id",
+      "X-Idempotency-Key",
+      "X-Client-Version",
+      "If-None-Match"
+    ],
+    "exposed_headers": [
+      "ETag",
+      "X-Request-Id",
+      "X-RateLimit-Remaining",
+      "X-RateLimit-Reset"
+    ],
+    "allow_credentials": true,
+    "max_age_seconds": 86400
+  }
+}
