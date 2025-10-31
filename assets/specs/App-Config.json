@@ -1,0 +1,10 @@
+{
+  "publicUrl": "https://app.coherosphere.com",
+  "apiBaseUrl": "https://api.coherosphere.io",
+  "docsUrl": "https://docs.coherosphere.io",
+  "landingUrl": "https://coherosphere.com",
+  "auth": {
+    "issuer": "https://api.coherosphere.io/auth",
+    "audience": "coherosphere"
+  }
+}

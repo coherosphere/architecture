@@ -1,0 +1,29 @@
+{
+  "$id": "https://coherosphere.com/schemas/security/IncidentOpened.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "incidentId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+      ]
+    },
+    "openedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "incidentId",
+    "severity",
+    "openedAt"
+  ],
+  "additionalProperties": false
+}

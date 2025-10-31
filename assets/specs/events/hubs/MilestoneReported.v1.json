@@ -1,0 +1,33 @@
+{
+  "$id": "https://coherosphere.com/schemas/hubs/MilestoneReported.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "projectId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "milestoneId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Proposed",
+        "InProgress",
+        "Completed",
+        "Rejected"
+      ]
+    },
+    "reportedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "projectId",
+    "milestoneId",
+    "status",
+    "reportedAt"
+  ],
+  "additionalProperties": false
+}

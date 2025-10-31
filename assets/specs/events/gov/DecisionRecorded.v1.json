@@ -1,0 +1,36 @@
+{
+  "$id": "https://coherosphere.com/schemas/gov/DecisionRecorded.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "proposalId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "Approved",
+        "Rejected",
+        "NoQuorum"
+      ]
+    },
+    "quorum": {
+      "type": "number"
+    },
+    "threshold": {
+      "type": "number"
+    },
+    "talliedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "proposalId",
+    "outcome",
+    "quorum",
+    "threshold",
+    "talliedAt"
+  ],
+  "additionalProperties": false
+}

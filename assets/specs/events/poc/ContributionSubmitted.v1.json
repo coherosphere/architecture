@@ -1,0 +1,41 @@
+{
+  "$id": "https://coherosphere.com/schemas/poc/ContributionSubmitted.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "contributionId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "memberId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "projectId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "uri": {
+      "type": "string",
+      "format": "uri"
+    },
+    "refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "ingestedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "contributionId",
+    "memberId",
+    "uri",
+    "ingestedAt"
+  ],
+  "additionalProperties": true
+}

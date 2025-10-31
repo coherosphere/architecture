@@ -1,0 +1,19 @@
+{
+  "$id": "https://coherosphere.com/schemas/treasury/RoundClosed.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "roundId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "endsAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "roundId",
+    "endsAt"
+  ],
+  "additionalProperties": false
+}

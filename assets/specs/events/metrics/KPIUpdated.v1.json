@@ -1,0 +1,27 @@
+{
+  "$id": "https://coherosphere.com/schemas/metrics/KPIUpdated.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "kpi": {
+      "type": "string"
+    },
+    "value": {
+      "type": "number"
+    },
+    "dims": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "kpi",
+    "value",
+    "at"
+  ],
+  "additionalProperties": false
+}

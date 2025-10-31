@@ -1,0 +1,37 @@
+{
+  "$id": "https://coherosphere.com/schemas/common.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Common Fragments",
+  "$defs": {
+    "ULID": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "ID": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Money": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 12
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "additionalProperties": false
+    },
+    "Did": {
+      "type": "string",
+      "pattern": "^did:[a-z0-9]+:.+"
+    }
+  }
+}

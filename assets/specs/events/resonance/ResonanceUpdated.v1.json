@@ -1,0 +1,45 @@
+{
+  "$id": "https://coherosphere.com/schemas/resonance/ResonanceUpdated.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "targetType": {
+      "type": "string",
+      "enum": [
+        "contribution",
+        "project",
+        "hub",
+        "system"
+      ]
+    },
+    "targetId": {
+      "$ref": "../common.json#/$defs/ID"
+    },
+    "r": {
+      "type": "number"
+    },
+    "i": {
+      "type": "number"
+    },
+    "a": {
+      "type": "number"
+    },
+    "lambda": {
+      "type": "number"
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "targetType",
+    "targetId",
+    "r",
+    "i",
+    "a",
+    "lambda",
+    "at"
+  ],
+  "additionalProperties": false
+}

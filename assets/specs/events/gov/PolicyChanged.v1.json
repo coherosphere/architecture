@@ -1,0 +1,29 @@
+{
+  "$id": "https://coherosphere.com/schemas/gov/PolicyChanged.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "policyName": {
+      "type": "string"
+    },
+    "fromVersion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "toVersion": {
+      "type": "string"
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "policyName",
+    "toVersion",
+    "at"
+  ],
+  "additionalProperties": false
+}
