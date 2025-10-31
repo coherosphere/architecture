@@ -1,0 +1,9 @@
+C1-ID,Element Name,Type,Description,Connections
+C1-01,Coherosphere System (Sphere of Coherence),System Boundary,"Unified socio-technological ecosystem aligning human values, AI, and decentralized governance.",Contains C2-01–C2-12; interacts with Developers (C1-07) and Society (C1-08).
+C1-02,Member / Contributor,External Actor,Creates contributions and participates in governance through proposals and votes.,"Interacts with C2-02, C2-03, C2-06."
+C1-03,AI Systems & Agents,External System,Perform alignment analytics and resonance computation to support governance feedback loops.,"Interacts with C2-01, C2-07."
+C1-04,External DAOs & Web3 Systems,External System,Decentralized autonomous organizations interoperating via shared protocols for funding and governance.,Interacts bidirectionally with C2-03.
+C1-05,Local Communities & Institutions,External Actor / Organization,"Physical and digital communities engaged in education, regeneration, or healthcare.",Interacts bidirectionally with C2-06.
+C1-06,Bitcoin / Hard Asset Layer,External System,Sound money base layer ensuring reserve stability and treasury integrity.,Receives transactions and reserves from C2-04.
+C1-07,Developers & Architects,External Actor,"Maintain, extend, and audit the open-source infrastructure powering the Coherosphere.",Interact with C1-01 and C2-11.
+C1-08,Public / Society,External Actor,"Observes resonance, benefits from coherence, and receives transparent impact feedback.","Connected to C2-07, C2-08, and C2-12."

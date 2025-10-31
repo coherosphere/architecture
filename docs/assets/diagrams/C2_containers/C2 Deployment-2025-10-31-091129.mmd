@@ -1,0 +1,138 @@
+---
+title: "C2 — Deployment View (Regions, Zones, Replication)"
+config:
+  layout: elk
+---
+flowchart LR
+  %% ===== Styles (Coherosphere CI) =====
+  classDef zone_core fill:#ffedd5,stroke:#fb923c,color:#111827,stroke-width:2px;
+  classDef zone_edge fill:#fef3c7,stroke:#f59e0b,color:#111827,stroke-width:2px;
+  classDef zone_secure fill:#dcfce7,stroke:#22c55e,color:#111827,stroke-width:2px;
+  classDef zone_dr fill:#e0e7ff,stroke:#6366f1,color:#111827,stroke-width:2px;
+  classDef zone_access fill:#ede9fe,stroke:#7c3aed,color:#111827,stroke-width:2px;
+  classDef container fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+  classDef control fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef store fill:#0ea5e9,stroke:#075985,color:#fff;
+  classDef risk fill:#ef4444,stroke:#7f1d1d,color:#fff;
+  classDef ext fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+  classDef ui fill:#8b5cf6,stroke:#4c1d95,color:#fff;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ===== Access / Entry (Global) =====
+  subgraph ACCESS["Access Layer — Anycast + CDN + WAF"]
+    direction TB
+    ING["Global Ingress (CDN/WAF)\nTLS Termination • Rate Caps"]:::control
+    APIGW["C2-11 Public API Gateway\n(REST/gRPC/GraphQL)\nreplicas: x3"]:::control
+    UI["C2-12 Resonance Board / UI\n(static + stream clients)\nAZ: Multi-AZ"]:::ui
+  end
+  class ACCESS zone_access;
+
+  %% ===== Core Region =====
+  subgraph CORE["Core Region — eu-central (Multi-AZ)"]
+    direction TB
+    RS["C2-01 Resonance Service\nreplicas: x3"]:::container
+    POC["C2-02 Proof-of-Contribution\nreplicas: x3"]:::container
+    GOV["C2-03 Governance & DAO\nreplicas: x3"]:::container
+    TRE["C2-04 Treasury & Funding\nreplicas: x2"]:::container
+    ID["C2-05 Identity & Reputation (PoCI)\nreplicas: x2"]:::container
+    MET["C2-07 Metrics / Analytics\nreplicas: x3"]:::container
+    ETH["C2-08 Manifesto & Ethics Guard\nreplicas: x2"]:::container
+    KG["C2-09 Knowledge Graph\nreplicas: x2"]:::container
+
+    subgraph DATA["Core Data Stores"]
+      direction TB
+      LEDGER["PoC Ledger\n(event store)\nRPO ≤ 5m"]:::store
+      MSTORE["Metrics DB / Feature Store\nRPO ≤ 5m"]:::store
+      KGDB["Graph DB + Vector DB\nRPO ≤ 10m"]:::store
+    end
+  end
+  class CORE zone_core;
+
+  %% ===== Secure Zone =====
+  subgraph SECURE["Secure Zone — HSM • Audit • Reserves"]
+    direction TB
+    SEC["C2-10 Security & Audit Layer\nreplicas: x2"]:::risk
+    HSM["HSM / Key Vault\n(signing • custody)"]:::store
+    TLED["Treasury Ledger / Escrows\n(settlement journal)"]:::store
+    ATTEST["Attestation Registry\n(PoCI/Ethics)"]:::store
+    AUD["Audit Vault (append-only)"]:::store
+  end
+  class SECURE zone_secure;
+
+  %% ===== Federation Edge =====
+  subgraph EDGE["Federation Edge — Local Hubs (CRDT Sync)"]
+    direction TB
+    HUB1["C2-06 Local Hub — CH-001\nSync Orchestrator + Edge Store"]:::container
+    HUB2["C2-06 Local Hub — JP-101\nSync Orchestrator + Edge Store"]:::container
+    EDGE1["Edge Store (CRDT)\nlocal cache"]:::store
+    EDGE2["Edge Store (CRDT)\nlocal cache"]:::store
+  end
+  class EDGE zone_edge;
+
+  %% ===== DR / Failover =====
+  subgraph DR["DR Region — eu-west (Warm Standby)"]
+    direction TB
+    RS_DR["Resonance (warm)\nreplicas: x1"]:::container
+    POC_DR["PoC (warm)\nreplicas: x1"]:::container
+    GOV_DR["Governance (warm)\nreplicas: x1"]:::container
+    MET_DR["Metrics (warm)\nreplicas: x1"]:::container
+    SNAPDR["Async Snapshots\nRPO ≤ 15m"]:::store
+  end
+  class DR zone_dr;
+
+  %% ===== External Ecosystem =====
+  subgraph EXT["External Ecosystem"]
+    direction TB
+    BTC["C1-06 Bitcoin / Hard Asset Layer"]:::ext
+    EXTDAO["C1-04 External DAOs / Web3"]:::ext
+    AI["C1-03 AI Systems / Agents"]:::ext
+  end
+  class EXT ext;
+
+  %% ===== Connectivity (always source --> target) =====
+  UI --> ING
+  ING --> APIGW
+
+  APIGW --> RS
+  APIGW --> POC
+  APIGW --> GOV
+  APIGW --> TRE
+  APIGW --> ID
+  APIGW --> MET
+  APIGW --> ETH
+  APIGW --> KG
+  APIGW --> HUB1
+  APIGW --> HUB2
+
+  POC --> LEDGER
+  RS  --> MSTORE
+  MET --> MSTORE
+  KG  --> KGDB
+  ID  --> ATTEST
+  ETH --> ATTEST
+
+  TRE --> TLED
+  SEC --> AUD
+  SEC --> HSM
+
+  HUB1 --> EDGE1
+  HUB2 --> EDGE2
+  HUB1 --> APIGW
+  HUB2 --> APIGW
+  HUB1 --> MET
+  HUB2 --> MET
+  HUB1 --> KG
+  HUB2 --> KG
+
+  LEDGER --> SNAPDR
+  MSTORE --> SNAPDR
+  KGDB   --> SNAPDR
+  RS --> RS_DR
+  POC --> POC_DR
+  GOV --> GOV_DR
+  MET --> MET_DR
+
+  TRE --> BTC
+  GOV <--> EXTDAO
+  RS --> AI
+  KG --> AI

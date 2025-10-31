@@ -1,0 +1,88 @@
+openapi: 3.1.0
+    info:
+      title: C2-07 Metrics API
+      version: 1.0.0
+    servers:
+      - url: https://api.coherosphere.com
+    tags:
+  - name: Metrics
+paths:
+
+/v1/kpi:
+  get:
+    summary: KPI rollups
+    tags: [Metrics]
+    security: [{ oauth2: [metrics:read] }]
+    responses:
+      "200": {{ description: KPI rollups }}
+/v1/kpi/series:
+  get:
+    summary: KPI time series
+    tags: [Metrics]
+    security: [{ oauth2: [metrics:read] }]
+    parameters:
+      - in: query
+        name: metric
+        required: true
+        schema: {{ type: string }}
+      - in: query
+        name: range
+        required: false
+        schema: {{ type: string, example: "30d" }}
+    responses:
+      "200": {{ description: Series }}
+/v1/snapshots:
+  post:
+    summary: Force snapshot
+    tags: [Metrics]
+    security: [{ oauth2: [metrics:read] }]
+    responses:
+      "202": {{ description: Snapshot scheduled }}
+
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.coherosphere.com/oauth/authorize
+          tokenUrl: https://auth.coherosphere.com/oauth/token
+          scopes:
+            poc:read: Read PoC data
+            poc:write: Write PoC data
+            gov:read: Read governance data
+            gov:vote: Cast votes
+            gov:write: Create or manage proposals
+            treasury:read: Read treasury data
+            treasury:manage: Manage rounds and payouts
+            id:read: Read identity and reputation
+            id:issue: Issue credentials
+            id:verify: Verify credentials/evidence
+            metrics:read: Read KPIs and SRI
+            ethics:evaluate: Run ethics checks
+            hub:manage: Manage local hubs and projects
+            hub:read: Read hubs/projects
+            kg:ingest: Ingest knowledge
+            kg:query: Query knowledge
+            security:ingest: Send SIEM telemetry
+            security:manage: Manage incidents and reports
+    did_jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: DID-JWT
+  schemas:
+    Problem:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+      required: [type, title, status]
+    IdResponse:
+      type: object
+      properties:
+        id: { type: string }
+      required: [id]

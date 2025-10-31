@@ -1,0 +1,101 @@
+openapi: 3.1.0
+    info:
+      title: C2-06 Local Hubs API
+      version: 1.0.0
+    servers:
+      - url: https://api.coherosphere.com
+    tags:
+  - name: Hubs
+paths:
+
+/v1/projects:
+  post:
+    summary: Register or update project
+    tags: [Hubs]
+    security: [{ oauth2: [hub:manage] }]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title: { type: string }
+              hubId: { type: string }
+              ownerId: { type: string }
+    responses:
+      "201": {{ description: Created, content: {{ application/json: {{ schema: {{ $ref: "#/components/schemas/IdResponse" }}}}} }}}
+/v1/projects/{id}:
+  get:
+    summary: Get project details
+    tags: [Hubs]
+    security: [{ oauth2: [hub:read] }]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: {{ type: string }}
+    responses:
+      "200": {{ description: Project details }}
+/v1/sync/pull:
+  post:
+    summary: Pull CRDT frames
+    tags: [Hubs]
+    security: [{ oauth2: [hub:manage] }]
+    responses:
+      "200": {{ description: Frames }}
+/v1/sync/push:
+  post:
+    summary: Push CRDT frames
+    tags: [Hubs]
+    security: [{ oauth2: [hub:manage] }]
+    responses:
+      "202": {{ description: Accepted }}
+
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.coherosphere.com/oauth/authorize
+          tokenUrl: https://auth.coherosphere.com/oauth/token
+          scopes:
+            poc:read: Read PoC data
+            poc:write: Write PoC data
+            gov:read: Read governance data
+            gov:vote: Cast votes
+            gov:write: Create or manage proposals
+            treasury:read: Read treasury data
+            treasury:manage: Manage rounds and payouts
+            id:read: Read identity and reputation
+            id:issue: Issue credentials
+            id:verify: Verify credentials/evidence
+            metrics:read: Read KPIs and SRI
+            ethics:evaluate: Run ethics checks
+            hub:manage: Manage local hubs and projects
+            hub:read: Read hubs/projects
+            kg:ingest: Ingest knowledge
+            kg:query: Query knowledge
+            security:ingest: Send SIEM telemetry
+            security:manage: Manage incidents and reports
+    did_jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: DID-JWT
+  schemas:
+    Problem:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+      required: [type, title, status]
+    IdResponse:
+      type: object
+      properties:
+        id: { type: string }
+      required: [id]

@@ -1,0 +1,71 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor M as C1-02 Member / Contributor
+
+box #8b5cf6 UI (🟪)
+  participant UI as C2-12 Resonance Board / UI
+end
+
+box #fde68a Control / API (🟨)
+  participant API as C2-11 Public API Gateway
+  participant ID as C2-05 Identity (PoCI)
+  participant ETH as C2-08 Manifesto & Ethics Guard
+end
+
+box #ff8b00 Governance / Compute (🟧)
+  participant GOV as C2-03 Governance & DAO
+  participant POC as C2-02 Proof-of-Contribution (PoC)
+  participant TRE as C2-04 Treasury & Funding
+  participant MET as C2-07 Metrics / Analytics
+  participant SEC as C2-10 Security & Audit
+end
+
+M ->> UI: Draft proposal (title, scope, budget, refs)
+UI ->> API: submitProposal(payload)
+
+API ->> ID: verifyIdentity(DID/VC)
+ID -->> API: IdentityVerified
+
+API ->> ETH: preflightAlignment(payload)
+ETH -->> API: AlignmentChecked / Guidance
+
+API ->> GOV: registerProposal(payload)
+GOV -->> MET: event ProposalCreated
+GOV -->> UI: proposalId / status=Open
+
+note over GOV: Voting window opens (quorum, threshold, sublinear weights)
+
+loop Voting phase (members)
+  M ->> UI: Cast vote (support/against, stake)
+  UI ->> API: castVote(proposalId, vote)
+  API ->> ID: verifyIdentity(DID/VC)
+  API ->> POC: fetchVotingWeight(memberId)
+  POC -->> API: W = (CP^α)
+  API ->> GOV: recordVote(proposalId, vote, W)
+  GOV -->> MET: event VoteCast
+end
+
+GOV ->> GOV: tally(quorum, threshold, weighted)
+GOV -->> MET: event VoteTallied
+
+alt Decision = Approved
+  GOV ->> GOV: recordDecision(Approved)
+  GOV -->> MET: event DecisionRecorded
+  par If budgeted action
+    GOV ->> TRE: executeGrant(projectId, amount)
+    TRE -->> MET: event FundingAllocated
+  and If policy change
+    GOV -->> MET: event PolicyChanged
+  end
+else Rejected / NoQuorum
+  GOV ->> GOV: recordDecision(Rejected)
+  GOV -->> MET: event DecisionRecorded
+end
+
+%% Audit trail & transparency
+GOV -->> SEC: appendAudit(proposalId, votes, decision)
+SEC -->> UI: publishAuditDigest
+
+note over UI,MET: Outcome → Proposal processed end-to-end (created, voted, tallied, executed/recorded) with metrics & audit updates.
