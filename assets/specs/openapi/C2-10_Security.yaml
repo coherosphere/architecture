@@ -6,13 +6,8 @@ info:
   description: Security health, SIEM ingest, logs, and transparency reports.
 servers:
   - url: https://api.coherosphere.io
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-# Require auth by default; we'll override health below.
+
+# Require auth by default; health will override.
 security:
   - bearerAuth: []
 
@@ -21,7 +16,7 @@ paths:
     get:
       summary: Liveness / readiness
       description: Public health check (no auth).
-      security: []  # <— override: no auth here
+      security: []  # override: no auth
       responses:
         "200":
           description: OK
@@ -29,7 +24,11 @@ paths:
             application/json:
               schema:
                 type: object
-                properties: { status: { type: string, enum: [ok] } }
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]
+                required: [status]
 
   /security/siem/events:
     post:
@@ -60,7 +59,8 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/LogEntry' }
+                items:
+                  $ref: '#/components/schemas/LogEntry'
         "401":
           description: Unauthorized
           content:
@@ -78,7 +78,8 @@ paths:
             application/json:
               schema:
                 type: array
-                items: { $ref: '#/components/schemas/TransparencyReport' }
+                items:
+                  $ref: '#/components/schemas/TransparencyReport'
         "401":
           description: Unauthorized
           content:
@@ -99,7 +100,8 @@ paths:
           description: Report
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/TransparencyReport' }
+              schema:
+                $ref: '#/components/schemas/TransparencyReport'
         "404":
           description: Not found
         "401":
@@ -110,6 +112,12 @@ paths:
                 $ref: '#/components/schemas/AuthError'
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     AuthError:
       type: object
@@ -119,6 +127,7 @@ components:
         status: { type: integer }
         detail: { type: string }
       required: [type, title, status]
+
     SiemEvent:
       type: object
       properties:
@@ -126,6 +135,7 @@ components:
         kind: { type: string }
         ts: { type: string, format: date-time }
       required: [id, kind, ts]
+
     LogEntry:
       type: object
       properties:
@@ -134,6 +144,7 @@ components:
         source: { type: string }
         message: { type: string }
       required: [ts, level, message]
+
     TransparencyReport:
       type: object
       properties:
