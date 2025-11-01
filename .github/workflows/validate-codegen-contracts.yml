@@ -1,0 +1,51 @@
+name: Validate Codegen Contracts (Prism + Schemathesis)
+
+on:
+  push:
+    paths:
+      - "assets/specs/openapi/**"
+      - "scripts/codegen_harness_validate.sh"
+      - ".github/workflows/validate-codegen-contracts.yml"
+  pull_request:
+    paths:
+      - "assets/specs/openapi/**"
+      - "scripts/codegen_harness_validate.sh"
+      - ".github/workflows/validate-codegen-contracts.yml"
+  workflow_dispatch: {}
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (for Prism)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python (for Schemathesis)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Schemathesis
+        run: |
+          python -m pip install --upgrade pip
+          pip install "schemathesis>=3.27,<4"
+
+      - name: Run contract harness
+        run: |
+          bash scripts/codegen_harness_validate.sh
+
+      - name: Upload harness artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codegen-contracts-artifacts
+          path: |
+            .harness_logs_contracts/**
+            .harness_contracts/**
