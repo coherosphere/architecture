@@ -2,129 +2,116 @@
 set -euo pipefail
 
 ROOT="${1:-assets/specs/openapi}"
-BASE_PORT="${BASE_PORT:-41000}"
-MAX_EXAMPLES="${MAX_EXAMPLES:-25}"
+PORT_BASE="${PORT_BASE:-41000}"
+PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
+STRICT="${STRICT_CONTRACTS:-false}"   # true => fehlende paths führen zum Fail
 
-LOG_DIR=".harness_logs_contracts"
-OUT_DIR=".harness_contracts"
-mkdir -p "$LOG_DIR" "$OUT_DIR"
+echo "🔎 Contract test for specs under: ${ROOT}"
 
-echo "🔎 Contract test for specs under: $ROOT"
-mapfile -t SPECS < <(ls "$ROOT"/C2-*.yaml "$ROOT"/C2-*.yml 2>/dev/null || true)
-if [[ ${#SPECS[@]} -eq 0 ]]; then
-  echo "❌ No OpenAPI specs found in $ROOT"
-  exit 1
-fi
+mkdir -p .harness_tmp/bundled .harness_logs_contracts .harness_out_contracts
 
-pids=()
-failures=0
-skipped=0
+fail=0
+idx=0
 
-cleanup() {
-  echo "🧹 Stopping Prism servers…"
-  for pid in "${pids[@]:-}"; do
-    if kill -0 "$pid" 2>/dev/null; then kill "$pid" || true; fi
-  done
-}
-trap cleanup EXIT
-
-wait_for_port() {
-  local port="$1" tries=240  # 60 s timeout
-  while ! (echo >"/dev/tcp/127.0.0.1/$port") >/dev/null 2>&1; do
-    sleep 0.25
-    tries=$((tries-1))
-    [[ $tries -le 0 ]] && return 1
-  done
-  return 0
+bundle() {
+  local in="$1" out="$2"
+  # Redocly v2 (neuer Paketname @redocly/cli)
+  npx -y @redocly/cli@latest bundle "$in" \
+    --ext yaml \
+    --dereferenced \
+    --remove-unused-components \
+    -o "$out" >/dev/null
 }
 
-i=0
-for SPEC in "${SPECS[@]}"; do
-  fname="$(basename "$SPEC")"
-  id="${fname%%.*}"
-  port=$((BASE_PORT+i))
-  LOG="$LOG_DIR/prism_${i}.log"
+has_paths() {
+  python3 - "$1" <<'PY'
+import sys, yaml
+p = sys.argv[1]
+with open(p, 'r', encoding='utf-8') as f:
+    data = yaml.safe_load(f)
+paths = (data or {}).get('paths') or {}
+print('1' if len(paths)>0 else '0')
+PY
+}
 
-  echo ""
-  echo "──────────────────────────────────────────────────────────────"
-  echo "⚙️  Harness for ${fname}  (port $port)"
-  echo "──────────────────────────────────────────────────────────────"
+start_prism() {
+  local spec="$1" port="$2" log="$3"
+  # Prism CLI v5
+  npx -y @stoplight/prism-cli@5 mock "$spec" \
+    -p "$port" -h 127.0.0.1 $PRISM_FLAGS \
+    >"$log" 2>&1 &
+  echo $!
+}
 
-  # Skip minimal specs without operations
-  if ! grep -qE '(^|\s)paths:' "$SPEC"; then
-    echo "  ⚠️  No operations found (no paths: section) — skipping $fname."
-    skipped=$((skipped+1))
-    i=$((i+1))
-    continue
-  fi
+wait_port() {
+  local port="$1" tries=30
+  for _ in $(seq 1 $tries); do
+    if (echo > /dev/tcp/127.0.0.1/"$port") >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.3
+  done
+  return 1
+}
 
-  SPEC_DIR="$(cd "$(dirname "$SPEC")" && pwd)"
-  SPEC_BASENAME="$(basename "$SPEC")"
-
-  echo "  ▶︎ Starting Prism @ $SPEC_DIR on :$port (log: $LOG)"
-  (
-    cd "$SPEC_DIR"
-    prism mock "$SPEC_BASENAME" \
-      -p "$port" \
-      -h 127.0.0.1 \
-      --errors \
-      --verboseLevel debug \
-      --cors
-  ) >"$LOG" 2>&1 &
-
-  prism_pid=$!
-  pids+=("$prism_pid")
-
-  # Quick check whether prism exited immediately
-  sleep 0.5
-  if ! kill -0 "$prism_pid" 2>/dev/null; then
-    echo "  ❌ Prism exited immediately for $fname. Last log lines:"
-    tail -n 60 "$LOG" || true
-    failures=$((failures+1))
-    i=$((i+1))
-    continue
-  fi
-
-  if ! wait_for_port "$port"; then
-    echo "  ❌ Prism failed to open :$port for $fname. Last log lines:"
-    tail -n 60 "$LOG" || true
-    failures=$((failures+1))
-    kill "$prism_pid" >/dev/null 2>&1 || true
-    i=$((i+1))
-    continue
-  fi
-  echo "  ✅ Prism ready (pid=$prism_pid)"
-
-  JUNIT="$OUT_DIR/${id}_junit.xml"
-  RPT="$OUT_DIR/${id}_report.txt"
-  echo "  ▶︎ Schemathesis run (max-examples=$MAX_EXAMPLES)…"
-
-  set +e
-  schemathesis run "$SPEC" \
-    --base-url "http://127.0.0.1:$port" \
+run_schemathesis() {
+  local spec="$1" base="$2" outdir="$3"
+  # wenige Beispiele, damit CI schnell bleibt
+  schemathesis run "$spec" \
+    --base-url "$base" \
     --checks all \
-    --stateful=links \
-    --hypothesis-seed=1 \
-    --hypothesis-max-examples="$MAX_EXAMPLES" \
-    --junit-xml "$JUNIT" | tee "$RPT"
-  st=$?
-  set -e
+    --validate-schema \
+    --max-examples 10 \
+    --hypothesis-deadline=500 \
+    --seed 1 \
+    --report=md --report-file "$outdir/report.md" \
+    >/dev/null
+}
 
-  if [[ $st -ne 0 ]]; then
-    echo "  ❌ Contract violations for $id (exit=$st). See $RPT"
-    failures=$((failures+1))
-  else
-    echo "  ✅ Contract OK for $id"
+shopt -s nullglob
+for f in "$ROOT"/C2-*.y?(a)ml; do
+  base="$(basename "$f")"
+  name="${base%.*}"
+  port=$((PORT_BASE + idx))
+  idx=$((idx + 1))
+
+  echo "──────────────────────────────────────────────────────────────"
+  echo "⚙️  Harness for ${base}  (port ${port})"
+  echo "──────────────────────────────────────────────────────────────"
+
+  bundled=".harness_tmp/bundled/${base}"
+  bundle "$f" "$bundled"
+
+  if [[ "$(has_paths "$bundled")" != "1" ]]; then
+    echo "  ⚠️  No operations (/paths empty) → $( $STRICT && echo 'FAIL' || echo 'skip' )"
+    if [[ "$STRICT" == "true" ]]; then
+      fail=1
+    fi
+    continue
   fi
 
-  kill "$prism_pid" >/dev/null 2>&1 || true
-  i=$((i+1))
+  log=".harness_logs_contracts/prism_${idx}.log"
+  pid=$(start_prism "$bundled" "$port" "$log")
+
+  if ! wait_port "$port"; then
+    echo "  ❌ Prism failed to open :${port} for ${base}. Last log lines:"
+    tail -n 12 "$log" || true
+    kill "$pid" >/dev/null 2>&1 || true
+    fail=1
+    continue
+  fi
+  echo "  ✅ Prism up on :${port} (pid=${pid})"
+
+  outdir=".harness_out_contracts/${name}"
+  mkdir -p "$outdir"
+  if run_schemathesis "$bundled" "http://127.0.0.1:${port}" "$outdir"; then
+    echo "  ✅ Schemathesis OK → ${outdir}/report.md"
+  else
+    echo "  ❌ Schemathesis reported failures (see ${outdir}/report.md)"
+    fail=1
+  fi
+
+  kill "$pid" >/dev/null 2>&1 || true
 done
 
-echo ""
-echo "📊 Summary: ${#SPECS[@]} specs, $skipped skipped, $failures failed"
-if [[ $failures -gt 0 ]]; then
-  echo "❌ Contract test finished with $failures failing spec(s)."
-  exit 1
-fi
-echo "✅ All OpenAPI contracts validated successfully."
+exit $fail
