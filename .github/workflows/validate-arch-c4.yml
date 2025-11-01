@@ -1,5 +1,5 @@
-# validate-openapi.yml
-name: Validate Architecture – C4 ↔ DDD
+# validate-arch-c4.yml
+name: Validate Architecture – C4 ↔ DDD Event Schemas
 
 on:
   push:
