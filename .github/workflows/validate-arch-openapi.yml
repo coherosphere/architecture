@@ -38,7 +38,7 @@ jobs:
       - name: Spectral lint (errors only)
         run: |
           npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" \
-            --ruleset "spectral:oas" \
+            --ruleset "oas" \
             --fail-severity=error
 
       - name: Summarize
