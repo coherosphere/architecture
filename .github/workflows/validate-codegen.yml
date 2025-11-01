@@ -1,4 +1,4 @@
-name: Validate Codegen Harness
+name: Validate Codegen
 
 on:
   workflow_dispatch: {}
