@@ -1,5 +1,5 @@
-# validate-openapi.yml
-name: Validate OpenAPI Syntax & Structure
+# validate-arch-openapi.yml
+name: Validate Architecture – OpenAPI Domains Policy & Governance
 
 on:
   push:
