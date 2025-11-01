@@ -2,85 +2,68 @@
 sequenceDiagram
 autonumber
 
-actor M as C1-02 Member / Data Subject
+actor DS as Data Subject
+participant SEC as C2-10 Security & Audit
+participant ID as C2-05 Identity & Reputation (PoCI)
+participant KG as C2-09 Knowledge Graph
+participant DPO as Data Protection Officer
 
-box #8b5cf6 UI
-  participant UI as C2-12 Resonance Board / UI (Privacy Center)
+%% ========== Intake & Verification ==========
+DS ->> SEC: submit DSR (access or erasure, scope, evidence)
+note over SEC: DDD-EVT-79 (DSRSubmitted)
+
+SEC ->> ID: verifyIdentity(credentials)
+alt identity verified
+  ID -->> SEC: identityVerified
+else verification failed
+  SEC -->> DS: request additional proof / deny with reason
+  note over SEC: DDD-EVT-80 (DSRValidationFailed)
 end
 
-box #fde68a Control / API
-  participant API as C2-11 Public API Gateway
+
+%% ========== ACCESS REQUEST FLOW ==========
+rect rgb(244,244,255)
+note over SEC: ACCESS flow
+SEC ->> SEC: classify request type == access
+SEC ->> KG: collect personal data (subject refs)
+KG -->> SEC: dataset bundle for export
+SEC ->> DS: provide export link (signed, expiring)
+note over SEC: DDD-EVT-81 (DSRAccessDelivered)
+SEC ->> DPO: record audit entry
+note over SEC: DDD-EVT-82 (DSRClosed)
 end
 
-box #ff8b00 Core Services
-  participant ID as C2-05 Identity & Reputation (PoCI)
-  participant POC as C2-02 Proof of Contribution
-  participant RS as C2-01 Resonance Service
-  participant MET as C2-07 Metrics / Analytics
-  participant KG as C2-09 Knowledge Graph
-  participant GOV as C2-03 Governance & DAO
+
+%% ========== ERASURE REQUEST FLOW ==========
+rect rgb(255,244,244)
+note over SEC: ERASURE flow
+SEC ->> SEC: classify request type == erasure
+SEC ->> KG: locate items for deletion
+KG -->> SEC: deletion plan (targets, constraints)
+
+alt legal hold active
+  SEC -->> DS: partial erasure — legal hold items kept
+  note over SEC: Reverse path — limited erasure
+else no legal hold
+  SEC ->> KG: apply erasure (soft/hard delete)
+  KG -->> SEC: erasure confirmed
 end
 
-box #e5e7eb Security / Compliance
-  participant SEC as C2-10 Security & Audit (Compliance)
+SEC ->> DS: confirmation + summary report
+note over SEC: DDD-EVT-81 (DSRErasureCompleted)
+SEC ->> DPO: record audit entry
+note over SEC: DDD-EVT-82 (DSRClosed)
 end
 
-%% -------- DSAR intake --------
-M ->> UI: Submit DSAR (Access or Erasure)
-UI ->> API: POST /privacy/dsar {type, scope}
-API ->> ID: verifyIdentity(DID, credentials)
-ID -->> API: IdentityVerified (DDD EVT 16)
-API -->> SEC: DSARRequested (DDD EVT 79)
-SEC ->> SEC: open compliance case, assign SLA timer
 
-%% -------- Scope discovery --------
-API ->> SEC: getPolicyScope(scope)
-SEC -->> API: policy & data sources
-API ->> API: expand DSAR to relevant containers (POC, RS, MET, KG)
-
-%% -------- Access Request path --------
-alt DSAR.type == ACCESS
-  par collect user data
-    POC ->> POC: aggregate contributions, impact, CP/W
-    POC -->> API: contribution data
-    RS ->> RS: retrieve resonance samples (R = I × A × e^(−λΔt))
-    RS -->> API: resonance data
-    MET ->> MET: gather KPIs and time series
-    MET -->> API: KPI data
-    KG ->> KG: export semantic entries & embeddings
-    KG -->> API: knowledge data
-  end
-  API ->> SEC: sanitize / redact (3rd-party or sensitive)
-  SEC -->> API: sanitized dataset
-  API -->> SEC: DataPackagePrepared (DDD EVT 80)
-  SEC -->> UI: deliver secure download link
-  UI -->> M: notify and show access package
-else DSAR.type == ERASURE
-  %% -------- Erasure path --------
-  API ->> GOV: check legal holds / governance exemptions
-  alt Exemption exists
-    GOV -->> API: denyErasure(reason)
-    API -->> UI: notify denial & appeal path
-    SEC ->> SEC: record denial log
-  else proceed with deletion
-    par delete data
-      POC ->> POC: remove or anonymize CP/W history
-      RS ->> RS: purge resonance records
-      MET ->> MET: purge related KPIs
-      KG ->> KG: remove personal nodes
-    end
-    SEC ->> SEC: verify deletion & evidence log
-    SEC -->> API: ErasureCompleted (DDD EVT 81)
-    API -->> UI: show confirmation
-  end
+%% ========== Exception Handling ==========
+opt timeout or unreachable subject
+  SEC ->> DPO: flag timed-out case (SLA breach)
+  SEC -->> DS: notice (resume window)
 end
 
-%% -------- Case closure --------
-SEC ->> SEC: close DSAR case (audit, signatures)
-SEC -->> MET: DSARClosed (DDD EVT 82)
-MET -->> MET: KPIUpdated (DDD EVT 26)
-API -->> UI: show completion summary
-
-Note over SEC: DSARRequested (79) opens compliance case
-Note over SEC,API: DataPackagePrepared (80) for access, ErasureCompleted (81) for erasure
-Note over MET: DSARClosed (82) triggers compliance KPI update
+opt dispute or appeal
+  DS ->> DPO: appeal decision
+  DPO ->> SEC: reopen case and add evidence
+  SEC ->> SEC: re-evaluate and update audit record
+end

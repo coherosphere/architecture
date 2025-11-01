@@ -1,4 +1,4 @@
-%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+%%{init: {'theme':'neutral','themeVariables':{ 'sequenceNumberColor':'#444'}}}%%
 sequenceDiagram
 autonumber
 
@@ -9,51 +9,61 @@ box #ff8b00 Core Services
   participant TRE as C2-04 Treasury & Funding
 end
 
-%% Detection
-S ->> SEC: review risk dashboard (policy thresholds)
-SEC ->> SEC: evaluate SIEM signals, anomaly scores
 
-alt threshold breached
-  SEC -->> SEC: RiskThresholdBreachDetected (DDD EVT 83)
-  note right of SEC: Guardrails require pausing one or more streams
+%% === Detection ===
+S ->> SEC: Review risk dashboard (policy thresholds)
+SEC ->> SEC: Evaluate SIEM signals and anomaly scores
 
-else
-  note right of SEC: Continue monitoring
-
+alt Threshold breached
+  SEC -->> SEC: RiskThresholdBreachDetected (DDD-EVT-83)
+  SEC -->> SEC: Guardrails require stream pause
+else No breach
+  SEC -->> SEC: Continue monitoring (no action)
 end
 
-%% Pause flow
-alt breach confirmed AND active streams exist
+%% spacer
+%% --------------------------------------------
+
+%% === Pause Flow ===
+SEC ->> SEC: Confirm breach and check active streams
+
+alt Active streams found
   SEC ->> TRE: pauseStream(streamId, reason, evidenceRef)
-  TRE ->> TRE: halt disbursement on escrow/stream
+  TRE ->> TRE: Halt disbursement on escrow/stream
   TRE -->> SEC: streamPaused(ack)
-  SEC -->> SEC: FundingStreamPaused (DDD EVT 84)
-  note over SEC,TRE: Payouts halted until risk cleared
-
+  SEC -->> SEC: FundingStreamPaused (DDD-EVT-84)
+  SEC -->> TRE: Record pause context (evidenceRef)
+else No active streams
+  SEC -->> SEC: FundingPauseRecorded (audit-only)
 end
 
-%% Steward acknowledgement
-S ->> SEC: acknowledge pause (ticket linked)
-SEC -->> S: status: paused, evidence, next review window
+%% spacer
+%% --------------------------------------------
 
-%% Monitoring loop (risk review)
-loop periodic risk review
-  SEC ->> SEC: reassess signals, incidents, mitigations
+%% === Steward Acknowledgement ===
+S ->> SEC: Acknowledge pause (ticket linked)
+SEC -->> S: Status paused, evidence, next review window
 
-  alt risk cleared
-    SEC -->> SEC: RiskCleared (DDD EVT 85)
+%% spacer
+%% --------------------------------------------
+
+%% === Monitoring Loop ===
+loop Periodic review
+  SEC ->> SEC: Reassess signals and mitigations
+  alt Risk cleared
+    SEC -->> SEC: RiskCleared (DDD-EVT-85)
     SEC ->> TRE: resumeStream(streamId, rationale)
-    TRE ->> TRE: resume disbursement
+    TRE ->> TRE: Resume disbursement
     TRE -->> SEC: streamResumed(ack)
-    SEC -->> SEC: FundingStreamResumed (DDD EVT 86)
-    note over SEC,TRE: Stream successfully resumed
-
-else
-  %% keep stream paused; retain evidence
+    SEC -->> SEC: FundingStreamResumed (DDD-EVT-86)
+  else Still at risk
+    SEC -->> SEC: RetainEvidence + keep paused
+  end
 end
 
-end
+%% spacer
+%% --------------------------------------------
 
-%% Completion
-SEC -->> S: final status (resumed or escalation)
-note over SEC: All actions audited with hashes/signatures
+%% === Completion ===
+SEC -->> S: Final status (resumed or escalation)
+SEC -->> SEC: All actions audited (hashes/signatures)
