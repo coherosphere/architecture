@@ -29,7 +29,7 @@ cleanup() {
 trap cleanup EXIT
 
 wait_for_port() {
-  local port="$1" tries=240  # 60 s Timeout
+  local port="$1" tries=240  # 60 s timeout
   while ! (echo >"/dev/tcp/127.0.0.1/$port") >/dev/null 2>&1; do
     sleep 0.25
     tries=$((tries-1))
@@ -44,15 +44,17 @@ for SPEC in "${SPECS[@]}"; do
   id="${fname%%.*}"
   port=$((BASE_PORT+i))
   LOG="$LOG_DIR/prism_${i}.log"
+
   echo ""
   echo "──────────────────────────────────────────────────────────────"
   echo "⚙️  Harness for ${fname}  (port $port)"
   echo "──────────────────────────────────────────────────────────────"
 
-  # Skip if no paths block
+  # Skip minimal specs without operations
   if ! grep -qE '(^|\s)paths:' "$SPEC"; then
     echo "  ⚠️  No operations found (no paths: section) — skipping $fname."
     skipped=$((skipped+1))
+    i=$((i+1))
     continue
   fi
 
@@ -66,17 +68,18 @@ for SPEC in "${SPECS[@]}"; do
       -p "$port" \
       -h 127.0.0.1 \
       --errors \
-      --log-level debug \
+      --verboseLevel debug \
       --cors
   ) >"$LOG" 2>&1 &
 
   prism_pid=$!
   pids+=("$prism_pid")
 
+  # Quick check whether prism exited immediately
   sleep 0.5
   if ! kill -0 "$prism_pid" 2>/dev/null; then
     echo "  ❌ Prism exited immediately for $fname. Last log lines:"
-    tail -n 40 "$LOG" || true
+    tail -n 60 "$LOG" || true
     failures=$((failures+1))
     i=$((i+1))
     continue
@@ -84,7 +87,7 @@ for SPEC in "${SPECS[@]}"; do
 
   if ! wait_for_port "$port"; then
     echo "  ❌ Prism failed to open :$port for $fname. Last log lines:"
-    tail -n 40 "$LOG" || true
+    tail -n 60 "$LOG" || true
     failures=$((failures+1))
     kill "$prism_pid" >/dev/null 2>&1 || true
     i=$((i+1))
