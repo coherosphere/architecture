@@ -2,81 +2,51 @@
 sequenceDiagram
 autonumber
 
-actor M as C1-02 Member / Contributor
-actor D as C1-02 Donor / Funder
-actor H as C1-05 Local Hub / Project
+actor M as C1-02 Member / Donor
 
-box #8b5cf6 UI (🟪)
+box #8b5cf6 UI
   participant UI as C2-12 Resonance Board / UI
 end
 
-box #fde68a Control / API (🟨)
+box #fde68a Gateway
   participant API as C2-11 Public API Gateway
 end
 
-box #ff8b00 Core Services (🟧)
-  participant GOV as C2-03 Governance & DAO
+box #ff8b00 Core
+  participant GOV as C2-03 Governance
   participant TRE as C2-04 Treasury & Funding
-  participant POC as C2-02 Proof-of-Contribution (PoC)
+  participant POC as C2-02 PoC
   participant MET as C2-07 Metrics / Analytics
   participant SEC as C2-10 Security & Audit
-  participant HUB as C2-06 Local Hub / Federation
 end
 
-%% -------- Phase 1: Round setup --------
-M ->> UI: Propose QF round (scope, pool, rules)
-UI ->> API: submitProposal(QF params)
-API ->> GOV: registerProposal(QF params)
-GOV -->> MET: event ProposalCreated
+UI ->> API: openFundingRound(cfg)
+API ->> GOV: approveRound(cfg)
+GOV -->> TRE: RoundOpened (DDD EVT)
+TRE -->> MET: RoundOpened (metrics)
 
-loop Voting window
-  M ->> UI: Vote on QF round
-  UI ->> API: castVote(proposalId)
-  API ->> GOV: recordVote()
-  GOV -->> MET: event VoteCast
+M ->> UI: donate(projectId, amount)
+UI ->> API: recordDonation(projectId, amount)
+API ->> TRE: addDonation(projectId, amount)
+TRE -->> MET: DonationRecorded (DDD EVT)
+
+par periodic matching
+  TRE ->> TRE: computeQuadraticMatches()
+  TRE -->> MET: MatchingComputed
+and anomaly checks
+  SEC ->> SEC: anti-fraud / sybil review
+  SEC -->> TRE: ok
 end
 
-GOV ->> GOV: tally & decide (quorum/threshold)
-alt Approved
-  GOV -->> MET: event DecisionRecorded
-  GOV ->> TRE: openRound(poolId, rules)
-  TRE -->> UI: roundStatus=Open
-else Rejected
-  GOV -->> UI: roundStatus=Rejected
+alt round close success
+  TRE ->> TRE: finalizeMatches()
+  TRE -->> MET: FundingAllocated (DDD EVT)
+  TRE ->> TRE: streamPayouts()
+  TRE -->> MET: RoundClosed
+else failed close or fraud
+  SEC -->> TRE: findingsDetected
+  TRE ->> TRE: haltPayouts()
+  TRE -->> MET: RoundClosed (halted)
 end
 
-%% -------- Phase 2: Contributions & signals --------
-H ->> UI: Register project (metadata)
-UI ->> API: registerProject()
-API ->> HUB: createProject()
-HUB -->> MET: event ProjectCreated
-
-D ->> UI: Pledge donation to project
-UI ->> API: donate(projectId, amount)
-API ->> POC: fetchDonorReputation/weight()
-POC -->> API: donorWeight
-API ->> TRE: recordDonation(projectId, amount, donorWeight)
-TRE -->> MET: event DonationRecorded
-
-par periodic preview
-  TRE ->> TRE: computePreliminaryMatch()
-  TRE -->> UI: previewMatch(projectId, matchAmt)
-end
-
-%% -------- Phase 3: Matching & payout --------
-UI ->> API: closeRound()
-API ->> TRE: closeRound(poolId)
-TRE ->> TRE: computeFinalMatches(QF)
-TRE -->> MET: event FundingAllocated
-
-par Payouts
-  TRE ->> TRE: prepareEscrows()
-  TRE ->> TRE: streamOrDisbursePayouts()
-  TRE -->> MET: event TreasuryTxPosted
-end
-
-%% -------- Phase 4: Audit & transparency --------
-TRE -->> SEC: appendTreasuryAudit(roundId, txs)
-SEC -->> UI: publishTransparencyReport(roundId)
-
-note over UI,MET: Outcome → QF round approved, donations recorded, matches computed, payouts executed, metrics & transparency updated.
+note over UI,MET: Outcome → matching & payouts reflected in dashboards

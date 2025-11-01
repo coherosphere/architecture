@@ -2,87 +2,49 @@
 sequenceDiagram
 autonumber
 
-actor F as Funder / Treasury Operator
+actor B as C1-02 Beneficiary
 
 box #8b5cf6 UI
-  participant UI as C2-12 Resonance Board UI
+  participant UI as C2-12 Resonance Board / UI
 end
 
-box #fde68a Control or API
+box #fde68a Gateway
   participant API as C2-11 Public API Gateway
 end
 
-box #ff8b00 Core Services
-  participant TRE as C2-04 Treasury and Funding
-  participant GOV as C2-03 Governance and DAO
-  participant POC as C2-02 Proof of Contribution
-  participant MET as C2-07 Metrics and Analytics
-  participant SEC as C2-10 Security and Audit
+box #ff8b00 Core
+  participant TRE as C2-04 Treasury & Funding
+  participant POC as C2-02 PoC
+  participant MET as C2-07 Metrics / Analytics
+  participant SEC as C2-10 Security & Audit
 end
 
-%% -------- Stream setup --------
-F ->> UI: Create payout stream (projectId, amount, duration)
-UI ->> API: POST /payouts/stream
-API ->> TRE: createPayoutStream payload
-TRE ->> GOV: verifyPolicyCompliance projectId
-GOV -->> TRE: policy OK
-TRE ->> SEC: audit log createStream
-TRE -->> MET: event RoundOpened DDD EVT 31
-API -->> UI: streamCreated(streamId)
+UI ->> API: openStream(beneficiary, schedule, amount)
+API ->> TRE: createStream(beneficiary, schedule, amount)
+TRE -->> MET: StreamOpened (DDD EVT)
 
-%% -------- Funding and deposits --------
-F ->> TRE: deposit funds to escrow
-TRE ->> TRE: lock funds to stream account
-TRE -->> SEC: audit escrow deposit
-TRE -->> MET: publish FundingAllocated DDD EVT 19
-MET -->> MET: event KPIUpdated DDD EVT 26
-
-%% -------- Continuous disbursement cycle --------
-loop streaming interval
-  TRE ->> POC: verifyMilestoneProgress projectId
-  POC -->> TRE: progress ratio achieved
-  alt progress OK
-    TRE ->> TRE: release tranche proportional to progress
-    TRE -->> SEC: log release
-    TRE -->> MET: publish payout delta
-    MET -->> MET: event KPIUpdated DDD EVT 26
-  else progress failed or paused
-    TRE ->> TRE: pause stream
-    TRE -->> MET: event StreamPaused DDD EVT 32
-    TRE -->> SEC: record pause event
-  end
+loop periodic disbursement
+  TRE ->> TRE: accrueAndDisburse()
+  TRE -->> MET: StreamTick (KPIUpdated)
 end
 
-%% -------- Resume or adjust stream --------
-alt manual resume
-  F ->> UI: resumeStream(streamId)
-  UI ->> API: PATCH /payouts/stream/resume
-  API ->> TRE: resumeStream streamId
-  TRE -->> MET: event StreamResumed DDD EVT 33
-  TRE -->> SEC: log resume
-else governance adjustment
-  GOV ->> TRE: enforcePayoutAdjustment newRate
-  TRE -->> MET: event FundingAllocated DDD EVT 19
+alt pause requested or risk breach
+  API ->> TRE: pauseStream(streamId)
+  TRE ->> TRE: haltDisbursement()
+  TRE -->> MET: StreamPaused (DDD EVT)
+  SEC ->> SEC: recordControlAction(streamId)
+else normal operation
+  TRE -->> UI: streamStatus(active)
 end
 
-%% -------- Stream close --------
-alt normal completion
-  TRE ->> TRE: closeStream streamId
-  TRE -->> MET: event StreamClosed DDD EVT 34
-  TRE -->> SEC: finalize escrow ledger
-else forced termination
-  GOV ->> TRE: terminateStream policyViolation
-  TRE -->> SEC: log termination
-  TRE -->> MET: event StreamClosed DDD EVT 34
+alt resume conditions met
+  API ->> TRE: resumeStream(streamId)
+  TRE ->> TRE: resumeDisbursement()
+  TRE -->> MET: StreamResumed (DDD EVT)
+else close stream (completed or revoked)
+  API ->> TRE: closeStream(streamId)
+  TRE ->> TRE: settleEscrow()
+  TRE -->> MET: StreamClosed (DDD EVT)
 end
 
-%% -------- Transparency and finalization --------
-SEC ->> SEC: compile payout report
-SEC -->> GOV: publish TreasuryTxPosted DDD EVT 20
-SEC -->> MET: publish transparency KPI
-API -->> UI: show payout history and audit link
-UI -->> F: display final disbursement summary
-
-%% Notes
-Note over TRE,MET: FundingAllocated DDD EVT 19, StreamPaused DDD EVT 32, StreamResumed DDD EVT 33, and StreamClosed DDD EVT 34 mark stream state transitions.
-Note over SEC,GOV: TreasuryTxPosted DDD EVT 20 ensures traceability of final transfer.
+note over UI,MET: Lifecycle reflects in payouts and KPIs
