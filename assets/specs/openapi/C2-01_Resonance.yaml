@@ -1,23 +1,12 @@
 openapi: 3.1.0
-    info:
-      title: C2-01 Resonance API
-      version: "1.0.0"
-      description: >
-        OpenAPI specification for the Resonance. This spec is contracts-first and
-        references the canonical production API base at https://api.coherosphere.io.
-    servers:
-      - url: https://api.coherosphere.io
-        description: Production environment
-      - url: https://staging.api.coherosphere.io
-        description: Staging environment
-      - url: http://localhost:8080
-        description: Local development
-
-    paths:
-
-/v1/resonance/compute:
-  get:
-    summary: Compute resonance for a target
-    responses:
-      '200':
-        description: OK
+info:
+  title: C2-01 — Resonance API
+  version: 0.1.0
+  x-c2-id: C2-01
+servers:
+  - url: https://api.coherosphere.io
+    description: Production
+  - url: https://staging.api.coherosphere.io
+    description: Staging
+paths: {}
+components: {}

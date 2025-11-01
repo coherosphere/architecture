@@ -1,23 +1,12 @@
 openapi: 3.1.0
-    info:
-      title: C2-04 Treasury & Funding API
-      version: "1.0.0"
-      description: >
-        OpenAPI specification for the Treasury & Funding. This spec is contracts-first and
-        references the canonical production API base at https://api.coherosphere.io.
-    servers:
-      - url: https://api.coherosphere.io
-        description: Production environment
-      - url: https://staging.api.coherosphere.io
-        description: Staging environment
-      - url: http://localhost:8080
-        description: Local development
-
-    paths:
-
-/v1/treasury/rounds:
-  get:
-    summary: Open/list QF rounds
-    responses:
-      '200':
-        description: OK
+info:
+  title: C2-04 — Treasury API
+  version: 0.1.0
+  x-c2-id: C2-04
+servers:
+  - url: https://api.coherosphere.io
+    description: Production
+  - url: https://staging.api.coherosphere.io
+    description: Staging
+paths: {}
+components: {}

@@ -1,23 +1,12 @@
 openapi: 3.1.0
-    info:
-      title: C2-11 Public API Gateway API
-      version: "1.0.0"
-      description: >
-        OpenAPI specification for the Public API Gateway. This spec is contracts-first and
-        references the canonical production API base at https://api.coherosphere.io.
-    servers:
-      - url: https://api.coherosphere.io
-        description: Production environment
-      - url: https://staging.api.coherosphere.io
-        description: Staging environment
-      - url: http://localhost:8080
-        description: Local development
-
-    paths:
-
-/v1/*:
-  get:
-    summary: Gateway routed endpoint
-    responses:
-      '200':
-        description: OK
+info:
+  title: C2-11 — Public Gateway API
+  version: 0.1.0
+  x-c2-id: C2-11
+servers:
+  - url: https://api.coherosphere.io
+    description: Production
+  - url: https://staging.api.coherosphere.io
+    description: Staging
+paths: {}
+components: {}

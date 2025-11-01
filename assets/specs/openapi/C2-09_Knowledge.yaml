@@ -1,23 +1,12 @@
 openapi: 3.1.0
-    info:
-      title: C2-09 Knowledge Graph / Collective Intelligence API
-      version: "1.0.0"
-      description: >
-        OpenAPI specification for the Knowledge Graph / Collective Intelligence. This spec is contracts-first and
-        references the canonical production API base at https://api.coherosphere.io.
-    servers:
-      - url: https://api.coherosphere.io
-        description: Production environment
-      - url: https://staging.api.coherosphere.io
-        description: Staging environment
-      - url: http://localhost:8080
-        description: Local development
-
-    paths:
-
-/v1/knowledge/graph:
-  get:
-    summary: Query knowledge graph
-    responses:
-      '200':
-        description: OK
+info:
+  title: C2-09 — Knowledge API
+  version: 0.1.0
+  x-c2-id: C2-09
+servers:
+  - url: https://api.coherosphere.io
+    description: Production
+  - url: https://staging.api.coherosphere.io
+    description: Staging
+paths: {}
+components: {}
