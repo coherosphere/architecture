@@ -1,5 +1,5 @@
 # validate-openapi.yml
-name: Validate OpenAPI Syntax & Structure
+name: Validate Architecture – C4 ↔ DDD
 
 on:
   push:
