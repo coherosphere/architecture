@@ -22,27 +22,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1) Strict OpenAPI syntax/structure check
-      - name: Swagger Editor Validate
-        uses: char0n/swagger-editor-validate@v1
-        with:
-          files: |
-            assets/specs/openapi/**/*.yaml
-            assets/specs/openapi/**/*.yml
-
-      # 2) Spectral lint via npx (no GitHub Action tag issues)
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Spectral Lint (errors only fail)
+      # 1️⃣ Installiere OpenAPI CLI (schnell & headless)
+      - name: Install OpenAPI Validator
         run: |
-          npx -y @stoplight/spectral-cli@6 \
-            lint "assets/specs/openapi/**/*.yaml" \
-            --fail-severity=error
+          npm install -g @redocly/openapi-cli@1 @stoplight/spectral-cli@6
 
+      # 2️⃣ Syntax- & Strukturcheck via OpenAPI CLI
+      - name: Validate OpenAPI files (syntax only)
+        run: |
+          npx openapi lint "assets/specs/openapi/**/*.yaml" || exit 1
+
+      # 3️⃣ Semantic & consistency Linting via Spectral
+      - name: Spectral Lint (errors only)
+        run: |
+          npx spectral lint "assets/specs/openapi/**/*.yaml" --fail-severity=error
+
+      # 4️⃣ Zusammenfassung im GitHub Summary
       - name: Summarize
         if: always()
         run: |
-          echo "OpenAPI syntax & structure validation finished." >> $GITHUB_STEP_SUMMARY
+          echo "✅ OpenAPI syntax & structure validation completed." >> $GITHUB_STEP_SUMMARY
