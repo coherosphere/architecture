@@ -1,69 +1,58 @@
 openapi: 3.1.0
 info:
-  title: Security & Audit API
-  version: "0.1.0"
-  description: Endpoints for SIEM ingest, incident handling, and transparency reports.
-  license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
+  title: C2-10 Security & Audit
+  version: "1.0.0"
   x-c2-id: C2-10
-
+  description: Security health, SIEM ingest, logs, and transparency reports.
 servers:
   - url: https://api.coherosphere.io
-    description: Production
-  - url: https://staging.api.coherosphere.io
-    description: Staging
-
-tags:
-  - name: health
-    description: Health & readiness
-  - name: siem
-    description: SIEM ingest & queries
-  - name: transparency
-    description: Transparency & reports
-
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+# Require auth by default; we'll override health below.
 security:
   - bearerAuth: []
 
 paths:
   /security/health:
     get:
-      tags: [health]
-      summary: Health check
+      summary: Liveness / readiness
+      description: Public health check (no auth).
+      security: []  # <— override: no auth here
       responses:
         "200":
-            description: OK
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Health"
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { status: { type: string, enum: [ok] } }
 
   /security/siem/events:
     post:
-      tags: [siem]
-      summary: Ingest a SIEM event
+      summary: Ingest SIEM event
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SiemEvent"
+              $ref: '#/components/schemas/SiemEvent'
       responses:
         "202":
-          description: Accepted for processing
+          description: Accepted
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
 
   /security/logs:
     get:
-      tags: [siem]
-      summary: Query normalized security logs
-      parameters:
-        - in: query
-          name: since
-          description: ISO8601 timestamp to start from
-          schema: { type: string, format: date-time }
-        - in: query
-          name: limit
-          schema: { type: integer, minimum: 1, maximum: 1000 }
+      summary: Query recent security logs
       responses:
         "200":
           description: Log entries
@@ -71,30 +60,38 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  $ref: "#/components/schemas/LogEntry"
+                items: { $ref: '#/components/schemas/LogEntry' }
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
 
   /security/transparency/reports:
     get:
-      tags: [transparency]
       summary: List transparency reports
       responses:
         "200":
-          description: Report list
+          description: Reports
           content:
             application/json:
               schema:
                 type: array
-                items:
-                  $ref: "#/components/schemas/TransparencyReport"
+                items: { $ref: '#/components/schemas/TransparencyReport' }
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
 
   /security/transparency/reports/{id}:
     get:
-      tags: [transparency]
-      summary: Get a transparency report by ID
+      summary: Get a transparency report
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
           schema: { type: string }
       responses:
@@ -102,24 +99,33 @@ paths:
           description: Report
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/TransparencyReport"
+              schema: { $ref: '#/components/schemas/TransparencyReport' }
         "404":
           description: Not found
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
 
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
   schemas:
-    Health:
+    AuthError:
       type: object
       properties:
-        status: { type: string, enum: [ok] }
-
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+      required: [type, title, status]
+    SiemEvent:
+      type: object
+      properties:
+        id: { type: string }
+        kind: { type: string }
+        ts: { type: string, format: date-time }
+      required: [id, kind, ts]
     LogEntry:
       type: object
       properties:
@@ -127,21 +133,7 @@ components:
         level: { type: string, enum: [info, warn, error] }
         source: { type: string }
         message: { type: string }
-      required: [ts, level, source, message]
-
-    SiemEvent:
-      type: object
-      properties:
-        id: { type: string }
-        ts: { type: string, format: date-time }
-        kind: { type: string }
-        actor: { type: string }
-        target: { type: string }
-        data:
-          type: object
-          additionalProperties: true
-      required: [id, ts, kind]
-
+      required: [ts, level, message]
     TransparencyReport:
       type: object
       properties:
@@ -151,6 +143,7 @@ components:
           properties:
             from: { type: string, format: date }
             to: { type: string, format: date }
+          required: [from, to]
         hash: { type: string }
-        url: { type: string, format: uri }
-      required: [id, period, hash]
+        url:  { type: string, format: uri }
+      required: [id, period]
