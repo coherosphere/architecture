@@ -2,17 +2,17 @@
 name: Validate Architecture – OpenAPI Syntax & Structure
 
 on:
-  workflow_dispatch: {} 
+  workflow_dispatch: {}
   push:
     paths:
       - "assets/specs/openapi/**/*.yaml"
       - "assets/specs/openapi/**/*.yml"
-      - ".github/workflows/validate-openapi.yml"
+      - ".github/workflows/validate-arch-openapi.yml"
   pull_request:
     paths:
       - "assets/specs/openapi/**/*.yaml"
       - "assets/specs/openapi/**/*.yml"
-      - ".github/workflows/validate-openapi.yml"
+      - ".github/workflows/validate-arch-openapi.yml"
 
 jobs:
   validate-openapi:
@@ -29,15 +29,17 @@ jobs:
         with:
           node-version: "20"
 
-      # 1) Redocly OpenAPI CLI (syntax/structure)
+      # 1) Redocly CLI (syntax/structure)
       - name: Redocly lint (syntax & structure)
         run: |
-          npx -y @redocly/openapi-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --format stylish
+          npx -y @redocly/cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --format stylish
 
-      # 2) Spectral (semantic rules / extra consistency)
+      # 2) Spectral (semantic rules, errors only)
       - name: Spectral lint (errors only)
         run: |
-          npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --fail-severity=error
+          npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" \
+            --ruleset "spectral:oas" \
+            --fail-severity=error
 
       - name: Summarize
         if: always()
