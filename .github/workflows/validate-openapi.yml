@@ -1,24 +1,44 @@
 name: Validate OpenAPI Domains Syntax & Structure
+
 on:
   push:
     paths:
-      - "assets/specs/openapi/**"
-      - "scripts/fix_openapi_domains.py"
-  workflow_dispatch:
+      - "assets/specs/openapi/**/*.yaml"
+      - "assets/specs/openapi/**/*.yml"
+      - ".github/workflows/validate-openapi.yml"
+  pull_request:
+    paths:
+      - "assets/specs/openapi/**/*.yaml"
+      - "assets/specs/openapi/**/*.yml"
+      - ".github/workflows/validate-openapi.yml"
 
 jobs:
-  validate:
+  validate-openapi:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 1) Strikte OpenAPI-Syntax/Struktur-Validierung
+      - name: Swagger Editor Validate
+        uses: char0n/swagger-editor-validate@v1
         with:
-          python-version: "3.x"
-      - name: Dry-run domain check
+          files: |
+            assets/specs/openapi/**/*.yaml
+            assets/specs/openapi/**/*.yml
+
+      # 2) Linting (nur Severity "error" bricht ab; warnings sind ok)
+      - name: Spectral Lint
+        uses: stoplightio/spectral-action@v0
+        with:
+          file_glob: "assets/specs/openapi/**/*.yaml"
+          fail_severity: "error"
+
+      # 3) Kompakter Summary-Output
+      - name: Summarize
+        if: always()
         run: |
-          python scripts/fix_openapi_domains.py \
-            --root assets/specs/openapi \
-            --prod https://api.coherosphere.io \
-            --staging https://staging.api.coherosphere.io \
-            --report openapi_domain_fix_report.json
-          cat openapi_domain_fix_report.json
+          echo "OpenAPI syntax & structure validation finished." >> $GITHUB_STEP_SUMMARY
