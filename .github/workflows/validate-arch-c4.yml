@@ -2,6 +2,7 @@
 name: Validate Architecture – C4 ↔ DDD Event Schemas
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - "assets/specs/events/**"
