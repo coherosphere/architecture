@@ -1,7 +1,6 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-
 
 const config: Config = {
   // ── Site basics ───────────────────────────────────────────
@@ -12,43 +11,71 @@ const config: Config = {
   url: 'https://docs.coherosphere.io',
   baseUrl: '/',
 
-  // GitHub repo info (für Edit-Links etc.)
   organizationName: 'coherosphere',
   projectName: 'architecture',
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  // Broken links: für den Start liberal; später gern auf 'throw' stellen
+  onBrokenLinks: 'warn',
 
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
 
-  // ── Enable Mermaid ────────────────────────────────────────
+  // ── Markdown/Rendering ────────────────────────────────────
   markdown: {
     mermaid: true,
+    hooks: {
+      // ersetzt die deprecated Option onBrokenMarkdownLinks
+      onBrokenMarkdownLinks: 'warn',
+    },
   },
   themes: ['@docusaurus/theme-mermaid'],
 
-  // ── Presets ───────────────────────────────────────────────
+  // ── Presets/Theme ────────────────────────────────────────
   presets: [
     [
       'classic',
       {
         docs: {
-          // Wir verwenden die bereits vorhandenen Markdown-Dokumente im Repo:
+          // Haupt-Dokumentation aus assets/docs
           path: '../assets/docs',
           routeBasePath: '/', // Docs sind die Startseite
           sidebarPath: require.resolve('./sidebars.ts'),
-          editUrl: 'https://github.com/coherosphere/architecture/edit/main/docs/',
+          editUrl:
+            'https://github.com/coherosphere/architecture/edit/main/docs.coherosphere.io/',
           showLastUpdateTime: true,
           showLastUpdateAuthor: false,
         },
-        blog: false, // kein Blog
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
       } satisfies Preset.Options,
+    ],
+  ],
+
+  // ── Zusätzliche Content-Quellen ───────────────────────────
+  plugins: [
+    // Diagrams unter /diagrams (Markdown-Hüllen mit ```mermaid)
+    [
+      'docusaurus-plugin-content-docs',
+      {
+        id: 'diagrams',
+        path: '../assets/docs/diagrams',
+        routeBasePath: '/diagrams',
+        sidebarPath: false,
+      },
+    ],
+    // Specs-Readmes unter /specs (z.B. /specs/openapi/README)
+    [
+      'docusaurus-plugin-content-docs',
+      {
+        id: 'specs',
+        path: '../assets/specs',
+        routeBasePath: '/specs',
+        sidebarPath: false,
+      },
     ],
   ],
 
@@ -60,7 +87,6 @@ const config: Config = {
       title: 'Coherosphere',
       logo: { alt: 'Coherosphere', src: 'img/logo.svg' },
       items: [
-        // Beispiele: passe Ziele an deine Dateien in assets/docs an
         { to: '/', label: 'Docs', position: 'left' },
         { to: '/ARCHITECTURE_TODO_v4.3', label: 'Status (v4.3)', position: 'left' },
         { to: '/AI_BUILD_GUIDE_v4', label: 'AI Build Guide', position: 'left' },
