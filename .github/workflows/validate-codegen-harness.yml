@@ -1,15 +1,59 @@
-- name: Run codegen harness
-  env:
-    HARNESS_DEBUG: "1"
-  run: |
-    chmod +x scripts/codegen_harness.sh
-    scripts/codegen_harness.sh assets/specs/openapi
+name: Validate Codegen Harness
 
-- name: Upload harness logs
-  if: always()
-  uses: actions/upload-artifact@v4
-  with:
-    name: harness_logs
-    path: |
-      .harness_logs/**
-      .harness_out/**
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - "assets/specs/openapi/**/*.{yaml,yml}"
+      - "scripts/codegen_harness.sh"
+      - ".github/workflows/validate-codegen-harness.yml"
+
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (for Prism)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install OS deps (jq, curl, yq)
+        run: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+          YQ_VER=v4.44.3
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+          jq --version
+          yq --version
+          curl --version
+          node -v
+          npm -v
+
+      - name: Make script executable
+        run: chmod +x scripts/codegen_harness.sh
+
+      - name: Run codegen harness
+        env:
+          HARNESS_DEBUG: "1"
+        run: |
+          scripts/codegen_harness.sh assets/specs/openapi
+
+      - name: Upload harness artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harness_artifacts
+          path: |
+            .harness_logs/**
+            .harness_out/**
+          if-no-files-found: warn
