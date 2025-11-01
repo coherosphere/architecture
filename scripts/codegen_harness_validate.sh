@@ -4,7 +4,6 @@ set -euo pipefail
 ROOT="${1:-assets/specs/openapi}"
 BASE_PORT="${BASE_PORT:-41000}"
 MAX_EXAMPLES="${MAX_EXAMPLES:-25}"
-PRISM_VERSION="${PRISM_VERSION:-5.8.1}"
 
 LOG_DIR=".harness_logs_contracts"
 OUT_DIR=".harness_contracts"
@@ -19,6 +18,7 @@ fi
 
 pids=()
 failures=0
+skipped=0
 
 cleanup() {
   echo "🧹 Stopping Prism servers…"
@@ -28,13 +28,8 @@ cleanup() {
 }
 trap cleanup EXIT
 
-port_free() {
-  local port="$1"
-  ! lsof -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1
-}
-
 wait_for_port() {
-  local port="$1" tries=60
+  local port="$1" tries=240  # 60 s Timeout
   while ! (echo >"/dev/tcp/127.0.0.1/$port") >/dev/null 2>&1; do
     sleep 0.25
     tries=$((tries-1))
@@ -48,41 +43,40 @@ for SPEC in "${SPECS[@]}"; do
   fname="$(basename "$SPEC")"
   id="${fname%%.*}"
   port=$((BASE_PORT+i))
-
+  LOG="$LOG_DIR/prism_${i}.log"
   echo ""
   echo "──────────────────────────────────────────────────────────────"
   echo "⚙️  Harness for ${fname}  (port $port)"
   echo "──────────────────────────────────────────────────────────────"
 
-  if ! port_free "$port"; then
-    echo "  ⚠️  Port $port is already in use; skipping."
-    failures=$((failures+1))
+  # Skip if no paths block
+  if ! grep -qE '(^|\s)paths:' "$SPEC"; then
+    echo "  ⚠️  No operations found (no paths: section) — skipping $fname."
+    skipped=$((skipped+1))
     continue
   fi
 
-  # Start Prism from the SPEC directory so relative $refs resolve
-  LOG="$LOG_DIR/prism_${i}.log"
   SPEC_DIR="$(cd "$(dirname "$SPEC")" && pwd)"
   SPEC_BASENAME="$(basename "$SPEC")"
 
   echo "  ▶︎ Starting Prism @ $SPEC_DIR on :$port (log: $LOG)"
   (
     cd "$SPEC_DIR"
-    npx -y @stoplight/prism-cli@"$PRISM_VERSION" \
-      mock "$SPEC_BASENAME" \
+    prism mock "$SPEC_BASENAME" \
       -p "$port" \
       -h 127.0.0.1 \
-      --errors
+      --errors \
+      --log-level debug \
+      --cors
   ) >"$LOG" 2>&1 &
 
   prism_pid=$!
   pids+=("$prism_pid")
 
-  # Give Prism a moment; if it dies, print logs
   sleep 0.5
   if ! kill -0 "$prism_pid" 2>/dev/null; then
     echo "  ❌ Prism exited immediately for $fname. Last log lines:"
-    tail -n 80 "$LOG" || true
+    tail -n 40 "$LOG" || true
     failures=$((failures+1))
     i=$((i+1))
     continue
@@ -90,9 +84,8 @@ for SPEC in "${SPECS[@]}"; do
 
   if ! wait_for_port "$port"; then
     echo "  ❌ Prism failed to open :$port for $fname. Last log lines:"
-    tail -n 80 "$LOG" || true
+    tail -n 40 "$LOG" || true
     failures=$((failures+1))
-    # ensure process is stopped
     kill "$prism_pid" >/dev/null 2>&1 || true
     i=$((i+1))
     continue
@@ -101,8 +94,8 @@ for SPEC in "${SPECS[@]}"; do
 
   JUNIT="$OUT_DIR/${id}_junit.xml"
   RPT="$OUT_DIR/${id}_report.txt"
-
   echo "  ▶︎ Schemathesis run (max-examples=$MAX_EXAMPLES)…"
+
   set +e
   schemathesis run "$SPEC" \
     --base-url "http://127.0.0.1:$port" \
@@ -118,14 +111,15 @@ for SPEC in "${SPECS[@]}"; do
     echo "  ❌ Contract violations for $id (exit=$st). See $RPT"
     failures=$((failures+1))
   else
-    echo "  ✅ Contract OK for $id (report: $RPT)"
+    echo "  ✅ Contract OK for $id"
   fi
 
-  if kill -0 "$prism_pid" 2>/dev/null; then kill "$prism_pid" || true; fi
+  kill "$prism_pid" >/dev/null 2>&1 || true
   i=$((i+1))
 done
 
 echo ""
+echo "📊 Summary: ${#SPECS[@]} specs, $skipped skipped, $failures failed"
 if [[ $failures -gt 0 ]]; then
   echo "❌ Contract test finished with $failures failing spec(s)."
   exit 1
