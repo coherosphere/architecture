@@ -1,9 +1,8 @@
-import { themes as prismThemes } from 'prism-react-renderer';
-import type { Config } from '@docusaurus/types';
+import {themes as prismThemes} from 'prism-react-renderer';
+import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  // ── Site basics ───────────────────────────────────────────
   title: 'Coherosphere Architecture',
   tagline: 'C1–C4 · DDD · Specs',
   favicon: 'img/favicon.ico',
@@ -14,72 +13,63 @@ const config: Config = {
   organizationName: 'coherosphere',
   projectName: 'architecture',
 
-  // Broken links: für den Start liberal; später gern auf 'throw' stellen
+  // Don’t fail the build while we wire pages
   onBrokenLinks: 'warn',
 
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-  },
-
-  // ── Markdown/Rendering ────────────────────────────────────
+  // v3 syntax still valid; also add v4-style hook to quiet warnings
   markdown: {
     mermaid: true,
     hooks: {
-      // ersetzt die deprecated Option onBrokenMarkdownLinks
       onBrokenMarkdownLinks: 'warn',
     },
   },
   themes: ['@docusaurus/theme-mermaid'],
 
-  // ── Presets/Theme ────────────────────────────────────────
+  i18n: { defaultLocale: 'en', locales: ['en'] },
+
   presets: [
     [
       'classic',
       {
         docs: {
-          // Haupt-Dokumentation aus assets/docs
-          path: '../assets/docs',
-          routeBasePath: '/', // Docs sind die Startseite
+          path: '../assets/docs',          // your Markdown docs
+          routeBasePath: '/',              // docs on homepage
           sidebarPath: require.resolve('./sidebars.ts'),
-          editUrl:
-            'https://github.com/coherosphere/architecture/edit/main/docs.coherosphere.io/',
+          editUrl: 'https://github.com/coherosphere/architecture/edit/main/docs.coherosphere.io/',
           showLastUpdateTime: true,
-          showLastUpdateAuthor: false,
         },
         blog: false,
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
+        theme: { customCss: require.resolve('./src/css/custom.css') },
       } satisfies Preset.Options,
     ],
   ],
 
-  // ── Zusätzliche Content-Quellen ───────────────────────────
-plugins: [
-  // Diagrams under /diagrams
-  [
-    '@docusaurus/plugin-content-docs',
-    {
-      id: 'diagrams',
-      path: '../assets/docs/diagrams',
-      routeBasePath: '/diagrams',
-      sidebarPath: false,
-    },
+  // Extra docs instances (must use the explicit plugin)
+  plugins: [
+    // Diagrams section (folder exists, even if no .md yet)
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'diagrams',
+        path: '../assets/diagrams',       // <-- fixed (was ../assets/docs/diagrams)
+        routeBasePath: '/diagrams',
+        sidebarPath: false,
+        include: ['**/*.md', '**/*.mdx'], // ignore .mmd files (no pages yet, but OK)
+      },
+    ],
+    // Specs section (serves READMEs under /specs)
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'specs',
+        path: '../assets/specs',           // this folder exists
+        routeBasePath: '/specs',
+        sidebarPath: false,
+        include: ['**/README.md', 'README.md', '**/*.md', '**/*.mdx'],
+      },
+    ],
   ],
-  // Specs READMEs under /specs
-  [
-    '@docusaurus/plugin-content-docs',
-    {
-      id: 'specs',
-      path: '../assets/specs',
-      routeBasePath: '/specs',
-      sidebarPath: false,
-    },
-  ],
-],
 
-  // ── Theme / UI ────────────────────────────────────────────
   themeConfig: {
     image: 'img/social-card.png',
     colorMode: { respectPrefersColorScheme: true },
@@ -90,19 +80,10 @@ plugins: [
         { to: '/', label: 'Docs', position: 'left' },
         { to: '/ARCHITECTURE_TODO_v4.3', label: 'Status (v4.3)', position: 'left' },
         { to: '/AI_BUILD_GUIDE_v4', label: 'AI Build Guide', position: 'left' },
-        {
-          label: 'Diagrams',
-          position: 'left',
-          items: [
-            { to: '/diagrams/overview/C4_Layers_Summary', label: 'C4 Layers Summary' },
-            { to: '/diagrams/overview/Architecture_Stack', label: 'Architecture Stack' },
-          ],
-        },
-        {
-          href: 'https://github.com/coherosphere/architecture',
-          label: 'GitHub',
-          position: 'right',
-        },
+        // Link to section roots for now (avoid deep links to non-existent pages)
+        { to: '/diagrams', label: 'Diagrams', position: 'left' },
+        { to: '/specs', label: 'Specs', position: 'left' },
+        { href: 'https://github.com/coherosphere/architecture', label: 'GitHub', position: 'right' },
       ],
     },
     footer: {
