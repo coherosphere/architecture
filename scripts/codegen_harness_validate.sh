@@ -4,9 +4,9 @@ set -euo pipefail
 ROOT="${1:-assets/specs/openapi}"
 PORT_BASE="${PORT_BASE:-41000}"
 PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
-STRICT="${STRICT_CONTRACTS:-false}"   # true = fehlende paths => Fehler
+STRICT="${STRICT_CONTRACTS:-false}"   # true = missing paths → fail
 
-echo "🔎 Contract test for specs under: ${ROOT}"
+echo "🔎 Contract test for OpenAPI specs under: ${ROOT}"
 
 mkdir -p .harness_tmp/bundled .harness_logs_contracts .harness_out_contracts
 
@@ -15,7 +15,6 @@ idx=0
 
 bundle_spec() {
   local in="$1" out="$2"
-  # Redocly CLI (neu)
   npx -y @redocly/cli@latest bundle "$in" \
     --ext yaml \
     --dereferenced \
@@ -29,8 +28,8 @@ import sys, yaml
 p = sys.argv[1]
 try:
     with open(p, 'r', encoding='utf-8') as f:
-        data = yaml.safe_load(f)
-    print('1' if (data or {}).get('paths') else '0')
+        data = yaml.safe_load(f) or {}
+    print('1' if data.get('paths') else '0')
 except Exception:
     print('0')
 PY
@@ -74,7 +73,7 @@ for f in "$ROOT"/C2-*.y?(a)ml; do
   idx=$((idx + 1))
 
   echo "──────────────────────────────────────────────────────────────"
-  echo "⚙️  Harness for ${base}  (port ${port})"
+  echo "⚙️  Running contract harness for ${base}  (port ${port})"
   echo "──────────────────────────────────────────────────────────────"
 
   bundled=".harness_tmp/bundled/${base}"
@@ -86,12 +85,12 @@ for f in "$ROOT"/C2-*.y?(a)ml; do
     continue
   fi
 
-  log=".harness_logs_contracts/prism_${idx}.log"
+  log=".harness_logs_contracts/prism_${port}.log"
   pid=$(start_prism "$bundled" "$port" "$log")
 
   if ! wait_port "$port"; then
-    echo "  ❌ Prism failed to open :${port} for ${base}. Last log lines:"
-    tail -n 12 "$log" || true
+    echo "  ❌ Prism failed to start on :${port} for ${base}. Last log lines:"
+    tail -n 18 "$log" || true
     kill "$pid" >/dev/null 2>&1 || true
     fail=1
     continue
