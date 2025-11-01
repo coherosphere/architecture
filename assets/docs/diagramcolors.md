@@ -1,4 +1,4 @@
-# 🎨 Coherosphere Diagram Color System (Mermaid CI)
+# Coherosphere Diagram Color System (Mermaid CI)
 
 This document defines the **visual language** used across all Coherosphere architecture diagrams  
 (C1–C4 levels) rendered in Mermaid.  
@@ -6,7 +6,7 @@ Colors are **semantic**, not decorative — each hue communicates a specific typ
 
 ---
 
-## 🧩 Color Semantics Overview
+## Color Semantics Overview
 
 | Category | Mermaid Class | Color | Meaning | Typical Components |
 |-----------|----------------|--------|----------|--------------------|
@@ -22,7 +22,7 @@ Colors are **semantic**, not decorative — each hue communicates a specific typ
 
 ---
 
-## 🧠 Reading a Diagram
+## Reading a Diagram
 
 Color in Coherosphere diagrams isn’t arbitrary — it’s **functional**.  
 It lets you instantly recognize *what kind of thing* a node represents:
@@ -41,7 +41,7 @@ It lets you instantly recognize *what kind of thing* a node represents:
 
 ---
 
-## 🌈 Mermaid Theme Snippet
+## Mermaid Theme Snippet
 
 You can reuse this theme block across all Coherosphere Mermaid diagrams:
 
