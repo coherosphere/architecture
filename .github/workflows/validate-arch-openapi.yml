@@ -29,19 +29,25 @@ jobs:
         with:
           node-version: "20"
 
-      # 1) Redocly CLI (syntax/structure)
+      - name: Show tool versions
+        run: |
+          npx -y @stoplight/spectral-cli@latest --version
+          npx -y @redocly/cli@latest --version
+
+      # 1️⃣ Redocly CLI → überprüft Syntax & Struktur
       - name: Redocly lint (syntax & structure)
         run: |
           npx -y @redocly/cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --format stylish
 
-      # 2) Spectral (semantic rules, errors only)
-      - name: Spectral lint (errors only)
+      # 2️⃣ Spectral → semantische Konsistenz & OAS-Regeln
+      - name: Spectral lint (semantic validation)
         run: |
           npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" \
-            --ruleset "oas" \
+            --ruleset "@stoplight/spectral/rulesets/oas/index.json" \
             --fail-severity=error
 
+      # 3️⃣ Zusammenfassung
       - name: Summarize
         if: always()
         run: |
-          echo "✅ OpenAPI syntax & structure validation completed (Redocly + Spectral)." >> $GITHUB_STEP_SUMMARY
+          echo "✅ OpenAPI syntax & structure validation completed successfully (Redocly + Spectral)." >> $GITHUB_STEP_SUMMARY
