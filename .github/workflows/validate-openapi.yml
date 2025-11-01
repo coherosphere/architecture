@@ -27,23 +27,17 @@ jobs:
         with:
           node-version: "20"
 
-      # 1️⃣ Installiere OpenAPI CLI (schnell & headless)
-      - name: Install OpenAPI Validator
+      # 1) Redocly OpenAPI CLI (syntax/structure)
+      - name: Redocly lint (syntax & structure)
         run: |
-          npm install -g @redocly/openapi-cli@1 @stoplight/spectral-cli@6
+          npx -y @redocly/openapi-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --format stylish
 
-      # 2️⃣ Syntax- & Strukturcheck via OpenAPI CLI
-      - name: Validate OpenAPI files (syntax only)
+      # 2) Spectral (semantic rules / extra consistency)
+      - name: Spectral lint (errors only)
         run: |
-          npx openapi lint "assets/specs/openapi/**/*.yaml" || exit 1
+          npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --fail-severity=error
 
-      # 3️⃣ Semantic & consistency Linting via Spectral
-      - name: Spectral Lint (errors only)
-        run: |
-          npx spectral lint "assets/specs/openapi/**/*.yaml" --fail-severity=error
-
-      # 4️⃣ Zusammenfassung im GitHub Summary
       - name: Summarize
         if: always()
         run: |
-          echo "✅ OpenAPI syntax & structure validation completed." >> $GITHUB_STEP_SUMMARY
+          echo "✅ OpenAPI syntax & structure validation completed (Redocly + Spectral)." >> $GITHUB_STEP_SUMMARY
