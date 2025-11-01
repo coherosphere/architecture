@@ -39,21 +39,3 @@ It lets you instantly recognize *what kind of thing* a node represents:
 > **Mnemonic:**  
 > **Yellow steers, Orange computes, Blue stores, Green emits, Red guards, Brown works, Purple shows, Gray connects.**
 
----
-
-## Mermaid Theme Snippet
-
-You can reuse this theme block across all Coherosphere Mermaid diagrams:
-
-```mermaid
-%% --- Coherosphere CI Theme ---
-classDef container fill:#111827,stroke:#111827,color:#ffffff,font-weight:bold;
-classDef compute fill:#ff8b00,stroke:#333333,color:#ffffff;
-classDef control fill:#fde68a,stroke:#b45309,color:#1f2937;
-classDef store fill:#0ea5e9,stroke:#075985,color:#ffffff;
-classDef event fill:#22c55e,stroke:#065f46,color:#083344;
-classDef worker fill:#fb923c,stroke:#7c2d12,color:#1f2937;
-classDef ui fill:#8b5cf6,stroke:#4c1d95,color:#ffffff;
-classDef risk fill:#ef4444,stroke:#7f1d1d,color:#ffffff;
-classDef ext fill:#e5e7eb,stroke:#9ca3af,color:#111827;
-linkStyle default stroke:#334155,stroke-width:2px;
