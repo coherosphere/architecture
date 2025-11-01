@@ -1,5 +1,5 @@
-# .github/workflows/validate-c4-schemas.yml
-name: Validate C4 ↔ DDD Event Schemas
+# validate-openapi.yml
+name: Validate OpenAPI Syntax & Structure
 
 on:
   push:
