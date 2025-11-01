@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1) Strikte OpenAPI-Syntax/Struktur-Validierung
+      # 1) Strict OpenAPI syntax/structure check
       - name: Swagger Editor Validate
         uses: char0n/swagger-editor-validate@v1
         with:
@@ -30,14 +30,18 @@ jobs:
             assets/specs/openapi/**/*.yaml
             assets/specs/openapi/**/*.yml
 
-      # 2) Linting (nur Severity "error" bricht ab; warnings sind ok)
-      - name: Spectral Lint
-        uses: stoplightio/spectral-action@v0
+      # 2) Spectral lint via npx (no GitHub Action tag issues)
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          file_glob: "assets/specs/openapi/**/*.yaml"
-          fail_severity: "error"
+          node-version: "20"
 
-      # 3) Kompakter Summary-Output
+      - name: Spectral Lint (errors only fail)
+        run: |
+          npx -y @stoplight/spectral-cli@6 \
+            lint "assets/specs/openapi/**/*.yaml" \
+            --fail-severity=error
+
       - name: Summarize
         if: always()
         run: |
