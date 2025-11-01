@@ -1,59 +1,61 @@
-name: Validate Codegen – Contracts (Prism + Schemathesis)
+name: Validate Codegen Contracts (Prism + Schemathesis)
 
 on:
   workflow_dispatch: {}
   push:
     paths:
-      - "assets/specs/openapi/**"
-      - ".github/workflows/validate-codegen-contracts.yml"
+      - "assets/specs/openapi/**/*.yml"
+      - "assets/specs/openapi/**/*.yaml"
       - "scripts/codegen_harness_validate.sh"
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+      - ".github/workflows/validate-codegen-contracts.yml"
+  pull_request:
+    paths:
+      - "assets/specs/openapi/**/*.yml"
+      - "assets/specs/openapi/**/*.yaml"
+      - "scripts/codegen_harness_validate.sh"
+      - ".github/workflows/validate-codegen-contracts.yml"
 
 jobs:
   contracts:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install CLI deps (Prism, Redocly, Schemathesis, PyYAML)
+      - name: Install dependencies (Prism, Redocly, Schemathesis)
         run: |
           npm i -g @stoplight/prism-cli@5 @redocly/cli@latest
           python -m pip install --upgrade pip
-          pip install "schemathesis>=3.27" pyyaml
+          pip install "schemathesis>=3.25,<4" pyyaml
 
-      - name: Make script executable
-        run: chmod +x scripts/codegen_contracts_validate.sh
+      - name: Make harness script executable
+        run: chmod +x scripts/codegen_harness_validate.sh
 
-      - name: Run contracts harness (bundle → prism → schemathesis)
+      - name: Run OpenAPI contract harness
         env:
+          STRICT_CONTRACTS: "false"     # Set to "true" to fail on empty-path specs
           PORT_BASE: "41000"
-          STRICT_CONTRACTS: "false"  # auf "true" setzen, falls Specs ohne paths als Fehler gelten sollen
-        run: |
-          bash scripts/codegen_contracts_validate.sh assets/specs/openapi
+        run: bash scripts/codegen_harness_validate.sh assets/specs/openapi
 
-      - name: Upload logs & reports
+      - name: Upload harness logs & reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: codegen-contracts-artifacts
           path: |
-            .harness_logs_contracts
-            .harness_out_contracts
-            .harness_tmp/bundled
+            .harness_logs_contracts/**
+            .harness_out_contracts/**
