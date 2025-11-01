@@ -1,0 +1,44 @@
+# validate-openapi.yml
+name: Validate OpenAPI Syntax & Structure
+
+on:
+  push:
+    paths:
+      - "assets/specs/openapi/**/*.yaml"
+      - "assets/specs/openapi/**/*.yml"
+      - ".github/workflows/validate-openapi.yml"
+  pull_request:
+    paths:
+      - "assets/specs/openapi/**/*.yaml"
+      - "assets/specs/openapi/**/*.yml"
+      - ".github/workflows/validate-openapi.yml"
+
+jobs:
+  validate-openapi:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # 1) Redocly OpenAPI CLI (syntax/structure)
+      - name: Redocly lint (syntax & structure)
+        run: |
+          npx -y @redocly/openapi-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --format stylish
+
+      # 2) Spectral (semantic rules / extra consistency)
+      - name: Spectral lint (errors only)
+        run: |
+          npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --fail-severity=error
+
+      - name: Summarize
+        if: always()
+        run: |
+          echo "✅ OpenAPI syntax & structure validation completed (Redocly + Spectral)." >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,52 @@
+# validate-openapi-domains.yml
+name: Validate OpenAPI Domains Policy & Governance
+
+on:
+  push:
+    paths:
+      - "assets/specs/openapi/**"
+      - ".github/workflows/validate-openapi-domains.yml"
+      - "scripts/validate_openapi_domains.py"
+  pull_request:
+    paths:
+      - "assets/specs/openapi/**"
+      - ".github/workflows/validate-openapi-domains.yml"
+      - "scripts/validate_openapi_domains.py"
+
+jobs:
+  validate-openapi-domains:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run domain validator
+        run: |
+          python scripts/validate_openapi_domains.py             --root "assets/specs/openapi"             --allow "https://api.coherosphere.io,https://staging.api.coherosphere.io"             --report "openapi_domain_report.json"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi_domain_report
+          path: openapi_domain_report.json
+
+      - name: Fail if violations found
+        if: ${{ always() }}
+        run: |
+          python - <<'PY'
+          import json, sys
+          with open('openapi_domain_report.json','r') as f:
+              data = json.load(f)
+          violations = sum(len(v) for v in data.get('files', {}).values())
+          print(json.dumps(data, indent=2))
+          if data.get('status') != 'ok' or violations:
+              print("OpenAPI domain validation failed.", file=sys.stderr)
+              sys.exit(1)
+          print("OpenAPI domain validation passed.")
+          PY
