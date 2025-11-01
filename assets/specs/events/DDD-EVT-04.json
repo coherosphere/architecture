@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.coherosphere.io/schemas/events/DDD-EVT-04.json",
+  "title": "DDD-EVT-04",
+  "description": "Placeholder JSON Schema for DDD-EVT-04 (payload TBD). This exists to satisfy cross-reference integrity; refine 'data' later.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique event instance id (UUID recommended)"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event creation time (RFC 3339)"
+    },
+    "source": {
+      "type": "string",
+      "description": "Emitter URI/URN (e.g., service name)"
+    },
+    "type": {
+      "const": "DDD-EVT-04",
+      "description": "Event type identifier"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Entity subject (optional)"
+    },
+    "data": {
+      "type": "object",
+      "description": "Event payload (to be refined)",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "id",
+    "timestamp",
+    "type",
+    "data"
+  ]
+}
