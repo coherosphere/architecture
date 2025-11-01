@@ -19,7 +19,6 @@ check_x_c2_id() {
   local id
   id="$(yq -r '.info."x-c2-id"' "$spec" 2>/dev/null || true)"
   [[ -n "$id" && "$id" != "null" ]] || fail "Missing info.x-c2-id in $spec"
-  # Optional: check filename contains the same C2-xx
   local fname; fname="$(basename "$spec")"
   if [[ "$fname" != *"${id}"* ]]; then
     echo "::warning ::Filename ($fname) does not include x-c2-id ($id)."
@@ -28,7 +27,6 @@ check_x_c2_id() {
 
 pick_first_path() {
   local spec="$1"
-  # Prefer first GET path; else first path
   local first_get first_any
   first_get="$(yq -r '.paths | to_entries | map(select(.value.get)) | .[0].key' "$spec" 2>/dev/null || true)"
   first_any="$(yq -r '.paths | keys | .[0]' "$spec" 2>/dev/null || true)"
@@ -60,7 +58,6 @@ gen_sdk() {
   local spec="$1" outdir="$2"
   rm -rf "$outdir"
   mkdir -p "$outdir"
-  # Generate a TS Axios client to ensure the spec is codegen-able
   openapi-generator-cli generate \
     -i "$spec" \
     -g typescript-axios \
@@ -76,10 +73,8 @@ for idx in "${!SPECS[@]}"; do
   rel="${spec#$ROOT/}"
   echo "::group::Harness for $rel"
 
-  # 1) Check x-c2-id presence
   check_x_c2_id "$spec"
 
-  # 2) Codegen (prove the spec materializes)
   sdk_dir="$OUT_DIR/sdk_${idx}"
   if gen_sdk "$spec" "$sdk_dir"; then
     echo "✅ Codegen OK → $sdk_dir"
@@ -88,7 +83,6 @@ for idx in "${!SPECS[@]}"; do
     status_overall=1
   fi
 
-  # 3) Spin up prism on a unique port
   port=$((port_base + idx))
   prism_log="$LOG_DIR/prism_${idx}.log"
   pid="$(start_prism "$spec" "$port" "$prism_log")"
@@ -102,7 +96,6 @@ for idx in "${!SPECS[@]}"; do
     continue
   fi
 
-  # 4) Pick a path and ping it
   path="$(pick_first_path "$spec")"
   if [[ -z "$path" || "$path" == "null" ]]; then
     echo "::warning ::No paths found in $rel — skipping HTTP probe."
@@ -120,7 +113,6 @@ for idx in "${!SPECS[@]}"; do
     status_overall=1
   fi
 
-  # cleanup prism
   kill "$pid" >/dev/null 2>&1 || true
   echo "::endgroup::"
 done
