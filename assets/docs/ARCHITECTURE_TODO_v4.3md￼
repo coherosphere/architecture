@@ -1,0 +1,122 @@
+# Coherosphere Architecture — To-Do List (v4.3)
+
+_Last updated: 2025-11-01_
+
+This document lists the **active development and documentation tasks** required for **v1.0 release readiness** of the Coherosphere architecture.  
+It reflects the current verified state of `/architecture` and all automated CI validations.
+
+---
+
+## ✅ 1. C4 Sequences (Behavioral Flows)
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ✅ | Finalize `C4-34` | Compliance workflow validated and merged. |
+| ✅ | Fix `C4-35` syntax | Funding stream sequence refactored into dual blocks; Mermaid-valid. |
+| ✅ | Confirm all 36 C4 sequences | All sequences syntactically valid and DDD-aligned. |
+| ✅ | Add reverse/error paths | Extend `C4-02`, `C4-03`, `C4-07`, `C4-10` with explicit `alt failure` logic. |
+
+---
+
+## ✅ 2. Event Specifications (JSON Schemas)
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ✅ | Create JSON Schemas for all DDD-EVTs (`DDD-EVT-01…92`) | Available under `/assets/specs/events/`. |
+| ✅ | Validate schema alignment with C4 flows | `validate-c4-schemas.yml` confirmed 100 %. |
+| ✅ | Auto-generate CloudEvents definitions | Includes `source`, `subject`, and `type` fields. |
+| ✅ | Export developer bundle (`events-schemas.zip`) | Linked in `/assets/specs/README.md`. |
+
+---
+
+## 🟧 3. Documentation & Publishing
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ⚠️ | Deploy **Docusaurus** (`docs.coherosphere.io`) | Initialize with architecture sections (C1–C4, DDD, Specs). |
+| ✅ | Manifest (`v4`) finalized | Timestamp-free and CI-integrated. |
+| 🔸 | Add `ARCHITECTURE_STATUS_REPORT_v4.md` | Text version of PDF for web indexing. |
+| 🔸 | Integrate Mermaid live rendering | For diagram previews within docs. |
+| 🔸 | Add OpenAPI viewer | Embed Swagger UI for `/assets/specs/openapi/*.yaml`. |
+
+---
+
+## ✅ 4. CI/CD & Validation
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ✅ | Implement master validator (`validate.yml`) | Verifies C2 ↔ DDD ↔ C4 ↔ SM ID consistency. |
+| ✅ | Add JSON Schema linting | Event definitions auto-validated. |
+| ✅ | Include Mermaid syntax validator | CI now blocks parse errors pre-commit. |
+| ✅ | Add OpenAPI syntax + domain validation | Enforces HTTPS + `x-c2-id`. |
+| ✅ | Add Codegen Harness + Contracts tests | Validates all C2 OpenAPI specs end-to-end. |
+| ✅ | Nightly build to regenerate Manifest tables | Auto-generate new tables for diagrams, specs, events. |
+
+---
+
+## 🟧 5. AI Build Readiness
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ✅ | `AI_BUILD_GUIDE_v4.md` synced | 100 % consistent with repo manifests. |
+| ✅ | AI-Build readiness | ≈ 93 % confirmed (per Status Report). |
+| 🔸 | Automate AI build mapping | Map each C-ID (C1–C4) to source container in build pipeline. |
+| 🔸 | Define prompt / template library | Standardized scaffolding templates for codegen. |
+| 🔸 | Integrate Test Harness into CI | Codegen harness running; add automated assertions. |
+
+---
+
+## ✅ 6. Architecture Assets
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ✅ | All diagrams renamed | Timestamp-free, CI-safe. |
+| ✅ | Manifest + structure stable | All C1–C4 + DDD integrated. |
+| ✅ | Add `/assets/diagrams/overview/C4_Layers_Summary.mmd` | Visual overview for documentation homepage. |
+| ✅ | Add `/assets/diagrams/overview/Architecture_Stack.mmd` | Vertical stack visualization (C1 → C4 → DDD → Specs). |
+
+---
+
+## ✅ 7. Infrastructure Alignment
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ✅ | Domains allocated | `coherosphere.com`, `app.`, `api.`, `docs.`, `chat.`, `ai.`, `data.` registered. |
+| ✅ | Update CORS policy manifest | `/assets/specs/cors/cors.manifest.json` created & versioned. |
+| ✅ | Add DNS configuration manifest | `/assets/specs/DNS_Config.json` with layer ↔ service mapping. |
+| ✅ | Cross-reference OpenAPI servers | Ensure all C2 URLs exist in DNS manifest & CORS origins. |
+| ✅ | Link manifests in architecture docs | Reference in Manifest.md & ADR section. |
+
+---
+
+## 🟧 8. Optional Enhancements
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| 🔸 | Prototype Resonance Simulation Engine | Verify λ (time-decay) + alignment model. |
+| 🔸 | Add “Resonance Map” visualization | 3D representation of coherence fields. |
+| 🔸 | Integrate “AI Copilot” (`chat.coherosphere.io`) | Semantic retrieval interface. |
+| 🔸 | Add version metadata to Manifest | Auto-timestamped “last updated” info. |
+
+---
+
+## 🧩 Priority Summary
+
+| Category | Priority |
+|-----------|-----------|
+| 🟢 Documentation & Manifest | **Complete** |
+| 🟢 C4 Sequence Finalization | **Complete** |
+| 🟢 JSON Event Schemas | **Complete** |
+| 🟡 Docs Deployment (Docusaurus) | **In progress** |
+| 🟠 CI/CD Enhancements | **High priority (Nightly build + Harness Assertions)** |
+| 🟢 AI Build Readiness | **93 % ready** |
+| 🟢 Infra Linkage (CORS/DNS) | **To document / cross-reference** |
+
+---
+
+### 🚀 Recommended Commit Bundle
+
+Create branch:  
+`feature/v4.3-finalization`
+
+Include:
