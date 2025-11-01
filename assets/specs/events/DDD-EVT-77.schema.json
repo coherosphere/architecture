@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.coherosphere.io/events/DDD-EVT-77.schema.json",
+  "title": "DDD-EVT-77",
+  "description": "Machine-readable event schema for DDD-EVT-77. Placeholder generated; refine 'data' block to match actual event payload.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "version",
+    "timestamp",
+    "source",
+    "correlationId",
+    "data"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "type": {
+      "const": "DDD-EVT-77"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v\\d+(?:\\.\\d+)?$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "format": "uri"
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "did"
+      ],
+      "properties": {
+        "did": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "hubId": {
+          "type": "string"
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "description": "Domain-specific payload. Replace placeholders with concrete fields.",
+      "additionalProperties": true
+    },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "00000000-0000-4000-8000-000000000000",
+      "type": "DDD-EVT-77",
+      "version": "v1",
+      "timestamp": "2025-01-01T00:00:00Z",
+      "source": "https://api.coherosphere.io/",
+      "correlationId": "corr-123",
+      "actor": {
+        "did": "did:example:123",
+        "role": "system"
+      },
+      "data": {
+        "note": "replace with real payload"
+      }
+    }
+  ]
+}
