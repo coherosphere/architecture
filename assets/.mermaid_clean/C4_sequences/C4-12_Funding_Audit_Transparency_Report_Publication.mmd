@@ -1,0 +1,86 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor AUD as Auditor or Oversight
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant SEC as C2-10 Security and Audit
+  participant TRE as C2-04 Treasury and Funding
+  participant GOV as C2-03 Governance and DAO
+  participant MET as C2-07 Metrics and Analytics
+end
+
+box #e5e7eb External
+  participant LED as Bitcoin or Hard Asset Layer
+end
+
+%% -------- Start audit job --------
+AUD ->> UI: open funding audit dashboard
+UI ->> API: startAudit period scope
+API ->> SEC: createAuditJob period scope
+SEC ->> SEC: register audit job and controls
+SEC -->> GOV: event AuditFindings pending start DDD EVT 23  note right of SEC: initial notice
+
+%% -------- Data collection and reconciliation --------
+SEC ->> TRE: request treasury ledger and payouts
+TRE -->> SEC: deliver ledger bundle
+SEC ->> LED: fetch chain receipts and tx refs
+LED -->> SEC: tx receipts and confirmations
+SEC ->> MET: request kpi snapshots and sri window
+MET -->> SEC: kpi and sri data
+
+SEC ->> SEC: reconcile payouts with ledger and chain
+SEC ->> SEC: run anomaly detection and policy checks
+alt discrepancy detected
+  SEC -->> GOV: event AuditFindings issue detected DDD EVT 23
+  SEC ->> TRE: request clarification and docs
+  TRE -->> SEC: provide clarifications
+else clean reconciliation
+  SEC -->> GOV: event AuditFindings clean DDD EVT 23
+end
+
+%% -------- Report assembly --------
+SEC ->> SEC: compile transparency report bundle
+SEC ->> SEC: sign bundle and produce hashes
+SEC -->> MET: publish audit kpi update
+MET -->> MET: event KPIUpdated DDD EVT 26
+SEC -->> GOV: event ReportGenerated DDD EVT 36
+
+%% -------- Governance review and acknowledgement --------
+GOV ->> GOV: review report summary
+alt governance requests follow up
+  GOV ->> SEC: request additional evidence
+  SEC -->> GOV: provide evidence addendum
+else acknowledged
+  GOV -->> SEC: ack report accepted
+end
+
+%% -------- Publication --------
+SEC ->> API: registerPublicReport link hash
+API -->> UI: publish audit report link
+SEC -->> GOV: event ReportPublished DDD EVT 37
+SEC -->> MET: publish transparency kpi update
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Final bookkeeping --------
+SEC ->> SEC: store attestations and report hashes
+SEC -->> TRE: share findings summary
+TRE -->> MET: update treasury transparency score
+
+%% -------- Completion --------
+UI -->> AUD: display report link and integrity hashes
+
+%% Notes
+Note over SEC,GOV: AuditFindings DDD EVT 23 occurs at start and on issues
+Note over SEC: ReportGenerated DDD EVT 36 before publication
+Note over SEC,GOV: ReportPublished DDD EVT 37 after governance ack
+Note over TRE,LED: TreasuryTxPosted DDD EVT 20 may be referenced from chain receipts

@@ -1,0 +1,90 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor A as Policy Steward
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant HUB as C2-06 Local Hub and Federation
+  participant MET as C2-07 Metrics and Analytics
+  participant SEC as C2-10 Security and Audit
+  participant ETH as C2-08 Ethics Guard
+end
+
+%% -------- Draft and approve policy change --------
+A ->> UI: Create policy change proposal
+UI ->> API: createProposal payload policy
+API ->> GOV: createProposal policy payload
+GOV -->> MET: event GovernanceProposalCreated DDD EVT 05
+
+loop voting window
+  A ->> UI: cast vote
+  UI ->> API: vote proposalId weight
+  API ->> GOV: recordVote proposalId voter weight
+  GOV -->> MET: event VoteCast DDD EVT 06
+end
+
+API ->> GOV: closeAndTally proposalId
+GOV -->> MET: event VoteTallied DDD EVT 07
+
+alt approved
+  GOV ->> GOV: recordDecision approved
+  GOV -->> MET: event DecisionRecorded DDD EVT 08
+  GOV -->> SEC: log decision
+  GOV ->> ETH: notify policy change for guidance
+  ETH -->> GOV: guidance recorded
+else rejected
+  GOV -->> SEC: log rejection
+  API -->> UI: result rejected
+  UI -->> A: notify rejection
+  %% stop here for rejection
+end
+
+%% -------- Publish PolicyChanged and BudgetSignal --------
+opt on approval
+  GOV ->> TRE: notify PolicyChanged policy refs
+  TRE -->> GOV: ack policy change
+  GOV -->> TRE: event PolicyChanged DDD EVT 10
+  TRE -->> GOV: event BudgetSignal DDD EVT 21
+  TRE -->> MET: publish KPI update signal
+  MET -->> MET: event KPIUpdated DDD EVT 26
+end
+
+%% -------- Treasury computes new budgets and allocations --------
+opt treasury recompute
+  TRE ->> TRE: recompute allocations and envelopes
+  TRE -->> SEC: audit treasury recompute start
+  TRE ->> HUB: push budget envelopes and rules
+  HUB -->> TRE: ack envelopes
+  TRE -->> SEC: audit treasury recompute finish
+end
+
+%% -------- Hub synchronization and local rollout --------
+HUB ->> HUB: update local policy and budget views
+HUB -->> MET: publish HubSignal and policy rollout status
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Optional project approvals path --------
+opt project approvals impacted
+  GOV ->> HUB: broadcast ProjectApproved references
+  HUB -->> MET: publish project lifecycle signals
+end
+
+%% -------- Transparency and completion --------
+SEC ->> SEC: persist transparency logs
+API -->> UI: show policy rollout status
+UI -->> A: display rollout complete
+
+%% Notes
+Note over GOV,TRE: PolicyChanged DDD EVT 10 and BudgetSignal DDD EVT 21 are key for this flow
+Note over HUB,MET: Hubs publish HubSignal for rollout health and KPIUpdated DDD EVT 26

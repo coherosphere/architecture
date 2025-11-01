@@ -1,0 +1,70 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor U as C1-02 Member or Contributor
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant GOV as C2-03 Governance and DAO
+  participant ETH as C2-08 Ethics Guard
+  participant SEC as C2-10 Security and Audit
+  participant MET as C2-07 Metrics and Analytics
+end
+
+%% -------- Trigger Appeal --------
+U ->> UI: Submit appeal on contribution or decision
+UI ->> API: POST /appeals with context and evidence
+API ->> GOV: createAppeal record (caseId)
+GOV -->> MET: event AppealOpened DDD EVT 28
+GOV -->> SEC: log appeal created
+
+%% -------- Pre-screen and Ethical Review --------
+API ->> ETH: reviewAppeal caseId policyRefs
+ETH ->> ETH: evaluate alignment and integrity
+ETH -->> API: result and recommendations
+ETH -->> GOV: event AlignmentChecked DDD EVT 03 (re-evaluation)
+Note over ETH,GOV: reuse alignment model to assess claim validity
+
+%% -------- Governance Dispute Committee Review --------
+alt committee review required
+  GOV ->> GOV: assembleReviewCommittee
+  GOV ->> SEC: requestEvidence caseId
+  SEC -->> GOV: deliverEvidence package
+  GOV ->> GOV: deliberate outcome
+  GOV -->> MET: event AppealResolved DDD EVT 29
+  GOV -->> SEC: store signed resolution
+else automated review
+  GOV ->> ETH: revalidate metrics or decision basis
+  ETH -->> GOV: summary and result
+  GOV -->> MET: event AppealResolved DDD EVT 29
+end
+
+%% -------- Update reputation or metrics --------
+alt claim upheld
+  GOV ->> MET: signal outcome impact +reputation
+  GOV ->> ETH: adjust attestation status
+  ETH -->> MET: publish AttestationUpdated DDD EVT 30
+else claim rejected
+  GOV ->> MET: log no change
+end
+
+%% -------- Transparency and publication --------
+SEC ->> SEC: generate transparency report
+SEC -->> GOV: link report to caseId
+GOV -->> MET: update KPI AppealResolvedRate
+
+%% -------- Completion --------
+API -->> UI: show appeal result and reasoning
+UI -->> U: display appeal outcome and guidance
+
+%% Notes
+Note over GOV,MET: AppealOpened DDD EVT 28 and AppealResolved DDD EVT 29 are key triggers
+Note over ETH,MET: AttestationUpdated DDD EVT 30 may occur if ethical status changed

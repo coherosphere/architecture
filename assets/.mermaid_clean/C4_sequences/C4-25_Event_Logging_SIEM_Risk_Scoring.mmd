@@ -1,0 +1,84 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant RS as C2-01 Resonance Service
+  participant POC as C2-02 Proof of Contribution
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant HUB as C2-06 Local Hub and Federation
+  participant MET as C2-07 Metrics and Analytics
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security and Audit (SIEM)
+end
+
+%% -------- Unified logging from services --------
+par emit structured logs (cloudevents)
+  RS ->> SEC: emit log(resonance calc, anomalies)
+  POC ->> SEC: emit log(intake, decay, CP/W changes)
+  GOV ->> SEC: emit log(votes, decisions)
+  TRE ->> SEC: emit log(allocations, payouts)
+  HUB ->> SEC: emit log(sync, federation status)
+  API ->> SEC: emit log(auth, rate limits, errors)
+end
+SEC -->> SEC: normalize parse schema validate
+SEC -->> MET: event LogIngested DDD EVT 54
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Correlation and detection --------
+SEC ->> SEC: correlate logs across services and actors
+SEC ->> SEC: run rules signatures baselines ml models
+alt anomaly detected
+  SEC -->> MET: event AnomalyDetected DDD EVT 55
+  MET -->> MET: event KPIUpdated DDD EVT 26
+  SEC ->> SEC: open finding with evidence and score
+else clean window
+  SEC ->> SEC: rollup summary only
+end
+
+%% -------- Risk scoring --------
+SEC ->> SEC: compute risk score per entity(service, project, hub)
+SEC -->> MET: RiskScoreUpdated DDD EVT 56
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Optional governance signal --------
+alt risk above threshold
+  SEC ->> GOV: notify risk alert with context
+  GOV ->> GOV: evaluate whether to open incident or proposal
+else within tolerance
+  GOV ->> GOV: no action required
+end
+
+%% -------- UI and transparency --------
+UI ->> API: subscribe risk and anomaly stream
+API ->> MET: registerStream(risk, anomalies)
+MET -->> API: initialSnapshot(risk vectors, findings)
+API -->> UI: deliver snapshot
+loop updates
+  MET ->> API: push deltas (risk, anomalies)
+  API -->> UI: push to dashboard (heatmaps/alerts)
+end
+
+%% -------- Archival and evidence --------
+SEC ->> SEC: store signed logs and hashes
+SEC ->> MET: publish transparency KPI
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Completion --------
+UI -->> UI: render risk heatmaps, drilldowns, evidence links
+
+%% Notes
+Note over SEC: LogIngested (DDD EVT 54) marks normalized entries into SIEM
+Note over SEC: AnomalyDetected (DDD EVT 55) raised by rules/baselines/ML
+Note over SEC,MET: RiskScoreUpdated (DDD EVT 56) streamed to dashboards and KPIs

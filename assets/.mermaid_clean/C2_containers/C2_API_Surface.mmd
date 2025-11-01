@@ -1,0 +1,43 @@
+flowchart LR
+  %% Styles
+  classDef container fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+  classDef control fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef ui fill:#8b5cf6,stroke:#4c1d95,color:#ffffff;
+  classDef ext fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% Access
+  DEV["C1-07 Developers / Clients"]:::ext
+  UI["C2-12 Resonance Board / UI"]:::ui
+  API["C2-11 Public API Gateway\nREST • gRPC • GraphQL"]:::control
+
+  %% Core services
+  RS["C2-01 Resonance\nPOST /v1/resonance/compute\nPOST /v1/decay/apply"]:::container
+  POC["C2-02 PoC\nPOST /v1/contributions\nGET  /v1/members/{id}/scores"]:::container
+  GOV["C2-03 Governance\nPOST /v1/proposals\nPOST /v1/proposals/{id}/votes"]:::container
+  TRE["C2-04 Treasury\nPOST /v1/rounds\nPOST /v1/payouts/stream"]:::container
+  ID["C2-05 Identity (PoCI)\nPOST /v1/dids\nPOST /v1/credentials/issue"]:::container
+  HUB["C2-06 Local Hubs\nPOST /v1/projects\nPOST /v1/sync/push|pull"]:::container
+  MET["C2-07 Metrics\nGET /v1/kpi\nGET /v1/kpi/series"]:::container
+  ETH["C2-08 Ethics\nPOST /v1/ethics/preflight\nPOST /v1/ethics/appeals"]:::container
+  KG["C2-09 Knowledge Graph\nPOST /v1/ingest\nPOST /v1/rag/query"]:::container
+  SEC["C2-10 Security & Audit\nPOST /v1/siem\nPOST /v1/incidents"]:::container
+
+  %% Streams / Webhooks (read-side cues)
+  SSE["Streams: /v1/streams/kpi\nWebhooks: metrics.kpi_updated, treasury.tx_posted, ..."]:::ext
+
+  %% Edges
+  DEV --> API
+  UI --> API
+  API --> RS
+  API --> POC
+  API --> GOV
+  API --> TRE
+  API --> ID
+  API --> HUB
+  API --> MET
+  API --> ETH
+  API --> KG
+  API --> SEC
+  MET --> SSE
+  SEC --> SSE

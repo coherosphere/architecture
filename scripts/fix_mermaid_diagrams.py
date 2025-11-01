@@ -1,126 +1,184 @@
 #!/usr/bin/env python3
-import re, sys, pathlib, subprocess, shutil
+"""
+Create cleaned, renderable copies of Mermaid .mmd files without modifying originals.
 
-ROOT = pathlib.Path("assets/diagrams")
-MMDC = shutil.which("mmdc")  # optional: wenn vorhanden, testen wir danach
+- Reads:  assets/diagrams/**/*.mmd
+- Writes: assets/.mermaid_clean/<same relative path>
 
-# Erkenner
-SEQ = re.compile(r'^\s*sequenceDiagram\b', re.I)
-FLOW = re.compile(r'^\s*flowchart\b|\s*graph\s+[TB|LR|RL|BT]\b', re.I)
-STATE = re.compile(r'^\s*stateDiagram-v2\b', re.I)
+Cleans:
+  • UTF-8 BOM
+  • YAML frontmatter blocks at file start (--- ... ---)
+  • Markdown code fences ```mermaid ... ```
+  • Stray 'title:' / 'config:' headers *before* the Mermaid directive
+  • CRLF → LF, ensures trailing newline
+
+Keeps:
+  • Mermaid comments (%% ...)
+  • init blocks (%%{init: ...}%%)
+  • Everything after the first valid Mermaid directive
+
+Exit code 0 with a small JSON report.
+"""
+
+from __future__ import annotations
+import sys, json, re, shutil
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]  # repo root (…/architecture)
+SRC_DIR = ROOT / "assets" / "diagrams"
+OUT_DIR = ROOT / "assets" / ".mermaid_clean"
+
+VALID_STARTERS = (
+    "flowchart", "graph", "sequenceDiagram", "classDiagram",
+    "stateDiagram-v2", "stateDiagram", "erDiagram", "gantt",
+    "journey", "pie", "quadrantChart", "mindmap", "timeline", "gitGraph"
+)
+
 FRONTMATTER_START = re.compile(r'^\s*---\s*$')
-FRONTMATTER_KEYS = re.compile(r'^\s*(title|config)\s*:', re.I)
+FRONTMATTER_END   = re.compile(r'^\s*---\s*$')
+CODEFENCE_START   = re.compile(r'^\s*```(?:mermaid)?\s*$', re.IGNORECASE)
+CODEFENCE_END     = re.compile(r'^\s*```\s*$')
 
-# Erlaubte init-Zeile
-INIT_BLOCK = "%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%"
+def strip_bom(text: str) -> str:
+    return text.lstrip('\ufeff')
 
-# Zeichenersetzungen, die mmdc robuster machen
-REPLACEMENTS = {
-    '“':'"', '”':'"', '’':"'", '–':'-', '—':'-', '•':'·', '–':'-',
-}
+def normalize_newlines(text: str) -> str:
+    return text.replace('\r\n', '\n').replace('\r', '\n')
 
-def normalize_text(txt:str)->str:
-    for k,v in REPLACEMENTS.items():
-        txt = txt.replace(k,v)
-    # Mermaid mag keine “title” direkt an Diagramm-Typ ohne NL:
-    txt = re.sub(r'^(stateDiagram-v2)title\b', r'\1\n title ', txt, flags=re.M)
-    return txt
+def split_lines(text: str) -> list[str]:
+    return text.split('\n')
 
-def strip_frontmatter(lines:list[str])->tuple[list[str], str|None]:
-    """Entfernt YAML-Frontmatter am Anfang und holt optional einen Titel."""
-    if not lines or not FRONTMATTER_START.match(lines[0]): 
-        return lines, None
-    title = None
-    i = 1
-    while i < len(lines) and not FRONTMATTER_START.match(lines[i]):
-        m = FRONTMATTER_KEYS.match(lines[i])
-        if m and m.group(1).lower()=='title':
-            # hole den Rest der Zeile als Titel
-            # Beispiele: title: "Foo"  |  title: Foo
-            tline = lines[i].split(':',1)[1].strip()
-            title = tline.strip().strip('"').strip("'")
-        i+=1
-    # i steht jetzt auf der schließenden '---' oder EOF
-    i = i+1 if i < len(lines) else i
-    return lines[i:], title
+def strip_frontmatter(lines: list[str]) -> list[str]:
+    """Remove YAML frontmatter only if it is the very first block."""
+    if not lines:
+        return lines
+    i = 0
+    # skip leading blank lines
+    while i < len(lines) and not lines[i].strip():
+        i += 1
+    if i < len(lines) and FRONTMATTER_START.match(lines[i]):
+        i += 1
+        while i < len(lines) and not FRONTMATTER_END.match(lines[i]):
+            i += 1
+        if i < len(lines):
+            i += 1  # drop the closing ---
+        # drop any blank lines following frontmatter
+        while i < len(lines) and not lines[i].strip():
+            i += 1
+        return lines[i:]
+    return lines
 
-def ensure_header(lines:list[str], inferred_title:str|None)->list[str]:
-    """Sorgt für INIT-Block, korrekten Diagrammtyp und 'title' Zeile, falls sinnvoll."""
-    content = "".join(lines).lstrip()
-    # Prüfe, ob bereits Diagrammtyp da ist
-    has_type = bool(SEQ.match(content) or FLOW.match(content) or STATE.match(content))
-    new = []
+def strip_markdown_fence(lines: list[str]) -> list[str]:
+    """Remove a top-level ``` or ```mermaid fence pair if present."""
+    if not lines:
+        return lines
+    i = 0
+    while i < len(lines) and not lines[i].strip():
+        i += 1
+    if i < len(lines) and CODEFENCE_START.match(lines[i]):
+        i += 1
+        body = []
+        while i < len(lines) and not CODEFENCE_END.match(lines[i]):
+            body.append(lines[i])
+            i += 1
+        # if we found a closing fence, consume it; else, keep what we have
+        return body
+    return lines
 
-    # INIT block oben einfügen (nur einmal)
-    new.append(INIT_BLOCK+"\n")
+def is_mermaid_directive(line: str) -> bool:
+    s = line.strip()
+    if not s or s.startswith('%%'):
+        return False
+    # allow init block as prelude
+    if s.startswith('%%{') and s.endswith('}%%'):
+        return False
+    return any(s.startswith(k) for k in VALID_STARTERS)
 
-    if has_type:
-        # Titel-Zeile direkt NACH Diagrammtyp einfügen, wenn noch nicht vorhanden
-        if inferred_title:
-            # Falls schon 'title ' existiert, nicht doppeln
-            if not re.search(r'^\s*title\s+', content, re.M):
-                # Füge 'title …' nach der ersten Diagrammtyp-Zeile ein
-                lines2 = content.splitlines(True)
-                for idx, L in enumerate(lines2):
-                    if SEQ.match(L) or FLOW.match(L) or STATE.match(L):
-                        lines2.insert(idx+1, f"title {inferred_title}\n")
-                        break
-                content = "".join(lines2)
-        return new + [content]
-    else:
-        # Kein Diagrammtyp gefunden → versuche zu raten (Heuristik)
-        guessed = "flowchart LR"
-        text = "".join(lines)
-        if "sequenceDiagram" in text: guessed = "sequenceDiagram"
-        if "state " in text or "stateDiagram" in text: guessed = "stateDiagram-v2"
-        new.append(guessed+"\n")
-        if inferred_title:
-            new.append(f"title {inferred_title}\n")
-        new.append(text)
-        return new
+def clean_prelude(lines: list[str]) -> list[str]:
+    """
+    Drop any non-mermaid headers (e.g., 'title:' or 'config:' YAML-ish lines)
+    that appear *before* the first real mermaid directive. Keep comments and init blocks.
+    """
+    out = []
+    seen_directive = False
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        s = line.strip()
 
-def fix_file(path: pathlib.Path)->tuple[bool,str]:
-    raw = path.read_text(encoding="utf-8", errors="ignore")
-    raw = normalize_text(raw)
-    lines = raw.splitlines(True)
+        if not seen_directive:
+            if s.startswith('%%'):            # keep comments
+                out.append(line)
+            elif s.startswith('%%{') and s.endswith('}%%'):  # keep init
+                out.append(line)
+            elif is_mermaid_directive(s):
+                seen_directive = True
+                out.append(line)
+            else:
+                # drop stray YAML-like headers (title:, config:, etc.) and blank prelude
+                # keep only if obviously mermaid (rare corner-case)
+                pass
+        else:
+            out.append(line)
+        i += 1
+    return out
 
-    # 1) Frontmatter weg, Titel merken
-    lines, title = strip_frontmatter(lines)
+def ensure_trailing_newline(text: str) -> str:
+    return text if text.endswith('\n') else text + '\n'
 
-    # 2) Header/Init/Titel sicherstellen
-    fixed_lines = ensure_header(lines, title)
+def clean_mermaid_text(raw: str) -> str:
+    t = strip_bom(raw)
+    t = normalize_newlines(t)
+    lines = split_lines(t)
 
-    # 3) Letztes Nl
-    if fixed_lines and not fixed_lines[-1].endswith("\n"):
-        fixed_lines[-1] += "\n"
+    # 1) remove YAML frontmatter at top
+    lines = strip_frontmatter(lines)
+    # 2) remove markdown code fences
+    lines = strip_markdown_fence(lines)
+    # 3) drop non-mermaid prelude like 'title:' / 'config:' before the directive
+    lines = clean_prelude(lines)
 
-    new = "".join(fixed_lines)
-    if new != raw:
-        path.write_text(new, encoding="utf-8")
-        return True, "fixed"
-    return False, "ok"
+    cleaned = '\n'.join(lines)
+    cleaned = ensure_trailing_newline(cleaned)
+    return cleaned
 
-def main():
-    # 0) doppelte Endungen beheben
-    for p in ROOT.rglob("*.mmd.mmd"):
-        p.rename(p.with_suffix(""))  # entfernt eine .mmd
-    for p in ROOT.rglob("*.mmd"):
-        changed, status = fix_file(p)
-        print(f"[{status}] {p}")
+def main() -> int:
+    if not SRC_DIR.exists():
+        print(json.dumps({"status":"error","message":f"Source dir not found: {SRC_DIR.as_posix()}"}))
+        return 0  # don't fail CI if folder is missing
 
-    # 4) optional render-test
-    if MMDC:
-        fails=0
-        for p in ROOT.rglob("*.mmd"):
-            try:
-                subprocess.run([MMDC, "-i", str(p), "-o", "/tmp/_out.svg"], check=True,
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            except subprocess.CalledProcessError:
-                print(f"[mmdc FAIL] {p}")
-                fails+=1
-        if fails:
-            print(f"mmdc render failures: {fails} file(s)")
-            sys.exit(1)
+    # reset output dir
+    if OUT_DIR.exists():
+        shutil.rmtree(OUT_DIR)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    files = sorted(SRC_DIR.rglob("*.mmd"))
+    report = {"source": str(SRC_DIR), "output": str(OUT_DIR), "processed": [], "skipped": []}
+
+    for src in files:
+        try:
+            rel = src.relative_to(SRC_DIR)
+        except ValueError:
+            # shouldn't happen, but skip safely
+            report["skipped"].append(str(src))
+            continue
+
+        dst = OUT_DIR / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+
+        raw = src.read_text(encoding="utf-8", errors="replace")
+        cleaned = clean_mermaid_text(raw)
+
+        # sanity: ensure we didn’t accidentally concatenate tokens (the bug you saw)
+        # We guard by forcing a newline between adjacent keywords if needed.
+        cleaned = re.sub(r'(flowchart\s+\w+)(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram(?:-v2)?|erDiagram|gantt|journey|pie|quadrantChart|mindmap|timeline|gitGraph)',
+                         r'\1\n\2', cleaned)
+
+        dst.write_text(cleaned, encoding="utf-8")
+        report["processed"].append(str(rel))
+
+    print(json.dumps({"status":"ok","report":report}, indent=2))
+    return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

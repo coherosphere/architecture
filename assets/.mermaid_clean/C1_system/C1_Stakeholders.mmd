@@ -1,0 +1,47 @@
+flowchart TB
+    %% === Legend / Styles ===
+    classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+    classDef human fill:#8b5cf6,stroke:#4c1d95,color:#fff,font-weight:bold;
+    classDef ext fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+    linkStyle default stroke:#334155,stroke-width:2px;
+
+    %% === Central System ===
+    COH["C1-01 Coherosphere System\n(Sphere of Coherence)"]:::core
+
+    %% === Human Stakeholders ===
+    MEM["C1-02 Members / Contributors\n(create content • vote • earn reputation)"]:::human
+    DEV["C1-07 Developers / Architects\n(extend code • maintain open infra)"]:::human
+    ORG["C1-05 Local Communities / Institutions\n(education • health • regeneration)"]:::human
+    PUB["C1-08 Public / Society\n(observes resonance • benefits from coherence)"]:::human
+
+    %% === External Technical Stakeholders ===
+    BTC["C1-06 Bitcoin / Hard Asset Layer\n(treasury base • sound money)"]:::ext
+    EXTDAO["C1-04 External DAOs / Web3 Systems\n(interoperable governance • funding bridges)"]:::ext
+    AI["C1-03 AI Systems / Agents\n(alignment analytics • feedback models)"]:::ext
+
+    %% === Relations ===
+    MEM --> COH
+    DEV --> COH
+    ORG --> COH
+    COH --> PUB
+    COH --> BTC
+    COH <--> EXTDAO
+    AI --> COH
+
+    %% === Descriptive groupings ===
+    subgraph H["Human & Organizational Actors"]
+        MEM
+        ORG
+        DEV
+        PUB
+    end
+
+    subgraph E["External Digital Ecosystem"]
+        BTC
+        EXTDAO
+        AI
+    end
+
+    %% === Group relations ===
+    H --> COH
+    E --> COH

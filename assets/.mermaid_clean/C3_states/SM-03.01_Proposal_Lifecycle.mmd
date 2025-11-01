@@ -1,0 +1,61 @@
+%%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
+stateDiagram-v2
+title: SM-03.01 — Proposal Lifecycle (C2-03 Governance & DAO)
+
+[*] --> DRAFT : ProposalCreated (DDD EVT 30)
+note right of DRAFT
+  Authoring & validation:
+  • proposalId assigned
+  • schema/policy checks
+end note
+
+DRAFT --> REVIEW : SubmittedForReview
+note right of REVIEW
+  Guard reviews (ethics/policy/eligibility)
+  Can request changes or reject
+end note
+
+REVIEW --> DRAFT : ChangesRequested
+REVIEW --> REJECTED : RejectedAtReview
+REVIEW --> OPEN_FOR_VOTE : ApprovedForVoting (DDD EVT 31)
+
+OPEN_FOR_VOTE --> OPEN_FOR_VOTE : VoteCast (DDD EVT 32)
+OPEN_FOR_VOTE --> TALLYING : VotingClosed
+
+TALLYING --> DECIDED_APPROVED : VoteTallied → Approved (DDD EVT 33)
+TALLYING --> DECIDED_REJECTED : VoteTallied → Rejected (DDD EVT 33)
+
+DECIDED_APPROVED --> EXECUTION : DecisionRecorded (DDD EVT 34)
+DECIDED_REJECTED --> ARCHIVED : DecisionRecorded (DDD EVT 34)
+
+EXECUTION --> EXECUTED : PolicyChanged / GrantApproved / ProjectApproved (DDD EVT 35)
+EXECUTION --> EXECUTION_FAILED : ExecutionFailed
+
+EXECUTION_FAILED --> APPEAL : AppealOpened (DDD EVT 36)
+EXECUTION_FAILED --> RETRY_EXEC : RetryAuthorized
+RETRY_EXEC --> EXECUTION : ReExecute
+
+EXECUTED --> AUDIT : ExecutionCompleted
+AUDIT --> ARCHIVED : AuditLogged (DDD EVT 37)
+
+%% Appeals (can originate from voters or oversight)
+OPEN_FOR_VOTE --> APPEAL : AppealOpened (DDD EVT 36)
+DECIDED_APPROVED --> APPEAL : AppealOpened (DDD EVT 36)
+DECIDED_REJECTED --> APPEAL : AppealOpened (DDD EVT 36)
+
+APPEAL --> DECIDED_APPROVED : AppealResolved → uphold
+APPEAL --> DECIDED_REJECTED : AppealResolved → overturn
+APPEAL --> ARCHIVED : AppealWithdrawn
+
+%% Cancellations
+DRAFT --> CANCELLED : WithdrawnByAuthor
+OPEN_FOR_VOTE --> CANCELLED : CancelledByAuthority
+CANCELLED --> ARCHIVED : Archived
+
+%% Terminal states
+REJECTED --> [*]
+ARCHIVED --> [*]
+
+%% ===== Styling =====
+classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+class DRAFT,REVIEW,OPEN_FOR_VOTE,TALLYING,DECIDED_APPROVED,DECIDED_REJECTED,EXECUTION,EXECUTED,EXECUTION_FAILED,RETRY_EXEC,APPEAL,AUDIT,ARCHIVED,REJECTED,CANCELLED core;

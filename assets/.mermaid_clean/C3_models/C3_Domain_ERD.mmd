@@ -1,0 +1,312 @@
+erDiagram
+    %% ============ CORE IDENTITIES ============
+    MEMBER ||--|| DID : has
+    MEMBER ||--o{ ATTESTATION : receives
+    MEMBER ||--o{ CONTRIBUTION : submits
+    MEMBER ||--o{ VOTE : casts
+    MEMBER ||--o{ DONATION : funds
+    MEMBER ||--o{ API_KEY : owns
+
+    DID {
+      string did PK
+      string method
+      string controller_member_id FK
+      datetime created_at
+      datetime updated_at
+    }
+
+    ATTESTATION {
+      string attestation_id PK
+      string subject_member_id FK
+      string type
+      string issuer_did FK
+      string hash
+      datetime issued_at
+      datetime expires_at
+      string status
+    }
+
+    MEMBER {
+      string member_id PK
+      string handle
+      string display_name
+      string email
+      string reputation_score
+      datetime created_at
+      datetime updated_at
+    }
+
+    %% ============ CONTRIBUTIONS & RESONANCE ============
+    CONTRIBUTION }o--|| PROJECT : targets
+    CONTRIBUTION }o--|| HUB : originates_in
+    CONTRIBUTION ||--o{ POC_LEDGER_ENTRY : recorded_as
+    CONTRIBUTION ||--o{ RESONANCE_SAMPLE : produces
+
+    CONTRIBUTION {
+      string contribution_id PK
+      string member_id FK
+      string project_id FK
+      string hub_id FK
+      string uri
+      string content_hash
+      string status
+      datetime submitted_at
+    }
+
+    POC_LEDGER_ENTRY {
+      string entry_id PK
+      string contribution_id FK
+      string member_id FK
+      float impact
+      float alignment
+      float cp_delta
+      float w_after
+      datetime effective_at
+    }
+
+    RESONANCE_SAMPLE {
+      string sample_id PK
+      string contribution_id FK
+      string project_id FK
+      float resonance_r
+      float lambda_used
+      datetime measured_at
+      string anomaly_flag
+    }
+
+    %% ============ PROJECTS & HUBS ============
+    HUB ||--o{ PROJECT : hosts
+    HUB ||--o{ HUB_SYNC_FRAME : emits
+
+    HUB {
+      string hub_id PK
+      string name
+      string region
+      string status
+      datetime registered_at
+    }
+
+    PROJECT {
+      string project_id PK
+      string hub_id FK
+      string title
+      string owner_member_id FK
+      string status
+      datetime created_at
+    }
+
+    HUB_SYNC_FRAME {
+      string frame_id PK
+      string hub_id FK
+      string crdt_vector
+      string payload_hash
+      datetime synced_at
+    }
+
+    %% ============ GOVERNANCE ============
+    PROPOSAL ||--o{ VOTE : receives
+    PROPOSAL }o--o{ PROJECT : references
+
+    PROPOSAL {
+      string proposal_id PK
+      string author_member_id FK
+      string title
+      string body_uri
+      string scope
+      string status
+      datetime opened_at
+      datetime closed_at
+      float quorum
+      float threshold
+      string decision
+    }
+
+    VOTE {
+      string vote_id PK
+      string proposal_id FK
+      string member_id FK
+      string choice
+      float weight_w
+      datetime cast_at
+    }
+
+    PARAM_VERSION {
+      string param_version_id PK
+      float lambda
+      float alpha
+      float q
+      float theta
+      datetime activated_at
+      string activated_by_proposal_id FK
+    }
+
+    %% ============ TREASURY ============
+    QF_ROUND ||--o{ MATCH_ALLOCATION : allocates
+    QF_ROUND ||--o{ DONATION : collects
+    PAYOUT_STREAM ||--o{ ESCROW_TX : settles
+    PROJECT ||--o{ PAYOUT_STREAM : funded_by
+
+    QF_ROUND {
+      string round_id PK
+      string pool_currency
+      float pool_amount
+      string status
+      datetime opened_at
+      datetime closed_at
+      string params_ref
+    }
+
+    DONATION {
+      string donation_id PK
+      string round_id FK
+      string project_id FK
+      string member_id FK
+      float amount
+      string tx_ref
+      datetime donated_at
+    }
+
+    MATCH_ALLOCATION {
+      string allocation_id PK
+      string round_id FK
+      string project_id FK
+      float match_amount
+      float confidence
+    }
+
+    PAYOUT_STREAM {
+      string stream_id PK
+      string project_id FK
+      float total_amount
+      string cadence
+      string status
+      datetime start_at
+      datetime end_at
+    }
+
+    ESCROW_TX {
+      string escrow_tx_id PK
+      string stream_id FK
+      float amount
+      string tx_hash
+      datetime posted_at
+      string status
+    }
+
+    %% ============ METRICS / OBSERVABILITY ============
+    KPI_SNAPSHOT ||--o{ KPI_VALUE : contains
+    PROJECT ||--o{ KPI_VALUE : measured_on
+    HUB ||--o{ KPI_VALUE : measured_on
+
+    KPI_SNAPSHOT {
+      string snapshot_id PK
+      datetime taken_at
+      string method
+      float sri_value
+    }
+
+    KPI_VALUE {
+      string kpi_value_id PK
+      string snapshot_id FK
+      string target_type
+      string target_id
+      string metric_key
+      float metric_value
+    }
+
+    %% ============ ETHICS / KNOWLEDGE ============
+    ETHICS_RUBRIC ||--o{ ETHICS_EVAL : used_for
+
+    ETHICS_EVAL {
+      string ethics_eval_id PK
+      string rubric_id FK
+      string subject_type
+      string subject_id
+      float score
+      string decision
+      datetime evaluated_at
+    }
+
+    ETHICS_RUBRIC {
+      string rubric_id PK
+      string version
+      string hash
+      string status
+      datetime published_at
+    }
+
+    KG_ENTITY ||--o{ KG_EDGE : links
+
+    KG_ENTITY {
+      string entity_id PK
+      string type
+      string label
+      string embedding_ref
+      datetime updated_at
+    }
+
+    KG_EDGE {
+      string edge_id PK
+      string src_entity_id FK
+      string dst_entity_id FK
+      string rel_type
+      float weight
+    }
+
+    %% ============ SECURITY / AUDIT ============
+    INCIDENT ||--o{ INCIDENT_EVENT : has
+
+    TRANSPARENCY_REPORT {
+      string report_id PK
+      string scope_type
+      string scope_ref
+      string uri
+      datetime published_at
+    }
+
+    INCIDENT {
+      string incident_id PK
+      string severity
+      string status
+      string opened_by
+      datetime opened_at
+      datetime resolved_at
+    }
+
+    INCIDENT_EVENT {
+      string event_id PK
+      string incident_id FK
+      string type
+      string details_uri
+      datetime at
+    }
+
+    AUDIT_LOG {
+      string audit_id PK
+      string subject_type
+      string subject_id
+      string actor
+      string action
+      string hash
+      datetime at
+    }
+
+    %% ============ API / ACCESS ============
+    API_CLIENT ||--o{ API_KEY : owns
+
+    API_CLIENT {
+      string client_id PK
+      string name
+      string owner_member_id FK
+      string status
+      datetime created_at
+    }
+
+    API_KEY {
+      string api_key_id PK
+      string client_id FK
+      string scope
+      datetime issued_at
+      datetime expires_at
+      string status
+    }

@@ -1,0 +1,91 @@
+%%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
+stateDiagram-v2
+title: SM-09.01 — Knowledge Ingestion Pipeline (C2-09 Knowledge Graph / Collective Intelligence)
+
+[*] --> DISCOVER : SourceDiscovered
+note right of DISCOVER
+  Discover new sources:
+  • hub/project outputs, repos, web docs, datasets
+  • governance & treasury artifacts
+  • manual submissions or connectors
+end note
+
+DISCOVER --> INGEST : SourceSelected
+note right of INGEST
+  Fetch & stage raw content (pull/stream)
+  • capture provenance (uri, hash, signer)
+  • store raw blob refs for audit
+end note
+
+INGEST --> PARSE : SourceFetched
+note right of PARSE
+  Content extraction & normalization
+  • text, tables, code blocks, media metadata
+  • language detect, mime routing
+end note
+
+PARSE --> DEDUP : Parsed
+note right of DEDUP
+  De-duplication & canonicalization
+  • simhash/LSH near-duplicate checks
+  • keep canonical doc id
+end note
+
+DEDUP --> ENTITY_LINK : Deduped
+note right of ENTITY_LINK
+  NER + entity resolution:
+  • link to DID, project, hub, proposal, stream
+  • add typed edges with confidences
+end note
+
+ENTITY_LINK --> EMBED : EntitiesLinked
+note right of EMBED
+  Embedding & feature generation:
+  • domain-specific models
+  • chunking + vector store write
+end note
+
+EMBED --> INTEGRATE : EmbeddingGenerated
+note right of INTEGRATE
+  Integrate into graph:
+  • apply ontology constraints
+  • validate schemas & ids
+end note
+
+INTEGRATE --> SYNTH : Integrated
+note right of SYNTH
+  Synthesis:
+  • summaries, explanations, citations
+  • produce derived notes & insights
+end note
+
+SYNTH --> PUBLISH : KnowledgeUpdated
+note right of PUBLISH
+  Publish to consumers:
+  • Metrics (C2-07), UI (C2-12), API (C2-11)
+  • expose search/RAG endpoints
+end note
+
+PUBLISH --> [*] : Published
+
+%% ---- Quality review & human-in-the-loop ----
+EMBED --> REVIEW : LowConfidence / DriftDetected
+ENTITY_LINK --> REVIEW : AmbiguousLink
+REVIEW --> EMBED : ReEmbed
+REVIEW --> ENTITY_LINK : FixLinking
+REVIEW --> REJECTED : NotRelevant
+REJECTED --> [*]
+
+%% ---- Failure & recovery paths ----
+INGEST --> FAILED : FetchError / AuthError
+PARSE --> FAILED : ExtractError / UnsupportedFormat
+INTEGRATE --> FAILED : SchemaMismatch / ConstraintViolation
+FAILED --> [*] : IngestionFailed
+
+%% ---- Maintenance / indexing ----
+PUBLISH --> UPDATE_INDEX : BuildIndexes
+UPDATE_INDEX --> [*] : IndexReady
+
+%% ===== Styling =====
+classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+class DISCOVER,INGEST,PARSE,DEDUP,ENTITY_LINK,EMBED,INTEGRATE,SYNTH,PUBLISH,REVIEW,REJECTED,FAILED,UPDATE_INDEX core;

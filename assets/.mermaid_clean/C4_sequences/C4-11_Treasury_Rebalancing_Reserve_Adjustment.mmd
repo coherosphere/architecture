@@ -1,0 +1,93 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor T as Treasury Steward
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant MET as C2-07 Metrics and Analytics
+  participant GOV as C2-03 Governance and DAO
+  participant ETH as C2-08 Ethics Guard
+  participant TRE as C2-04 Treasury and Funding
+  participant SEC as C2-10 Security and Audit
+end
+
+box #e5e7eb External
+  participant LED as Bitcoin or Hard Asset Layer
+end
+
+%% -------- Signal and Initiation --------
+T ->> UI: open treasury dashboard
+UI ->> MET: getRebalanceSignals
+MET -->> UI: sri trend risk bands drawdown index
+UI -->> T: show signals and recommendation
+
+alt auto policy allows
+  UI ->> API: startAutoRebalance policyRef window
+  API ->> TRE: planRebalance request
+else manual review
+  T ->> UI: propose rebalance plan
+  UI ->> API: createRebalanceProposal payload
+  API ->> GOV: createProposal rebalance payload
+  GOV -->> MET: event GovernanceProposalCreated DDD EVT 05
+  loop voting window
+    T ->> UI: cast vote
+    UI ->> API: vote proposalId
+    API ->> GOV: recordVote
+    GOV -->> MET: event VoteCast DDD EVT 06
+  end
+  API ->> GOV: closeAndTally proposalId
+  GOV -->> MET: event VoteTallied DDD EVT 07
+  alt approved
+    GOV -->> TRE: execute rebalance per policy
+    GOV -->> MET: event DecisionRecorded DDD EVT 08
+  else rejected
+    GOV -->> SEC: log rejection
+    API -->> UI: rebalance rejected
+    UI -->> T: notify rejection
+    %% stop on rejection
+  end
+end
+
+%% -------- Ethics guidance and risk checks --------
+API ->> ETH: preflightCheck allocations risk policy
+ETH -->> API: guidance and constraints
+API ->> TRE: applyEthicsConstraints guidance
+
+%% -------- Planning and simulation --------
+TRE ->> TRE: compute target weights based on sri and policy
+TRE ->> MET: request scenario metrics
+MET -->> TRE: scenario outcomes kpi deltas
+TRE ->> SEC: audit start planId
+
+%% -------- Execution to reserve assets --------
+loop each leg in plan
+  TRE ->> LED: execute trade or transfer
+  LED -->> TRE: tx hash or receipt
+  TRE -->> SEC: record leg with tx hash
+end
+TRE -->> MET: publish FundingAllocated DDD EVT 19
+
+%% -------- Post execution accounting --------
+TRE ->> TRE: update reserve ledger and positions
+TRE -->> MET: publish reserve state update
+MET -->> MET: event KPIUpdated DDD EVT 26
+TRE -->> MET: event ReserveRebalanced DDD EVT 35
+
+%% -------- Transparency and closure --------
+SEC ->> SEC: compile transparency report
+SEC -->> GOV: publish TreasuryTxPosted DDD EVT 20
+API -->> UI: show rebalance summary planId positions tx links
+UI -->> T: display completion and new target weights
+
+%% Notes
+Note over MET,TRE: ReserveRebalanced DDD EVT 35 marks successful reserve adjustment
+Note over GOV,MET: If governance route chosen the decision path emits EVT 05 06 07 08

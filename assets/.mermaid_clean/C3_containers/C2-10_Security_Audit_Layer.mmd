@@ -1,0 +1,40 @@
+flowchart LR
+  %% --- Coherosphere CI Theme ---
+  classDef container fill:#111827,stroke:#111827,color:#ffffff,font-weight:bold;
+  classDef compute fill:#ff8b00,stroke:#333333,color:#ffffff;
+  classDef control fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef worker fill:#fb923c,stroke:#7c2d12,color:#1f2937;
+  classDef store fill:#0ea5e9,stroke:#075985,color:#ffffff;
+  classDef event fill:#22c55e,stroke:#065f46,color:#083344;
+  classDef risk fill:#ef4444,stroke:#7f1d1d,color:#ffffff;
+  classDef ext fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+  classDef ui fill:#8b5cf6,stroke:#4c1d95,color:#ffffff;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ===== Container & Components (C2-10 → C3-10.xx) =====
+  subgraph SEC["C2-10 Security & Audit Layer"]
+    class SEC container
+    LED["C3-10.01 Ledger Monitor (Integrity/Reconcile)"]:::control
+    SIEM["C3-10.02 SIEM Collector (Logs/Telemetry)"]:::worker
+    ANO["C3-10.03 Anomaly Detection"]:::risk
+    RISK["C3-10.04 Risk Scoring"]:::compute
+    IR["C3-10.05 Incident Response (IR runbooks)"]:::worker
+    REP["C3-10.06 Transparency Reporter (Public Bundles)"]:::event
+    ADB["Audit-DB"]:::store
+    SDB["SIEM-Store"]:::store
+    IRDB["IR-DB"]:::store
+  end
+
+  %% ===== Internal flows =====
+  SIEM --> ANO --> RISK --> IR --> REP
+  LED --> RISK
+  LED --> ADB
+  SIEM --> SDB
+  IR --> IRDB
+
+  %% ===== External context links =====
+  API["C2-11 Public API Gateway"]:::ext --> SIEM
+  UI["C2-12 Resonance Board / UI"]:::ui --> SIEM
+  MET["C2-07 Metrics / Analytics"]:::ext <-- SIEM
+  REP --> GOV["C2-03 Governance & DAO"]:::ext
+  IR --> TRE["C2-04 Treasury & Funding"]:::ext

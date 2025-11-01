@@ -1,0 +1,70 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor H as Hub Steward
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant HUB as C2-06 Local Hub and Federation
+  participant ETH as C2-08 Manifesto and Ethics Guard
+  participant ID as C2-05 Identity PoCI
+  participant GOV as C2-03 Governance and DAO
+  participant MET as C2-07 Metrics and Analytics
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Start hub creation --------
+H ->> UI: create hub request metadata contacts region
+UI ->> API: POST /hubs register payload
+API ->> ID: verifyIdentity steward DID or org credential
+ID -->> API: IdentityVerified DDD EVT 16
+API ->> ETH: preflightAlignment hub profile manifesto attestation
+ETH -->> API: AlignmentChecked DDD EVT 03 with guidance
+
+alt alignment ok
+  API ->> HUB: registerHub payload and attestations
+  HUB ->> SEC: audit log hub registration start
+  HUB -->> API: hubId issued
+  HUB -->> MET: HubRegistered DDD EVT 38
+  MET -->> MET: KPIUpdated DDD EVT 26
+else alignment failed
+  API -->> UI: registration rejected with guidance
+  UI -->> H: show rejection and remediation
+  %% stop path on failure
+end
+
+%% -------- Optional governance participation --------
+opt register for governance
+  API ->> GOV: registerHubForParticipation hubId
+  GOV -->> API: ack registration
+  GOV -->> MET: KPIUpdated DDD EVT 26
+end
+
+%% -------- Manifesto sync and version pin --------
+API ->> ETH: getCurrentManifestoVersion
+ETH -->> API: manifestoVersion and rubric hash
+API ->> HUB: setManifestoVersion hubId version hash
+HUB -->> MET: ManifestoSynced DDD EVT 39
+MET -->> MET: KPIUpdated DDD EVT 26
+
+%% -------- Baseline signals and health --------
+HUB ->> MET: publish HubSignal baseline
+MET -->> MET: KPIUpdated DDD EVT 26
+HUB -->> SEC: store hub attestations and version refs
+
+%% -------- Completion --------
+API -->> UI: hub registration complete hubId manifesto version
+UI -->> H: display hub created and synced
+
+%% Notes
+Note over HUB,MET: HubRegistered DDD EVT 38 marks successful registration
+Note over HUB,ETH: ManifestoSynced DDD EVT 39 records pinned manifesto version
+Note over ID: IdentityVerified DDD EVT 16 for steward or org identity

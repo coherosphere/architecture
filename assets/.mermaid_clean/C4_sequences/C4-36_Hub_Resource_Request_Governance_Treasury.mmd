@@ -1,0 +1,50 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor H as Local Hub Steward (C1-05)
+
+box #ff8b00 Core Services
+  participant HUB as C2-06 Local Hub / Federation
+  participant GOV as C2-03 Governance & DAO
+  participant TRE as C2-04 Treasury & Funding
+  participant MET as C2-07 Metrics / Analytics
+end
+
+box #fde68a Control / API
+  participant API as C2-11 Public API Gateway
+end
+
+%% -------- Resource request submission --------
+H ->> API: submitResourceRequest(projectId, budget, justification)
+API ->> HUB: validateAndForwardRequest(payload)
+HUB ->> HUB: check local quorum & manifesto alignment
+HUB -->> API: requestValidated (DDD EVT 87)
+API ->> GOV: createGovernanceProposal(type=ResourceRequest)
+note right of GOV: New proposal enters Governance Lifecycle (C4-02)
+
+%% -------- Governance deliberation --------
+GOV ->> GOV: deliberate proposal (voting, thresholds)
+alt proposal approved
+  GOV -->> GOV: ResourceRequestApproved (DDD EVT 88)
+  GOV ->> TRE: allocateFunds(projectId, amount)
+  TRE ->> TRE: execute allocation, lock reserves
+  TRE -->> GOV: FundingAllocated (DDD EVT 89)
+  GOV -->> HUB: notifyApproval(projectId, allocationRef)
+  HUB -->> MET: emit HubResourceAllocated (DDD EVT 90)
+else proposal rejected
+  GOV -->> HUB: notifyRejection(reason)
+  HUB -->> MET: emit HubRequestRejected (DDD EVT 91)
+end
+
+%% -------- Treasury execution --------
+alt approved & allocation confirmed
+  TRE ->> HUB: initiatePayoutSchedule(projectId)
+  HUB ->> HUB: update local ledger / project state
+  HUB -->> GOV: ResourceExecutionReported (DDD EVT 92)
+  HUB -->> MET: update metrics (funding flow)
+end
+
+%% -------- Completion --------
+HUB -->> H: confirmation + treasuryTxId
+note over HUB,TRE: Final state — funding executed, metrics updated, governance closed
