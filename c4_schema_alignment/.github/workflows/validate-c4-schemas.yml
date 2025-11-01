@@ -1,0 +1,12 @@
+name: Validate C4 ↔ Event Schemas
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run alignment check
+        run: |
+          python3 c4_schema_alignment/validate_c4_event_schemas.py --repo-root .
