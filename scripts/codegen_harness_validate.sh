@@ -5,7 +5,7 @@ shopt -s nullglob dotglob
 ROOT="${1:-assets/specs/openapi}"
 PORT_BASE="${PORT_BASE:-41000}"
 PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
-STRICT="${STRICT_CONTRACTS:-false}"   # set to "true" to fail on specs without paths
+STRICT="${STRICT_CONTRACTS:-false}"   # set to "true" to fail when a spec has no paths
 
 echo "🔎 Contract test for OpenAPI specs under: ${ROOT}"
 
@@ -61,13 +61,13 @@ wait_port() {
 run_schemathesis() {
   local spec="$1" base="$2" outdir="$3"
   mkdir -p "$outdir"
-  # Pipe output to file; capture CLI exit code via PIPESTATUS
+  # Pipe output to a file; capture exit code via PIPESTATUS
   set +e
   schemathesis run "$spec" \
     --base-url "$base" \
     --checks all \
-    --validate-schema \
-    --max-examples 10 \
+    --validate-schema=true \
+    --hypothesis-max-examples=10 \
     --hypothesis-deadline=500 \
     | tee "$outdir/report.txt"
   local rc=${PIPESTATUS[0]}
