@@ -1,4 +1,5 @@
-name: Validate OpenAPI Domains Syntax & Structure
+# validate-openapi.yml
+name: Validate OpenAPI Syntax & Structure
 
 on:
   push:
