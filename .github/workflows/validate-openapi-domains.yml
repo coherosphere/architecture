@@ -1,3 +1,4 @@
+# validate-openapi-domains.yml
 name: Validate OpenAPI Domains Policy & Governance
 
 on:
