@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Enable robust globbing behavior
-shopt -s nullglob
-shopt -s dotglob
+# Safer globbing & hidden files where needed
+shopt -s nullglob dotglob
 
 ROOT="${1:-assets/specs/openapi}"
 PORT_BASE="${PORT_BASE:-41000}"
 PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
-STRICT="${STRICT_CONTRACTS:-false}"   # true = missing paths → fail
+STRICT="${STRICT_CONTRACTS:-false}"   # "true" → specs without paths will fail the job
 
 echo "🔎 Contract test for OpenAPI specs under: ${ROOT}"
 
@@ -19,12 +18,13 @@ idx=0
 
 bundle_spec() {
   local in="$1" out="$2"
-  # Use Redocly CLI to bundle & dereference
+  echo "bundling $in..."
   npx -y @redocly/cli@latest bundle "$in" \
     --ext yaml \
     --dereferenced \
     --remove-unused-components \
     -o "$out" >/dev/null
+  echo "📦 Created a bundle for $in at $out"
 }
 
 has_paths() {
@@ -35,7 +35,7 @@ p = sys.argv[1]
 try:
     with open(p, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f) or {}
-    print('1' if data.get('paths') else '0')
+    print('1' if isinstance(data.get('paths'), dict) and data['paths'] else '0')
 except Exception:
     print('0')
 PY
@@ -61,21 +61,20 @@ wait_port() {
 
 run_schemathesis() {
   local spec="$1" base="$2" outdir="$3"
+  # Keep flags compatible with latest Schemathesis; avoid deprecated --seed
   schemathesis run "$spec" \
     --base-url "$base" \
     --checks all \
     --validate-schema \
     --max-examples 10 \
     --hypothesis-deadline=500 \
-    --seed 42 \
     --report=md --report-file "$outdir/report.md" >/dev/null
 }
 
-# Collect both *.yaml and *.yml without extglob
+# Collect *.yaml and *.yml explicitly (no extglob)
 files=( "$ROOT"/C2-*.yaml "$ROOT"/C2-*.yml )
 
 for f in "${files[@]}"; do
-  # If glob didn't match anything, skip
   [[ -e "$f" ]] || continue
 
   base="$(basename "$f")"
@@ -91,8 +90,12 @@ for f in "${files[@]}"; do
   bundle_spec "$f" "$bundled"
 
   if [[ "$(has_paths "$bundled")" != "1" ]]; then
-    echo "  ⚠️  No operations found — ${STRICT:+failing}${STRICT:-skipping}"
-    if [[ "$STRICT" == "true" ]]; then fail=1; fi
+    if [[ "$STRICT" == "true" ]]; then
+      echo "  ⚠️  No operations found — STRICT=true → failing"
+      fail=1
+    else
+      echo "  ⚠️  No operations found — STRICT=false → skipping"
+    fi
     continue
   fi
 
@@ -100,7 +103,7 @@ for f in "${files[@]}"; do
   pid=$(start_prism "$bundled" "$port" "$log")
 
   if ! wait_port "$port"; then
-    echo "  ❌ Prism failed to start on :${port} for ${base}. Last log lines:"
+    echo "  ❌ Prism failed to open :${port} for ${base}. Last log lines:"
     tail -n 18 "$log" || true
     kill "$pid" >/dev/null 2>&1 || true
     fail=1
