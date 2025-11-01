@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Enable robust globbing behavior
+shopt -s nullglob
+shopt -s dotglob
+
 ROOT="${1:-assets/specs/openapi}"
 PORT_BASE="${PORT_BASE:-41000}"
 PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
@@ -15,6 +19,7 @@ idx=0
 
 bundle_spec() {
   local in="$1" out="$2"
+  # Use Redocly CLI to bundle & dereference
   npx -y @redocly/cli@latest bundle "$in" \
     --ext yaml \
     --dereferenced \
@@ -23,7 +28,8 @@ bundle_spec() {
 }
 
 has_paths() {
-  python3 - "$1" <<'PY'
+  local spec="$1"
+  python3 - "$spec" <<'PY'
 import sys, yaml
 p = sys.argv[1]
 try:
@@ -65,8 +71,13 @@ run_schemathesis() {
     --report=md --report-file "$outdir/report.md" >/dev/null
 }
 
-shopt -s nullglob
-for f in "$ROOT"/C2-*.y?(a)ml; do
+# Collect both *.yaml and *.yml without extglob
+files=( "$ROOT"/C2-*.yaml "$ROOT"/C2-*.yml )
+
+for f in "${files[@]}"; do
+  # If glob didn't match anything, skip
+  [[ -e "$f" ]] || continue
+
   base="$(basename "$f")"
   name="${base%.*}"
   port=$((PORT_BASE + idx))
