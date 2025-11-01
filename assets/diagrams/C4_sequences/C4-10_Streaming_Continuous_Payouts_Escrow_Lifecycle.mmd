@@ -48,3 +48,10 @@ else close stream (completed or revoked)
 end
 
 note over UI,MET: Lifecycle reflects in payouts and KPIs
+
+%% Failure branch
+alt failure: Stream paused/insufficient balance
+  SEC --x TRE: hold stream
+  TRE --x AUD: record event only
+  UI  --x DEV: expose pause+resume guidance
+end

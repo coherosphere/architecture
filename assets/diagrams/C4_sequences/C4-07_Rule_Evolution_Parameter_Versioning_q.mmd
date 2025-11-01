@@ -48,3 +48,10 @@ else rejected
 end
 
 UI -->> C: notify outcome
+
+%% Failure branch
+alt failure: Validation failed / invalid q-version
+  RS  --x GOV: reject parameter version
+  GOV --x AUD: log schema violation
+  GOV --x UI: notify maintainers
+end

@@ -50,3 +50,10 @@ else failed close or fraud
 end
 
 note over UI,MET: Outcome → matching & payouts reflected in dashboards
+
+%% Failure branch
+alt failure: Round setup invalid / payout blocked
+  TRE --x GOV: payoutDenied(roundId, reason)
+  GOV --x AUD: record discrepancy
+  UI  --x DEV: show remediation hint
+end
