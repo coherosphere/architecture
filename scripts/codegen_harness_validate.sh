@@ -81,14 +81,17 @@ run_schemathesis() {
   local spec="$1" base="$2" outdir="$3" oas="$4"
   mkdir -p "$outdir"
   local extra=()
-  # Enable OAS 3.1 mode when needed
+  # OAS 3.1 support
   if [[ "$oas" == "31" ]]; then
     extra+=( "--experimental=openapi-3.1" )
   fi
-  # Optional seed for reproducibility
-  if [[ -n "${SCHEMA_SEED}" ]]; then
+  # Reproducibility (optional)
+  if [[ -n "${SCHEMA_SEED:-}" ]]; then
     extra+=( "--seed" "${SCHEMA_SEED}" )
   fi
+  # Always send a bearer token if the API declares auth
+  extra+=( "--header" "Authorization: Bearer test-token" )
+
   set +e
   schemathesis run "$spec" \
     --base-url "$base" \
