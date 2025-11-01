@@ -1,36 +1,38 @@
+%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+stateDiagram-v2
 %%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
 stateDiagram-v2
-title: SM-05.01 — Identity Verification & Attestation (C2-05 Identity & Reputation / PoCI)
+title: SM-05.01 - Identity Verification & Attestation (C2-05 Identity & Reputation / PoCI)
 
 [*] --> CREATED : DIDCreated (DDD EVT 51)
 note right of CREATED
   Decentralized Identifier (DID) initialized  
-  • bound to public key  
-  • linked to member / contributor profile  
-  • registered in PoCI ledger  
+  · bound to public key  
+  · linked to member / contributor profile  
+  · registered in PoCI ledger  
 end note
 
 CREATED --> VERIFIED : IdentityVerified (DDD EVT 52)
 note right of VERIFIED
   Verification options:  
-  • self-asserted, social, or eKYC  
-  • on-chain proofs or federated attestations  
-  • signed timestamp in registry  
+  · self-asserted, social, or eKYC  
+  · on-chain proofs or federated attestations  
+  · signed timestamp in registry  
 end note
 
 VERIFIED --> ATTESTING : CredentialIssued
 note right of ATTESTING
   Issue verifiable credential (VC):  
-  • type = PoC, role, or achievement  
-  • ethics + alignment checks via C2-08  
-  • store hash in ledger  
+  · type = PoC, role, or achievement  
+  · ethics + alignment checks via C2-08  
+  · store hash in ledger  
 end note
 
 ATTESTING --> ACTIVE : AttestationIssued (DDD EVT 53)
 note right of ACTIVE
   Credential live & valid  
-  • available for weighting (PoC)  
-  • can be queried by DAO processes  
+  · available for weighting (PoC)  
+  · can be queried by DAO processes  
 end note
 
 ACTIVE --> REVOKED : AttestationRevoked (DDD EVT 54)

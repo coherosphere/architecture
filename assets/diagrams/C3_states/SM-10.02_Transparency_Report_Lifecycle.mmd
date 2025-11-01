@@ -1,29 +1,31 @@
+%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+stateDiagram-v2
 %%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
 stateDiagram-v2
-title: SM-10.02 — Transparency Report Lifecycle (C2-10 Security & Audit)
+title: SM-10.02 - Transparency Report Lifecycle (C2-10 Security & Audit)
 
 [*] --> DRAFT : ReportInitiated
 note right of DRAFT
   Create report shell:
-  • incident/ref IDs bound
-  • scope, timeline, owners
-  • initial checklist opened
+  · incident/ref IDs bound
+  · scope, timeline, owners
+  · initial checklist opened
 end note
 
 DRAFT --> DATA_GATHER : EvidenceRequested
 note right of DATA_GATHER
   Collect evidence:
-  • SIEM logs, ledger snapshots
-  • config diffs, patches
-  • governance directives
+  · SIEM logs, ledger snapshots
+  · config diffs, patches
+  · governance directives
 end note
 
 DATA_GATHER --> AUTHORING : EvidenceCollected
 note right of AUTHORING
   Compile narrative:
-  • root cause, impact, fixes
-  • timelines & tables
-  • redactions planned
+  · root cause, impact, fixes
+  · timelines & tables
+  · redactions planned
 end note
 
 AUTHORING --> LEGAL_REVIEW : DraftReady
@@ -35,8 +37,8 @@ QA_REVIEW --> SIGNING : QAApproved
 SIGNING --> GENERATED : ReportGenerated (DDD EVT 94)
 note right of GENERATED
   Immutable bundle produced:
-  • hashes, signatures, timestamp
-  • public & internal versions
+  · hashes, signatures, timestamp
+  · public & internal versions
 end note
 
 GENERATED --> PUBLISHING : PublishRequested

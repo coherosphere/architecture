@@ -1,13 +1,15 @@
+%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+stateDiagram-v2
 %%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
 stateDiagram-v2
-title: SM-06.01 — Hub Sync State (C2-06 Local Hub / Federation)
+title: SM-06.01 - Hub Sync State (C2-06 Local Hub / Federation)
 
 [*] --> OUT_OF_SYNC : SyncRequested (DDD EVT 60)
 note right of OUT_OF_SYNC
   Local hub detects divergence from federation:  
-  • stale CRDT frame  
-  • missing contributions or metrics  
-  • network topology change  
+  · stale CRDT frame  
+  · missing contributions or metrics  
+  · network topology change  
 end note
 
 OUT_OF_SYNC --> FETCH_REMOTE : BeginSync

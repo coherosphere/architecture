@@ -1,19 +1,21 @@
+%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+stateDiagram-v2
 %%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
 stateDiagram-v2
-title: SM-03.02 — Appeal / Dispute Flow (C2-03 Governance & DAO)
+title: SM-03.02 - Appeal / Dispute Flow (C2-03 Governance & DAO)
 
 [*] --> OPENED : AppealOpened (DDD EVT 36)
 note right of OPENED
   Appeal registered with context:
-  • origin (proposalId / executionId)
-  • appellant identity & grounds
+  · origin (proposalId / executionId)
+  · appellant identity & grounds
 end note
 
 OPENED --> INTAKE : IntakeStarted
 note right of INTAKE
   Formal checks:
-  • timeliness, standing, scope
-  • link to decision/execution record
+  · timeliness, standing, scope
+  · link to decision/execution record
 end note
 
 INTAKE --> UNDER_REVIEW : EligibilityConfirmed
@@ -27,9 +29,9 @@ HEARING --> DECISION : DeliberationClosed
 note right of DECISION
   Panel evaluates facts, policy, ethics
   Options:
-  • Uphold previous decision
-  • Overturn / Modify (remedy)
-  • Require re-vote / re-execution
+  · Uphold previous decision
+  · Overturn / Modify (remedy)
+  · Require re-vote / re-execution
 end note
 
 DECISION --> CLOSED : Outcome → Uphold (DDD EVT 38)

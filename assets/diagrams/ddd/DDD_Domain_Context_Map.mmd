@@ -1,21 +1,18 @@
----
-config:
-  layout: elk
----
+%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
 flowchart LR
  %% ===================== Bounded Contexts (with C2 mappings) =====================
  subgraph GOV["Governance BC  ⟷  C2-03 Governance & DAO Service"]
-   GOVAPI["C2-03 Proposal & Voting\n(quorum • threshold • sublinear weights)"]
+   GOVAPI["C2-03 Proposal & Voting\n(quorum · threshold · sublinear weights)"]
  end
 
- subgraph CONTRIB["Contribution & Evaluation BC  ⟷  C2-02 PoC • C2-01 Resonance • C2-08 Ethics"]
+ subgraph CONTRIB["Contribution & Evaluation BC  ⟷  C2-02 PoC · C2-01 Resonance · C2-08 Ethics"]
    POC["C2-02 Proof of Contribution\nR = I × A × e^(−λ·Δt)\nContribution Points CP_i"]
    FILTERS["C2-08 Resonance Filters\n(alignment checks)"]
-   ENGINE["C2-01 Resonance Engine\n(weight W_i • SRI inputs)"]
+   ENGINE["C2-01 Resonance Engine\n(weight W_i · SRI inputs)"]
  end
 
  subgraph ID["Identity & Reputation (PoCI) BC  ⟷  C2-05 Identity & Reputation"]
-   POCI["C2-05 PoCI Identity\n(reputation ledger • attestations)"]
+   POCI["C2-05 PoCI Identity\n(reputation ledger · attestations)"]
  end
 
  subgraph TREAS["Treasury & Funding BC  ⟷  C2-04 Treasury & Funding"]
@@ -24,17 +21,17 @@ flowchart LR
  end
 
  subgraph HUBS["Projects & Local Hubs BC  ⟷  C2-06 Local Hub / Federation"]
-   PROJ["C2-06 Projects & Grants\n(lifecycle • milestones)"]
+   PROJ["C2-06 Projects & Grants\n(lifecycle · milestones)"]
    LH["C2-06 Local Hubs\n(semi-autonomous units)"]
  end
 
- subgraph METAGOV["Meta-Governance & Audit BC  ⟷  C2-03 Governance • C2-10 Security & Audit"]
+ subgraph METAGOV["Meta-Governance & Audit BC  ⟷  C2-03 Governance · C2-10 Security & Audit"]
    PARAMS["Rule Versioning\n(λ, α, q, θ)"]
    AUDIT["Audits & Anomaly Detection"]
  end
 
- subgraph OBS["Metrics & Observability BC  ⟷  C2-07 Metrics • C2-12 UI"]
-   KPIs["C2-07 KPI System\n(A_j • R_j • CP_i • W_i • SRI)"]
+ subgraph OBS["Metrics & Observability BC  ⟷  C2-07 Metrics · C2-12 UI"]
+   KPIs["C2-07 KPI System\n(A_j · R_j · CP_i · W_i · SRI)"]
    BOARD["C2-12 Resonance Board UI\n(live dashboards)"]
  end
 
@@ -46,42 +43,42 @@ flowchart LR
 
  %% ===================== Domain Events / Relations (with DDD-EVT + C4 refs) =====================
  %% Contribution → Metrics / Gov
- CONTRIB -- "Publishes: ContributionSubmitted (DDD-EVT-01 • C4-01), ImpactScored (DDD-EVT-02 • C4-01), AlignmentChecked (DDD-EVT-03 • C4-21), ResonanceUpdated (DDD-EVT-04 • C4-01)" --> KPIs
- CONTRIB -- "Publishes: ContributionSubmitted (DDD-EVT-01 • C4-01)" --> GOVAPI
+ CONTRIB -- "Publishes: ContributionSubmitted (DDD-EVT-01 · C4-01), ImpactScored (DDD-EVT-02 · C4-01), AlignmentChecked (DDD-EVT-03 · C4-21), ResonanceUpdated (DDD-EVT-04 · C4-01)" --> KPIs
+ CONTRIB -- "Publishes: ContributionSubmitted (DDD-EVT-01 · C4-01)" --> GOVAPI
 
  %% Governance → Metrics / Treasury / Hubs
- GOVAPI -- "Publishes: GovernanceProposalCreated (DDD-EVT-05 • C4-02), VoteCast (DDD-EVT-06 • C4-02), VoteTallied (DDD-EVT-07 • C4-02), DecisionRecorded (DDD-EVT-08 • C4-02)" --> KPIs
- GOVAPI -- "Publishes: GrantApproved (DDD-EVT-09 • C4-03), PolicyChanged (DDD-EVT-10 • C4-07/C4-09)" --> QF
- GOVAPI -- "Publishes: ProjectApproved (DDD-EVT-11 • C4-09/C4-14)" --> PROJ
+ GOVAPI -- "Publishes: GovernanceProposalCreated (DDD-EVT-05 · C4-02), VoteCast (DDD-EVT-06 · C4-02), VoteTallied (DDD-EVT-07 · C4-02), DecisionRecorded (DDD-EVT-08 · C4-02)" --> KPIs
+ GOVAPI -- "Publishes: GrantApproved (DDD-EVT-09 · C4-03), PolicyChanged (DDD-EVT-10 · C4-07/C4-09)" --> QF
+ GOVAPI -- "Publishes: ProjectApproved (DDD-EVT-11 · C4-09/C4-14)" --> PROJ
 
  %% Hubs/Projects → Metrics / Treasury
- PROJ -- "Publishes: ProjectCreated (DDD-EVT-12 • C4-13/C4-14), MilestoneReported (DDD-EVT-13 • C4-14)" --> KPIs
- LH -- "Publishes: HubSignal (DDD-EVT-14 • C4-16/C4-15)" --> KPIs
- PROJ -- "Publishes: ResourceRequest (DDD-EVT-15 • C4-09)" --> TREAS
+ PROJ -- "Publishes: ProjectCreated (DDD-EVT-12 · C4-13/C4-14), MilestoneReported (DDD-EVT-13 · C4-14)" --> KPIs
+ LH -- "Publishes: HubSignal (DDD-EVT-14 · C4-16/C4-15)" --> KPIs
+ PROJ -- "Publishes: ResourceRequest (DDD-EVT-15 · C4-09)" --> TREAS
 
  %% Identity → Contrib / Gov
- POCI -- "Publishes: IdentityVerified (DDD-EVT-16 • C4-04), ReputationUpdated (DDD-EVT-17 • C4-04), AttestationIssued (DDD-EVT-18 • C4-21)" --> POC
- POCI -- "Publishes: IdentityVerified (DDD-EVT-16 • C4-04)" --> GOVAPI
+ POCI -- "Publishes: IdentityVerified (DDD-EVT-16 · C4-04), ReputationUpdated (DDD-EVT-17 · C4-04), AttestationIssued (DDD-EVT-18 · C4-21)" --> POC
+ POCI -- "Publishes: IdentityVerified (DDD-EVT-16 · C4-04)" --> GOVAPI
 
  %% Treasury → Metrics / Gov
- TREAS -- "Publishes: FundingAllocated (DDD-EVT-19 • C4-03), TreasuryTxPosted (DDD-EVT-20 • C4-10)" --> KPIs
- TREAS -- "Publishes: BudgetSignal (DDD-EVT-21 • C4-09)" --> GOVAPI
+ TREAS -- "Publishes: FundingAllocated (DDD-EVT-19 · C4-03), TreasuryTxPosted (DDD-EVT-20 · C4-10)" --> KPIs
+ TREAS -- "Publishes: BudgetSignal (DDD-EVT-21 · C4-09)" --> GOVAPI
 
  %% MetaGov → Gov / Contrib / Treasury / ID
- METAGOV -- "Publishes: ParamsVersioned (DDD-EVT-22 • C4-07), AuditFindings (DDD-EVT-23 • C4-12), AnomalyDetected (DDD-EVT-24 • C4-18)" --> GOVAPI
- PARAMS -- "Publishes: ParamsVersioned (DDD-EVT-22 • C4-07)" --> POC
- PARAMS -- "Publishes: ParamsVersioned (DDD-EVT-22 • C4-07)" --> TREAS
- METAGOV -- "Publishes: ParamSpec (DDD-EVT-25 • C4-07)" --> POCI
+ METAGOV -- "Publishes: ParamsVersioned (DDD-EVT-22 · C4-07), AuditFindings (DDD-EVT-23 · C4-12), AnomalyDetected (DDD-EVT-24 · C4-18)" --> GOVAPI
+ PARAMS -- "Publishes: ParamsVersioned (DDD-EVT-22 · C4-07)" --> POC
+ PARAMS -- "Publishes: ParamsVersioned (DDD-EVT-22 · C4-07)" --> TREAS
+ METAGOV -- "Publishes: ParamSpec (DDD-EVT-25 · C4-07)" --> POCI
 
  %% Observability → Gov / Treasury / Hubs
- KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 • C4-17), SRIComputed (DDD-EVT-27 • C4-01/C4-17)" --> GOVAPI
- KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 • C4-17)" --> TREAS
- KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 • C4-17)" --> PROJ
- KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 • C4-17)" --> LH
+ KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 · C4-17), SRIComputed (DDD-EVT-27 · C4-01/C4-17)" --> GOVAPI
+ KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 · C4-17)" --> TREAS
+ KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 · C4-17)" --> PROJ
+ KPIs -- "Publishes: KPIUpdated (DDD-EVT-26 · C4-17)" --> LH
 
- %% Customer–Supplier (Metrics serving Gov/Treasury)
- KPIs -- "Customer–Supplier" --> GOVAPI
- KPIs -- "Customer–Supplier" --> TREAS
+ %% Customer-Supplier (Metrics serving Gov/Treasury)
+ KPIs -- "Customer-Supplier" --> GOVAPI
+ KPIs -- "Customer-Supplier" --> TREAS
 
  %% Anti-Corruption / Sybil Guards
  FILTERS -. "Anti-Corruption Layer" .-> GOVAPI
@@ -89,8 +86,8 @@ flowchart LR
  POCI -. "Anti-Sybil ACL" .-> POC
 
  %% Conformist relationships
- TREAS -- "Conformist to Governance: PolicyChanged (DDD-EVT-10 • C4-09)" --> GOVAPI
- PROJ -- "Conformist to Governance: ProjectApproved (DDD-EVT-11 • C4-14)" --> GOVAPI
+ TREAS -- "Conformist to Governance: PolicyChanged (DDD-EVT-10 · C4-09)" --> GOVAPI
+ PROJ -- "Conformist to Governance: ProjectApproved (DDD-EVT-11 · C4-14)" --> GOVAPI
 
  %% Shared Kernel links
  KPIs ---|Shared Kernel: metric schema & IDs| ENGINE
