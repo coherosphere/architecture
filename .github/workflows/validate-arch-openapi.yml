@@ -1,4 +1,3 @@
-# validate-arch-openapi.yml
 name: Validate Architecture – OpenAPI Syntax & Structure
 
 on:
@@ -34,20 +33,28 @@ jobs:
           npx -y @stoplight/spectral-cli@latest --version
           npx -y @redocly/cli@latest --version
 
-      # 1️⃣ Redocly CLI → überprüft Syntax & Struktur
+      # Create a local Spectral ruleset so no remote path is needed
+      - name: Create Spectral ruleset
+        run: |
+          cat > .spectral.yaml <<'YAML'
+          extends:
+            - "spectral:oas"
+          rules:
+            info-description: warn
+            info-license: warn
+          YAML
+
+      # Redocly: syntax & structure
       - name: Redocly lint (syntax & structure)
         run: |
           npx -y @redocly/cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --format stylish
 
-      # 2️⃣ Spectral → semantische Konsistenz & OAS-Regeln
+      # Spectral: semantic rules with our local .spectral.yaml
       - name: Spectral lint (semantic validation)
         run: |
-          npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" \
-            --ruleset "@stoplight/spectral/rulesets/oas/index.json" \
-            --fail-severity=error
+          npx -y @stoplight/spectral-cli@latest lint "assets/specs/openapi/**/*.{yaml,yml}" --fail-severity=error
 
-      # 3️⃣ Zusammenfassung
       - name: Summarize
         if: always()
         run: |
-          echo "✅ OpenAPI syntax & structure validation completed successfully (Redocly + Spectral)." >> $GITHUB_STEP_SUMMARY
+          echo "✅ OpenAPI syntax & structure validation completed (Redocly + Spectral)." >> $GITHUB_STEP_SUMMARY
