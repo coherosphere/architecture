@@ -4,16 +4,15 @@ info:
   version: "1.0.0"
   x-c2-id: C2-11
   description: >
-    Unified ingress (REST/gRPC/GraphQL) for internal services. This spec
-    exposes minimal health/metadata endpoints; business operations live in
-    bounded-context C2 services.
+    Unified ingress (REST / gRPC / GraphQL) for all internal C2 services.
+    Provides health and metadata discovery endpoints.  
+    Business operations are defined in respective bounded-context services.
   license:
     name: CC BY 4.0
     url: https://creativecommons.org/licenses/by/4.0/
 servers:
   - url: https://api.coherosphere.io
 
-# Gateway requires auth by default; /gateway/status is public.
 security:
   - bearerAuth: []
 
@@ -21,8 +20,8 @@ paths:
   /gateway/status:
     get:
       summary: Gateway status (public)
-      description: Liveness/readiness of the gateway.
-      security: []  # override: no auth
+      description: Liveness and readiness of the gateway service.
+      security: []  # no auth required
       responses:
         "200":
           description: OK
@@ -35,30 +34,74 @@ paths:
                     type: string
                     enum: [ok]
                 required: [status]
+              examples:
+                sample:
+                  value:
+                    status: ok
 
   /gateway/metadata:
     get:
       summary: Gateway metadata
-      description: Returns service metadata & versions.
+      description: Returns metadata about available services and versions.
       responses:
         "200":
-          description: Metadata
+          description: Metadata summary
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  name: { type: string, example: "coherosphere-gateway" }
-                  version: { type: string }
+                  name:
+                    type: string
+                    example: "coherosphere-gateway"
+                  version:
+                    type: string
+                    example: "1.0.0"
                   services:
                     type: array
                     items:
                       type: object
                       properties:
-                        c2Id: { type: string, pattern: "^C2-\\d{2}$" }
-                        name: { type: string }
+                        c2Id:
+                          type: string
+                          pattern: "^C2-\\d{2}$"
+                          example: "C2-11"
+                        name:
+                          type: string
+                          example: "Public API Gateway"
                       required: [c2Id, name]
-                required: [name, version]
+                required: [name, version, services]
+              examples:
+                sample:
+                  summary: Valid gateway metadata
+                  value:
+                    name: coherosphere-gateway
+                    version: "1.0.0"
+                    services:
+                      - c2Id: "C2-01"
+                        name: "Resonance Service"
+                      - c2Id: "C2-02"
+                        name: "Proof-of-Contribution"
+                      - c2Id: "C2-03"
+                        name: "Governance & DAO"
+                      - c2Id: "C2-04"
+                        name: "Treasury & Funding"
+                      - c2Id: "C2-05"
+                        name: "Identity & Reputation"
+                      - c2Id: "C2-06"
+                        name: "Local Hub / Federation"
+                      - c2Id: "C2-07"
+                        name: "Metrics & Analytics"
+                      - c2Id: "C2-08"
+                        name: "Manifesto & Ethics Guard"
+                      - c2Id: "C2-09"
+                        name: "Knowledge Graph"
+                      - c2Id: "C2-10"
+                        name: "Security & Audit"
+                      - c2Id: "C2-11"
+                        name: "Public API Gateway"
+                      - c2Id: "C2-12"
+                        name: "Resonance Board / UI"
 
 components:
   securitySchemes:
