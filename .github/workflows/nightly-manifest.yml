@@ -1,0 +1,60 @@
+name: Nightly – Rebuild Manifests
+
+on:
+  schedule:
+    - cron: "17 2 * * *"   # täglich 02:17 UTC
+  workflow_dispatch: {}
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: true }
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate manifests
+        run: |
+          python - <<'PY'
+          import os,glob,datetime
+          def table(title, rows, headers):
+            out = [f"## {title}\n", "| " + " | ".join(headers) + " |", "|" + "|".join(["---"]*len(headers)) + "|"]
+            out += ["| " + " | ".join(r) + " |" for r in rows]
+            out.append("\n")
+            return "\n".join(out)
+
+          def collect(pattern):
+            return sorted(glob.glob(pattern))
+
+          now = datetime.datetime.utcnow().isoformat()+"Z"
+
+          mmd = collect("assets/diagrams/**/*.mmd")
+          yml = collect("assets/specs/openapi/*.*yml")
+          evs = collect("assets/specs/events/*.json")
+
+          rows_dia = [[os.path.basename(p), p] for p in mmd]
+          rows_api = [[os.path.basename(p), p] for p in yml]
+          rows_evt = [[os.path.basename(p), p] for p in evs]
+
+          body = [
+            "# Architecture Assets Manifest",
+            f"_Last update_: {now}\n",
+            table("Diagrams", rows_dia, ["File", "Path"]),
+            table("OpenAPI Specs", rows_api, ["File", "Path"]),
+            table("Event Schemas", rows_evt, ["File", "Path"]),
+          ]
+          os.makedirs("assets/diagrams", exist_ok=True)
+          with open("assets/diagrams/Manifest.md","w",encoding="utf-8") as f:
+            f.write("\n".join(body))
+          print("Manifest rebuilt.")
+          PY
+      - name: Commit & push
+        run: |
+          git config user.name "coherosphere-bot"
+          git config user.email "bot@coherosphere.com"
+          git add assets/diagrams/Manifest.md
+          git commit -m "chore(manifest): nightly rebuild" || echo "No changes"
+          git push
