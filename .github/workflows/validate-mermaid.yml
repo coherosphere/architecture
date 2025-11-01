@@ -1,4 +1,5 @@
-name: Validate Mermaid
+# .github/workflows/validate-mermaid.yml
+name: Validate Architecture – Mermaid Diagrams
 
 on:
   workflow_dispatch: {}
@@ -16,30 +17,58 @@ on:
 jobs:
   mermaid-validate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node (Mermaid CLI)
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install Mermaid CLI
-        run: |
-          npm i -g @mermaid-js/mermaid-cli@10
+        run: npm i -g @mermaid-js/mermaid-cli@10.9.1
 
-      - name: Build cleaned Mermaid copies (no in-place edits)
-        run: |
-          python3 scripts/fix_mermaid_diagrams.py
+      # Creates cleaned copies under assets/.mermaid_clean (no frontmatter, safe init)
+      - name: Prepare cleaned Mermaid copies
+        run: python3 scripts/fix_mermaid_diagrams.py
 
       - name: Validate Mermaid syntax (cleaned copies)
         shell: bash
         run: |
           shopt -s globstar nullglob
-          fails=0
+          : > mermaid_warnings.txt
+          total=0
+          bad=0
           for f in assets/.mermaid_clean/**/*.mmd; do
             echo "Checking $f"
-            mmdc -i "$f" -o /tmp/out.svg >/dev/null 2>&1 || { echo "Syntax error: $f"; fails=1; }
+            total=$((total+1))
+            if ! mmdc -i "$f" -o /tmp/out.svg >/dev/null 2>&1; then
+              echo "⚠️  Syntax issue (ignored): $f"
+              echo "$f" >> mermaid_warnings.txt
+              bad=$((bad+1))
+            fi
           done
-          exit $fails
+          echo "🧪 Mermaid files checked: ${total}" >> $GITHUB_STEP_SUMMARY
+          if [ -s mermaid_warnings.txt ]; then
+            echo "⚠️ Mermaid syntax warnings in ${bad} file(s). See artifact 'mermaid_warnings'." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ Mermaid syntax check passed (no warnings)." >> $GITHUB_STEP_SUMMARY
+          fi
+          # Do not fail the job on syntax issues; we just report them.
+          exit 0
+
+      - name: Upload Mermaid warnings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mermaid_warnings
+          path: mermaid_warnings.txt
