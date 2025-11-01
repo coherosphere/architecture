@@ -56,28 +56,28 @@ const config: Config = {
   ],
 
   // ── Zusätzliche Content-Quellen ───────────────────────────
-  plugins: [
-    // Diagrams unter /diagrams (Markdown-Hüllen mit ```mermaid)
-    [
-      'docusaurus-plugin-content-docs',
-      {
-        id: 'diagrams',
-        path: '../assets/docs/diagrams',
-        routeBasePath: '/diagrams',
-        sidebarPath: false,
-      },
-    ],
-    // Specs-Readmes unter /specs (z.B. /specs/openapi/README)
-    [
-      'docusaurus-plugin-content-docs',
-      {
-        id: 'specs',
-        path: '../assets/specs',
-        routeBasePath: '/specs',
-        sidebarPath: false,
-      },
-    ],
+plugins: [
+  // Diagrams under /diagrams
+  [
+    '@docusaurus/plugin-content-docs',
+    {
+      id: 'diagrams',
+      path: '../assets/docs/diagrams',
+      routeBasePath: '/diagrams',
+      sidebarPath: false,
+    },
   ],
+  // Specs READMEs under /specs
+  [
+    '@docusaurus/plugin-content-docs',
+    {
+      id: 'specs',
+      path: '../assets/specs',
+      routeBasePath: '/specs',
+      sidebarPath: false,
+    },
+  ],
+],
 
   // ── Theme / UI ────────────────────────────────────────────
   themeConfig: {
