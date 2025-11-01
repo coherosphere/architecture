@@ -2,6 +2,7 @@
 name: Validate Architecture – OpenAPI Domains Policy & Governance
 
 on:
+  workflow_dispatch: {} 
   push:
     paths:
       - "assets/specs/openapi/**"
