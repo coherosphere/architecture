@@ -1,0 +1,78 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor A as C1-02 Auditor or Maintainer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant SEC as C2-10 Security and Audit
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant MET as C2-07 Metrics and Analytics
+end
+
+box #e5e7eb External
+  participant CHN as Chain Verifier / ZK Prover
+end
+
+%% -------- Select artifact and start verification --------
+A ->> UI: open verification workspace
+UI ->> API: startVerification(artifactRef, version)
+API ->> SEC: createVerificationJob(artifactRef, version)
+SEC ->> SEC: fetch sources, bytecode, policy refs
+
+%% -------- Static analysis and formal verification --------
+SEC ->> SEC: run static checks and property tests
+SEC ->> SEC: run formal specs (safety, liveness, invariants)
+alt violations found
+  SEC ->> GOV: raise finding and remediation request
+  SEC -->> MET: event AuditFindings (DDD EVT 23)
+  API -->> UI: show failure and evidence
+  UI -->> A: remediation required
+else all properties hold
+  SEC -->> MET: event ContractVerified (DDD EVT 57)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+end
+
+%% -------- ZK proof generation and on-chain reference --------
+opt generate zk proof
+  SEC ->> CHN: requestZKProof(artifactHash, properties)
+  CHN -->> SEC: zkProof, vk, proofHash
+  SEC ->> SEC: bind proof to artifact and policy
+  SEC -->> MET: event ZKProofPublished (DDD EVT 58)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+end
+
+%% -------- Governance linkage (if contract is governance-owned) --------
+opt governance-owned contract
+  SEC ->> GOV: registerVerifiedArtifact(artifactRef, proofHash)
+  GOV -->> MET: DecisionRecorded (DDD EVT 08) note right of GOV: link verification to policy state
+end
+
+%% -------- Treasury linkage (if contract moves funds) --------
+opt treasury execution contract
+  SEC ->> TRE: whitelistExecutable(contractAddr, proofHash)
+  TRE -->> MET: FundingAllocated (DDD EVT 19) note right of TRE: emitted upon future executions
+end
+
+%% -------- Publication and transparency --------
+SEC ->> API: publishVerificationReport(artifactRef, hashes, links)
+API -->> UI: verificationReportLink
+SEC -->> MET: ReportGenerated (DDD EVT 36)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+
+%% -------- Completion --------
+UI -->> A: display verification status, proof link, report, hashes
+
+%% Notes
+Note over SEC: ContractVerified (DDD EVT 57) after formal checks pass
+Note over SEC: ZKProofPublished (DDD EVT 58) when zk proof artifact is published
+Note over SEC,MET: KPIUpdated (DDD EVT 26) on significant steps

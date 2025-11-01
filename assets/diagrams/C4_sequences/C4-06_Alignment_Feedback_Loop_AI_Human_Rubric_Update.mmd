@@ -1,0 +1,73 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor R as Human Reviewer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant ETH as C2-08 Ethics Guard
+  participant RS as C2-01 Resonance Service
+  participant MET as C2-07 Metrics and Analytics
+  participant GOV as C2-03 Governance and DAO
+end
+
+box #e5e7eb External
+  participant AI as C1-03 AI Systems and Agents
+end
+
+%% -------- Open review task --------
+R ->> UI: Open alignment review task
+UI ->> API: getPendingAlignmentReviews()
+API ->> ETH: listPendingReviews()
+ETH -->> API: reviewItems
+API -->> UI: reviewItems
+
+%% -------- AI assisted scoring --------
+UI ->> API: evaluateItem(itemId)
+API ->> ETH: requestEvaluation(itemId)
+ETH ->> AI: runAlignmentEval(contentRef policyRef rubricVersion)
+AI -->> ETH: aiScore rationale features
+ETH ->> ETH: computeAlignmentScore merge aiScore humanSignals
+ETH -->> MET: event AlignmentChecked DDD EVT 03
+MET ->> MET: computeKPI
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Optional resonance refresh for affected items --------
+alt large alignment delta
+  ETH ->> RS: updateAlignmentFactor(itemId newA)
+  RS -->> MET: publish resonance aggregates
+  MET ->> MET: compute SRI
+  MET -->> MET: event SRIComputed DDD EVT 27
+else minor change
+  ETH ->> MET: publish alignment delta
+end
+
+%% -------- Human feedback on rubric --------
+R ->> UI: Submit rubric feedback and notes
+UI ->> API: submitRubricFeedback(itemId signals)
+API ->> ETH: recordRubricFeedback(itemId signals)
+ETH ->> ETH: aggregate feedback and drift score
+
+alt drift above threshold
+  ETH ->> GOV: recommendRubricChange summary and evidence
+  GOV -->> ETH: ack recommendation  note right of GOV: C4 22 handles rubric versioning
+else keep current rubric
+  ETH ->> MET: publish feedback processed
+end
+
+%% -------- Completion --------
+ETH -->> API: evaluationResult status and scores
+API -->> UI: show result and guidance
+UI -->> R: display aiScore humanScore guidance
+
+%% Notes
+Note over ETH,MET: AlignmentChecked DDD EVT 03 and KPIUpdated DDD EVT 26 are emitted
+Note over ETH,GOV: This flow recommends change only. Formal rubric updates occur in C4 22

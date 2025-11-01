@@ -1,0 +1,73 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor O as C1-02 Observer or Auditor
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant SEC as C2-10 Security and Audit
+  participant MET as C2-07 Metrics and Analytics
+  participant GOV as C2-03 Governance and DAO
+end
+
+box #e5e7eb External
+  participant TLG as Transparency Ledger (e.g., IPFS or Chain)
+end
+
+%% -------- Initiation --------
+O ->> UI: request integrity snapshot (scope, window)
+UI ->> API: POST /transparency/snapshots
+API ->> SEC: startSnapshot(scope, window)
+
+%% -------- Collect evidences --------
+SEC ->> MET: fetch KPIs, SRI, events(window)
+MET -->> SEC: metrics bundle
+SEC ->> GOV: fetch governance decisions(window)
+GOV -->> SEC: decisions bundle
+SEC ->> SEC: gather logs, proofs, attestations
+
+%% -------- Build and sign bundle --------
+SEC ->> SEC: compose integrity bundle (manifests + hashes)
+SEC ->> SEC: sign bundle (sig, pubkey, timestamp)
+SEC -->> MET: event IntegritySnapshotCreated (DDD EVT 62)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+
+%% -------- Publish to transparency ledger --------
+SEC ->> TLG: put(bundle)  %% store content or tx
+TLG -->> SEC: receipt (cid or txHash)
+SEC ->> SEC: bind receipt to bundle index
+SEC -->> MET: event TransparencyLedgerUpdated (DDD EVT 63)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+
+%% -------- Register and expose --------
+SEC ->> API: registerSnapshot(metadata, receipt)
+API -->> UI: snapshotRegistered(link, receipt)
+
+%% -------- Optional governance acknowledgement --------
+opt governance acknowledgement
+  SEC ->> GOV: notify snapshot receipt
+  GOV -->> MET: DecisionRecorded (DDD EVT 08)
+end
+
+%% -------- Browsing and verification --------
+O ->> UI: open snapshot viewer
+UI ->> API: GET /transparency/snapshots/{id}
+API ->> SEC: fetch index and receipt
+SEC -->> API: bundle index, proof refs
+API -->> UI: render manifest, hashes, receipt link
+
+%% -------- Completion --------
+UI -->> O: display integrity snapshot and verification links
+
+%% Notes
+Note over SEC: IntegritySnapshotCreated (DDD EVT 62) marks sealed bundle creation
+Note over SEC,TLG: TransparencyLedgerUpdated (DDD EVT 63) after receipt recorded
+Note over MET: KPIUpdated (DDD EVT 26) emitted on major steps

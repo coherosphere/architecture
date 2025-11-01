@@ -1,0 +1,101 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor P as Proposer or MetaGov Council
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant GOV as C2-03 Governance and DAO
+  participant ETH as C2-08 Ethics Guard
+  participant POC as C2-02 Proof of Contribution
+  participant TRE as C2-04 Treasury and Funding
+  participant MET as C2-07 Metrics and Analytics
+  participant ID as C2-05 Identity PoCI
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Draft parameter change proposal --------
+P ->> UI: Create proposal change parameters lambda alpha q theta
+UI ->> API: createProposal payload params rationale
+API ->> GOV: createProposal payload params
+GOV -->> MET: event GovernanceProposalCreated DDD EVT 05
+GOV -->> SEC: log governance create
+
+%% -------- Deliberation and ethical check --------
+UI ->> API: requestEthicsPreflight proposalId
+API ->> ETH: evaluateProposalAlignment proposalId
+ETH -->> API: guidance and risks
+API -->> UI: show guidance to voters
+
+%% -------- Voting phase --------
+loop voting window
+  P ->> UI: cast vote
+  UI ->> API: vote proposalId weight
+  API ->> GOV: recordVote proposalId voter weight
+  GOV -->> MET: event VoteCast DDD EVT 06
+end
+
+%% -------- Tally and decision --------
+API ->> GOV: closeAndTally proposalId
+GOV -->> MET: event VoteTallied DDD EVT 07
+GOV ->> GOV: applyQuorumAndThreshold
+
+alt approved
+  GOV ->> GOV: recordDecision approved
+  GOV -->> MET: event DecisionRecorded DDD EVT 08
+  GOV -->> SEC: log decision and signature
+else rejected
+  GOV -->> SEC: log rejection
+  API -->> UI: result rejected
+  UI -->> P: notify rejection
+end
+
+%% -------- Issue ParamSpec and versioning (only if approved) --------
+opt on approval
+  GOV ->> ID: publishParamSpec keys lambda alpha q theta version
+  Note right of ID: DDD EVT 25 ParamSpec
+  ID -->> GOV: ack published
+
+  GOV ->> POC: notifyParamsVersioned version lambda alpha
+  GOV ->> TRE: notifyParamsVersioned version q theta
+  Note over GOV,POC: DDD EVT 22 ParamsVersioned
+  Note over GOV,TRE: DDD EVT 22 ParamsVersioned
+end
+
+%% -------- Services apply new parameters --------
+opt services update
+  POC ->> POC: updateRuntimeParams lambda alpha
+  POC -->> SEC: attest param load and hash
+
+  TRE ->> TRE: updateRuntimeParams q theta
+  TRE -->> SEC: attest param load and hash
+end
+
+%% -------- Metrics and transparency --------
+POC ->> MET: publish param change effects CP and W deltas
+TRE ->> MET: publish funding model change signal
+MET ->> MET: compute KPI
+MET -->> MET: event KPIUpdated DDD EVT 26
+API -->> UI: show new parameter version and changelog
+
+%% -------- Post change monitoring --------
+alt coherence drop after change
+  MET ->> GOV: signal coherence alert
+  SEC ->> GOV: provide audit trail
+else normal rollout
+  MET ->> GOV: signal version rollout complete
+end
+
+%% -------- Completion --------
+UI -->> P: proposal processed and parameters versioned if approved
