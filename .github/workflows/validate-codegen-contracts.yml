@@ -1,16 +1,16 @@
-name: Validate Codegen Contracts (Prism + Schemathesis)
+name: Validate Codegen Harness (Prism + Schemathesis)
 
 on:
   push:
     paths:
       - "assets/specs/openapi/**"
       - "scripts/codegen_harness_validate.sh"
-      - ".github/workflows/validate-codegen-contracts.yml"
+      - ".github/workflows/validate-codegen-harness.yml"
   pull_request:
     paths:
       - "assets/specs/openapi/**"
       - "scripts/codegen_harness_validate.sh"
-      - ".github/workflows/validate-codegen-contracts.yml"
+      - ".github/workflows/validate-codegen-harness.yml"
   workflow_dispatch: {}
 
 jobs:
@@ -27,7 +27,12 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Setup Python (for Schemathesis)
+      - name: Install Prism globally (faster startup)
+        run: |
+          npm install -g @stoplight/prism-cli@5.8.1
+          prism --version
+
+      - name: Setup Python (Schemathesis)
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
