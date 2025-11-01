@@ -99,17 +99,6 @@ All `.mmd` files follow the same visual standard:
 
 ---
 
-## File Naming Convention
-
-Example:  
-`C3 ERD-2025-10-31-092111.mmd` → `C3_Domain_ERD.mmd`
-
-Level_Purpose[-Subtopic]_YYYY-MM-DD-HHMMSS.ext
-↓
-Simplified stable naming →  Level_Purpose[_Subtopic].mmd/svg/png
-
----
-
 ## Maintenance Guidelines
 
 1. **Always version `.mmd` first**, then export `.svg` and `.png`.  
