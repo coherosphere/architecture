@@ -1,4 +1,4 @@
-name: Validate OpenAPI Domains
+name: Validate OpenAPI Domains Syntax & Structure
 on:
   push:
     paths:
