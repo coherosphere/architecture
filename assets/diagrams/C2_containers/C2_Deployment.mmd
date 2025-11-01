@@ -1,6 +1,9 @@
-%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+---
+title: "C2 — Deployment View (Regions, Zones, Replication)"
+config:
+  layout: elk
+---
 flowchart LR
-title C2 - Deployment View (Regions, Zones, Replication)
   %% ===== Styles (Coherosphere CI) =====
   classDef zone_core fill:#ffedd5,stroke:#fb923c,color:#111827,stroke-width:2px;
   classDef zone_edge fill:#fef3c7,stroke:#f59e0b,color:#111827,stroke-width:2px;
@@ -16,16 +19,16 @@ title C2 - Deployment View (Regions, Zones, Replication)
   linkStyle default stroke:#334155,stroke-width:2px;
 
   %% ===== Access / Entry (Global) =====
-  subgraph ACCESS["Access Layer - Anycast + CDN + WAF"]
+  subgraph ACCESS["Access Layer — Anycast + CDN + WAF"]
     direction TB
-    ING["Global Ingress (CDN/WAF)\nTLS Termination · Rate Caps"]:::control
+    ING["Global Ingress (CDN/WAF)\nTLS Termination • Rate Caps"]:::control
     APIGW["C2-11 Public API Gateway\n(REST/gRPC/GraphQL)\nreplicas: x3"]:::control
     UI["C2-12 Resonance Board / UI\n(static + stream clients)\nAZ: Multi-AZ"]:::ui
   end
   class ACCESS zone_access;
 
   %% ===== Core Region =====
-  subgraph CORE["Core Region - eu-central (Multi-AZ)"]
+  subgraph CORE["Core Region — eu-central (Multi-AZ)"]
     direction TB
     RS["C2-01 Resonance Service\nreplicas: x3"]:::container
     POC["C2-02 Proof-of-Contribution\nreplicas: x3"]:::container
@@ -46,10 +49,10 @@ title C2 - Deployment View (Regions, Zones, Replication)
   class CORE zone_core;
 
   %% ===== Secure Zone =====
-  subgraph SECURE["Secure Zone - HSM · Audit · Reserves"]
+  subgraph SECURE["Secure Zone — HSM • Audit • Reserves"]
     direction TB
     SEC["C2-10 Security & Audit Layer\nreplicas: x2"]:::risk
-    HSM["HSM / Key Vault\n(signing · custody)"]:::store
+    HSM["HSM / Key Vault\n(signing • custody)"]:::store
     TLED["Treasury Ledger / Escrows\n(settlement journal)"]:::store
     ATTEST["Attestation Registry\n(PoCI/Ethics)"]:::store
     AUD["Audit Vault (append-only)"]:::store
@@ -57,17 +60,17 @@ title C2 - Deployment View (Regions, Zones, Replication)
   class SECURE zone_secure;
 
   %% ===== Federation Edge =====
-  subgraph EDGE["Federation Edge - Local Hubs (CRDT Sync)"]
+  subgraph EDGE["Federation Edge — Local Hubs (CRDT Sync)"]
     direction TB
-    HUB1["C2-06 Local Hub - CH-001\nSync Orchestrator + Edge Store"]:::container
-    HUB2["C2-06 Local Hub - JP-101\nSync Orchestrator + Edge Store"]:::container
+    HUB1["C2-06 Local Hub — CH-001\nSync Orchestrator + Edge Store"]:::container
+    HUB2["C2-06 Local Hub — JP-101\nSync Orchestrator + Edge Store"]:::container
     EDGE1["Edge Store (CRDT)\nlocal cache"]:::store
     EDGE2["Edge Store (CRDT)\nlocal cache"]:::store
   end
   class EDGE zone_edge;
 
   %% ===== DR / Failover =====
-  subgraph DR["DR Region - eu-west (Warm Standby)"]
+  subgraph DR["DR Region — eu-west (Warm Standby)"]
     direction TB
     RS_DR["Resonance (warm)\nreplicas: x1"]:::container
     POC_DR["PoC (warm)\nreplicas: x1"]:::container

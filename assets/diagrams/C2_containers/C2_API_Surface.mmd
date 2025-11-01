@@ -1,6 +1,9 @@
-%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+---
+title: "C2 — API Surface Map"
+config:
+  layout: elk
+---
 flowchart LR
-title C2 - API Surface Map
   %% Styles
   classDef container fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
   classDef control fill:#fde68a,stroke:#b45309,color:#1f2937;
@@ -11,7 +14,7 @@ title C2 - API Surface Map
   %% Access
   DEV["C1-07 Developers / Clients"]:::ext
   UI["C2-12 Resonance Board / UI"]:::ui
-  API["C2-11 Public API Gateway\nREST · gRPC · GraphQL"]:::control
+  API["C2-11 Public API Gateway\nREST • gRPC • GraphQL"]:::control
 
   %% Core services
   RS["C2-01 Resonance\nPOST /v1/resonance/compute\nPOST /v1/decay/apply"]:::container

@@ -1,72 +1,70 @@
-%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
-stateDiagram-v2
 %%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
 stateDiagram-v2
-title: SM-10.01 - Incident Lifecycle (C2-10 Security & Audit)
+title: SM-10.01 — Incident Lifecycle (C2-10 Security & Audit)
 
 [*] --> DETECTED : IncidentOpened (DDD EVT 90)
 note right of DETECTED
   Incident detected by:
-  · automated anomaly detector  
-  · manual report or audit finding  
-  · external alert from Treasury/Governance  
+  • automated anomaly detector  
+  • manual report or audit finding  
+  • external alert from Treasury/Governance  
   Context: type, severity, affected services
 end note
 
 DETECTED --> TRIAGE : IncidentClassified
 note right of TRIAGE
   Initial assessment:
-  · verify validity & scope  
-  · assign priority (P1-P4)  
-  · notify stewards / SREs
+  • verify validity & scope  
+  • assign priority (P1–P4)  
+  • notify stewards / SREs
 end note
 
 TRIAGE --> CONTAIN : ContainmentStarted
 note right of CONTAIN
   Execute containment actions:  
-  · isolate nodes, pause payouts, revoke tokens  
-  · snapshot affected data  
-  · coordinate with governance / ops
+  • isolate nodes, pause payouts, revoke tokens  
+  • snapshot affected data  
+  • coordinate with governance / ops
 end note
 
 CONTAIN --> INVESTIGATE : Contained
 note right of INVESTIGATE
   Root cause analysis (RCA):  
-  · identify vector, exploit, or misconfiguration  
-  · correlate across logs, metrics, and PoC ledger  
-  · document hypotheses
+  • identify vector, exploit, or misconfiguration  
+  • correlate across logs, metrics, and PoC ledger  
+  • document hypotheses
 end note
 
 INVESTIGATE --> MITIGATE : CauseConfirmed
 note right of MITIGATE
   Apply fix or patch:  
-  · deploy config or code changes  
-  · restore affected components  
-  · monitor for recurrence
+  • deploy config or code changes  
+  • restore affected components  
+  • monitor for recurrence
 end note
 
 MITIGATE --> VERIFY : FixDeployed
 note right of VERIFY
   Verification loop:  
-  · rerun SIEM queries  
-  · validate KPIs & SRI coherence  
-  · confirm risk clearance
+  • rerun SIEM queries  
+  • validate KPIs & SRI coherence  
+  • confirm risk clearance
 end note
 
 VERIFY --> RESOLVED : IncidentResolved (DDD EVT 91)
 note right of RESOLVED
   Resolution confirmed and logged  
-  · update incident status = resolved  
-  · trigger transparency pipeline  
-  · notify affected domains
+  • update incident status = resolved  
+  • trigger transparency pipeline  
+  • notify affected domains
 end note
 
 RESOLVED --> DISCLOSURE : PublishReport
 note right of DISCLOSURE
   Prepare transparency report:  
-  · redact sensitive data  
-  · sign & timestamp audit log  
-  · publish via Metrics (C2-07) & UI (C2-12)
+  • redact sensitive data  
+  • sign & timestamp audit log  
+  • publish via Metrics (C2-07) & UI (C2-12)
 end note
 
 DISCLOSURE --> CLOSED : TransparencyReportPublished (DDD EVT 92)

@@ -1,15 +1,13 @@
-%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
-stateDiagram-v2
 %%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
 stateDiagram-v2
-title: SM-02.02 - Decay & Recompute Cycle (C2-02 Proof-of-Contribution)
+title: SM-02.02 — Decay & Recompute Cycle (C2-02 Proof-of-Contribution)
 
 [*] --> TRIGGER : CronTick / RecomputeRequested / ParamsVersioned
 note right of TRIGGER
   Entry conditions:
-  · Scheduled batch tick (CronTick)
-  · Manual backfill (RecomputeRequested)
-  · Parameters changed (ParamsVersioned: λ, α)
+  • Scheduled batch tick (CronTick)
+  • Manual backfill (RecomputeRequested)
+  • Parameters changed (ParamsVersioned: λ, α)
 end note
 
 TRIGGER --> LOAD_SNAPSHOT : Select ledger window

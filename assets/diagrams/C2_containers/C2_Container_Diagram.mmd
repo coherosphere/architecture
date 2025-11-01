@@ -1,20 +1,23 @@
-%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+---
+config:
+  layout: elk
+title: "Coherosphere — C2 Container Diagram (v2.5, with C1 & C3 references)"
+---
 flowchart TB
-title Coherosphere - C2 Container Diagram (v2.5, with C1 & C3 references)
 %% ===== System Boundary =====
 subgraph COH["C1-01 Coherosphere System (Sphere of Coherence)"]
-  RS["C2-01 Resonance Service<br>(C3-01.xx: Resonance Engine · SRI · Anomaly)"]
-  PoC["C2-02 Proof-of-Contribution Service<br>(C3-02.xx: CP Accumulator · Time Decay · Voting Mapper)"]
-  GOV["C2-03 Governance & DAO Service<br>(C3-03.xx: Proposal · Quorum/Threshold · Execution)"]
-  TRE["C2-04 Treasury & Funding Service<br>(C3-04.xx: QF Engine · Escrow · Reserve)"]
-  ID["C2-05 Identity &amp; Reputation (PoCI)<br>(C3-05.xx: DID · VC Registry · Reputation Graph)"]
-  HUB["C2-06 Local Hub / Federation<br>(C3-06.xx: Sync Orchestrator · Edge Store · CRDT)"]
-  MET["C2-07 Resonance Metric Stack / Analytics<br>(C3-07.xx: KPI Aggregator · SRI · Feature Store)"]
-  ETH["C2-08 Manifesto &amp; Ethics Guard<br>(C3-08.xx: Alignment · Rubrics · Attestations)"]
-  KNOW["C2-09 Knowledge Graph / Collective Intelligence<br>(C3-09.xx: Ontology · RAG Orchestrator · Synthesis)"]
-  SEC["C2-10 Security &amp; Audit Layer<br>(C3-10.xx: Ledger Monitor · SIEM · Forensics)"]
-  API["C2-11 Public API Gateway<br>(C3-11.xx: Smart Router · GraphQL Federation · Auth)"]
-  UI["C2-12 Resonance Board / UI<br>(C3-12.xx: Dashboards · Heatmaps · Workbenches)"]
+  RS["C2-01 Resonance Service<br>(C3-01.xx: Resonance Engine • SRI • Anomaly)"]
+  PoC["C2-02 Proof-of-Contribution Service<br>(C3-02.xx: CP Accumulator • Time Decay • Voting Mapper)"]
+  GOV["C2-03 Governance & DAO Service<br>(C3-03.xx: Proposal • Quorum/Threshold • Execution)"]
+  TRE["C2-04 Treasury & Funding Service<br>(C3-04.xx: QF Engine • Escrow • Reserve)"]
+  ID["C2-05 Identity &amp; Reputation (PoCI)<br>(C3-05.xx: DID • VC Registry • Reputation Graph)"]
+  HUB["C2-06 Local Hub / Federation<br>(C3-06.xx: Sync Orchestrator • Edge Store • CRDT)"]
+  MET["C2-07 Resonance Metric Stack / Analytics<br>(C3-07.xx: KPI Aggregator • SRI • Feature Store)"]
+  ETH["C2-08 Manifesto &amp; Ethics Guard<br>(C3-08.xx: Alignment • Rubrics • Attestations)"]
+  KNOW["C2-09 Knowledge Graph / Collective Intelligence<br>(C3-09.xx: Ontology • RAG Orchestrator • Synthesis)"]
+  SEC["C2-10 Security &amp; Audit Layer<br>(C3-10.xx: Ledger Monitor • SIEM • Forensics)"]
+  API["C2-11 Public API Gateway<br>(C3-11.xx: Smart Router • GraphQL Federation • Auth)"]
+  UI["C2-12 Resonance Board / UI<br>(C3-12.xx: Dashboards • Heatmaps • Workbenches)"]
 end
 
 %% ===== External actors/systems (C1-Level context) =====
@@ -22,9 +25,9 @@ USER["C1-02 Member / Contributor"] --> UI
 DEV["C1-07 Developers & Architects"] --> API
 EXTDAO["C1-04 External DAOs / Web3 Systems"] <--> GOV
 ORG["C1-05 Local Communities & Institutions"] <--> HUB
-AI["C1-03 AI Systems & Agents<br>(Alignment Analytics · Feedback Models)"] --> RS & MET
+AI["C1-03 AI Systems & Agents<br>(Alignment Analytics • Feedback Models)"] --> RS & MET
 BTC["C1-06 Bitcoin / Hard Asset Layer"]
-PUBLIC["C1-08 Public / Society<br>(observes resonance · benefits from coherence)"]:::ghost
+PUBLIC["C1-08 Public / Society<br>(observes resonance • benefits from coherence)"]:::ghost
 
 %% ===== Core internal flows (MET as hub, simplified) =====
 UI --> API

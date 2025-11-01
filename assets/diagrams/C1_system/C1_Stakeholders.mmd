@@ -1,6 +1,9 @@
-%%{init: {'theme':'base','themeVariables':{ 'fontFamily':'Inter,Arial', 'primaryColor':'#ff8b00','lineColor':'#334155'}}}%%
+---
+title: "C1-Stakeholders — Coherosphere System Context"
+config:
+  layout: elk
+---
 flowchart TB
-title C1-Stakeholders - Coherosphere System Context
     %% === Legend / Styles ===
     classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
     classDef human fill:#8b5cf6,stroke:#4c1d95,color:#fff,font-weight:bold;
@@ -11,15 +14,15 @@ title C1-Stakeholders - Coherosphere System Context
     COH["C1-01 Coherosphere System\n(Sphere of Coherence)"]:::core
 
     %% === Human Stakeholders ===
-    MEM["C1-02 Members / Contributors\n(create content · vote · earn reputation)"]:::human
-    DEV["C1-07 Developers / Architects\n(extend code · maintain open infra)"]:::human
-    ORG["C1-05 Local Communities / Institutions\n(education · health · regeneration)"]:::human
-    PUB["C1-08 Public / Society\n(observes resonance · benefits from coherence)"]:::human
+    MEM["C1-02 Members / Contributors\n(create content • vote • earn reputation)"]:::human
+    DEV["C1-07 Developers / Architects\n(extend code • maintain open infra)"]:::human
+    ORG["C1-05 Local Communities / Institutions\n(education • health • regeneration)"]:::human
+    PUB["C1-08 Public / Society\n(observes resonance • benefits from coherence)"]:::human
 
     %% === External Technical Stakeholders ===
-    BTC["C1-06 Bitcoin / Hard Asset Layer\n(treasury base · sound money)"]:::ext
-    EXTDAO["C1-04 External DAOs / Web3 Systems\n(interoperable governance · funding bridges)"]:::ext
-    AI["C1-03 AI Systems / Agents\n(alignment analytics · feedback models)"]:::ext
+    BTC["C1-06 Bitcoin / Hard Asset Layer\n(treasury base • sound money)"]:::ext
+    EXTDAO["C1-04 External DAOs / Web3 Systems\n(interoperable governance • funding bridges)"]:::ext
+    AI["C1-03 AI Systems / Agents\n(alignment analytics • feedback models)"]:::ext
 
     %% === Relations ===
     MEM --> COH
