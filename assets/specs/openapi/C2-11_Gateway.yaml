@@ -1,17 +1,68 @@
 openapi: 3.1.0
 info:
-info:
   title: C2-11 Public API Gateway
   version: "1.0.0"
   x-c2-id: C2-11
-  description: Unified ingress (REST/gRPC/GraphQL) for internal services.
+  description: >
+    Unified ingress (REST/gRPC/GraphQL) for internal services. This spec
+    exposes minimal health/metadata endpoints; business operations live in
+    bounded-context C2 services.
   license:
     name: CC BY 4.0
     url: https://creativecommons.org/licenses/by/4.0/
 servers:
   - url: https://api.coherosphere.io
-    description: Production
-  - url: https://staging.api.coherosphere.io
-    description: Staging
-paths: {}
-components: {}
+
+# Gateway requires auth by default; /gateway/status is public.
+security:
+  - bearerAuth: []
+
+paths:
+  /gateway/status:
+    get:
+      summary: Gateway status (public)
+      description: Liveness/readiness of the gateway.
+      security: []  # override: no auth
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]
+                required: [status]
+
+  /gateway/metadata:
+    get:
+      summary: Gateway metadata
+      description: Returns service metadata & versions.
+      responses:
+        "200":
+          description: Metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name: { type: string, example: "coherosphere-gateway" }
+                  version: { type: string }
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        c2Id: { type: string, pattern: "^C2-\\d{2}$" }
+                        name: { type: string }
+                      required: [c2Id, name]
+                required: [name, version]
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
