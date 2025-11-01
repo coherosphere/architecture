@@ -1,28 +1,44 @@
-name: Validate Mermaid Diagrams
+name: Validate Mermaid
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - "assets/diagrams/**/*.mmd"
+      - "scripts/fix_mermaid_diagrams.py"
       - ".github/workflows/validate-mermaid.yml"
   pull_request:
     paths:
       - "assets/diagrams/**/*.mmd"
-  workflow_dispatch: {}
+      - "scripts/fix_mermaid_diagrams.py"
+      - ".github/workflows/validate-mermaid.yml"
 
 jobs:
-  mermaid-parse:
+  mermaid-validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Install mermaid-cli
-        run: npm i -g @mermaid-js/mermaid-cli@10
-      - name: Parse all .mmd
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (Mermaid CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Mermaid CLI
+        run: |
+          npm i -g @mermaid-js/mermaid-cli@10
+
+      - name: Build cleaned Mermaid copies (no in-place edits)
+        run: |
+          python3 scripts/fix_mermaid_diagrams.py
+
+      - name: Validate Mermaid syntax (cleaned copies)
         shell: bash
         run: |
           shopt -s globstar nullglob
           fails=0
-          for f in assets/diagrams/**/*.mmd; do
+          for f in assets/.mermaid_clean/**/*.mmd; do
             echo "Checking $f"
             mmdc -i "$f" -o /tmp/out.svg >/dev/null 2>&1 || { echo "Syntax error: $f"; fails=1; }
           done
