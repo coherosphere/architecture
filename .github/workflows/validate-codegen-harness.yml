@@ -22,8 +22,7 @@ jobs:
       - name: Setup Node (for Prism)
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: "20"        # ⬅ no cache to avoid lockfile requirement
 
       - name: Install OS deps (jq, curl, yq)
         run: |
@@ -35,7 +34,6 @@ jobs:
           sudo chmod +x /usr/local/bin/yq
           jq --version
           yq --version
-          curl --version
           node -v
           npm -v
 
