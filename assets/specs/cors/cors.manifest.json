@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "policy": {
+    "allowOrigins": [
+      "https://coherosphere.com",
+      "https://api.coherosphere.io",
+      "https://app.coherosphere.io",
+      "https://docs.coherosphere.io",
+      "https://chat.coherosphere.io",
+      "https://ai.coherosphere.io",
+      "https://data.coherosphere.io",
+      "https://staging.api.coherosphere.io"
+    ],
+    "allowMethods": ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+    "allowHeaders": [
+      "Accept","Content-Type","Authorization","X-Request-Id","X-Trace-Id"
+    ],
+    "exposeHeaders": ["X-Request-Id","X-RateLimit-Remaining"],
+    "allowCredentials": true,
+    "maxAgeSeconds": 600,
+    "strict": true
+  },
+  "overrides": {
+    "C2-10": { "allowHeaders": ["Accept","Content-Type","Authorization","X-Signature","X-Timestamp"] },
+    "C2-11": { "exposeHeaders": ["X-Request-Id","X-Gateway-Node"] }
+  }
+}
