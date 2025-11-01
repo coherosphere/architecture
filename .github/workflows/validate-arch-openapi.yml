@@ -1,5 +1,5 @@
 # validate-arch-openapi.yml
-name: Validate Architecture – OpenAPI Domains Policy & Governance
+name: Validate Architecture – OpenAPI Syntax & Structure
 
 on:
   workflow_dispatch: {} 
