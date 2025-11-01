@@ -1,0 +1,7 @@
+
+# Example GitHub Actions step to validate servers and x-c2-id
+- name: Validate OpenAPI Domains
+  run: |
+    python scripts/fix_openapi_domains.py --root assets/specs/openapi --report openapi_domain_fix_report.json
+    echo "Report:"
+    cat openapi_domain_fix_report.json
