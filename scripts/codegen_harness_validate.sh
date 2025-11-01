@@ -5,7 +5,8 @@ shopt -s nullglob dotglob
 ROOT="${1:-assets/specs/openapi}"
 PORT_BASE="${PORT_BASE:-41000}"
 PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
-STRICT="${STRICT_CONTRACTS:-false}"   # set to "true" to fail when a spec has no paths
+STRICT="${STRICT_CONTRACTS:-false}"   # true => fail if no paths; false => skip
+SCHEMA_SEED="${SCHEMA_SEED:-}"        # optional: set to a number to stabilize Hypothesis
 
 echo "🔎 Contract test for OpenAPI specs under: ${ROOT}"
 
@@ -23,6 +24,24 @@ bundle_spec() {
     --remove-unused-components \
     -o "$out" >/dev/null
   echo "📦 Created a bundle for $in at $out"
+}
+
+detect_oas_version() {
+  # echo 31 for OAS 3.1, 30 for OAS 3.0, 0 otherwise
+  local spec="$1"
+  python3 - "$spec" <<'PY'
+import sys, yaml, re
+p=sys.argv[1]
+try:
+    with open(p,'r',encoding='utf-8') as f:
+        doc=yaml.safe_load(f) or {}
+    ov=str(doc.get('openapi','')).strip()
+    if re.match(r'^3\.1(\.|$)', ov): print('31')
+    elif re.match(r'^3\.0(\.|$)', ov): print('30')
+    else: print('0')
+except Exception:
+    print('0')
+PY
 }
 
 has_paths() {
@@ -59,9 +78,17 @@ wait_port() {
 }
 
 run_schemathesis() {
-  local spec="$1" base="$2" outdir="$3"
+  local spec="$1" base="$2" outdir="$3" oas="$4"
   mkdir -p "$outdir"
-  # Pipe output to a file; capture exit code via PIPESTATUS
+  local extra=()
+  # Enable OAS 3.1 mode when needed
+  if [[ "$oas" == "31" ]]; then
+    extra+=( "--experimental=openapi-3.1" )
+  fi
+  # Optional seed for reproducibility
+  if [[ -n "${SCHEMA_SEED}" ]]; then
+    extra+=( "--seed" "${SCHEMA_SEED}" )
+  fi
   set +e
   schemathesis run "$spec" \
     --base-url "$base" \
@@ -69,7 +96,7 @@ run_schemathesis() {
     --validate-schema=true \
     --hypothesis-max-examples=10 \
     --hypothesis-deadline=500 \
-    | tee "$outdir/report.txt"
+    "${extra[@]}" | tee "$outdir/report.txt"
   local rc=${PIPESTATUS[0]}
   set -e
   return $rc
@@ -114,8 +141,9 @@ for f in "${files[@]}"; do
   fi
   echo "  ✅ Prism running on :${port}"
 
+  oas_ver="$(detect_oas_version "$bundled")"
   outdir=".harness_out_contracts/${name}"
-  if run_schemathesis "$bundled" "http://127.0.0.1:${port}" "$outdir"; then
+  if run_schemathesis "$bundled" "http://127.0.0.1:${port}" "$outdir" "$oas_ver"; then
     echo "  ✅ Schemathesis OK → ${outdir}/report.txt"
   else
     echo "  ❌ Schemathesis test failures → ${outdir}/report.txt"
