@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-# Safer globbing & hidden files where needed
 shopt -s nullglob dotglob
 
 ROOT="${1:-assets/specs/openapi}"
 PORT_BASE="${PORT_BASE:-41000}"
 PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
-STRICT="${STRICT_CONTRACTS:-false}"   # "true" → specs without paths will fail the job
+STRICT="${STRICT_CONTRACTS:-false}"   # set to "true" to fail on specs without paths
 
 echo "🔎 Contract test for OpenAPI specs under: ${ROOT}"
 
@@ -35,7 +33,8 @@ p = sys.argv[1]
 try:
     with open(p, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f) or {}
-    print('1' if isinstance(data.get('paths'), dict) and data['paths'] else '0')
+    ok = isinstance(data.get('paths'), dict) and bool(data['paths'])
+    print('1' if ok else '0')
 except Exception:
     print('0')
 PY
@@ -61,17 +60,21 @@ wait_port() {
 
 run_schemathesis() {
   local spec="$1" base="$2" outdir="$3"
-  # Keep flags compatible with latest Schemathesis; avoid deprecated --seed
+  mkdir -p "$outdir"
+  # Pipe output to file; capture CLI exit code via PIPESTATUS
+  set +e
   schemathesis run "$spec" \
     --base-url "$base" \
     --checks all \
     --validate-schema \
     --max-examples 10 \
     --hypothesis-deadline=500 \
-    --report=md --report-file "$outdir/report.md" >/dev/null
+    | tee "$outdir/report.txt"
+  local rc=${PIPESTATUS[0]}
+  set -e
+  return $rc
 }
 
-# Collect *.yaml and *.yml explicitly (no extglob)
 files=( "$ROOT"/C2-*.yaml "$ROOT"/C2-*.yml )
 
 for f in "${files[@]}"; do
@@ -112,12 +115,10 @@ for f in "${files[@]}"; do
   echo "  ✅ Prism running on :${port}"
 
   outdir=".harness_out_contracts/${name}"
-  mkdir -p "$outdir"
-
   if run_schemathesis "$bundled" "http://127.0.0.1:${port}" "$outdir"; then
-    echo "  ✅ Schemathesis OK → ${outdir}/report.md"
+    echo "  ✅ Schemathesis OK → ${outdir}/report.txt"
   else
-    echo "  ❌ Schemathesis test failures → ${outdir}/report.md"
+    echo "  ❌ Schemathesis test failures → ${outdir}/report.txt"
     fail=1
   fi
 
