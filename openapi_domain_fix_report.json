@@ -1,0 +1,123 @@
+{
+  "root": "assets/specs/openapi",
+  "prod": "https://api.coherosphere.io",
+  "staging": "https://staging.api.coherosphere.io",
+  "write_mode": true,
+  "files": [
+    {
+      "file": "assets/specs/openapi/C2-01_resonance.yaml",
+      "c2_id": "C2-01",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-05_identity.yaml",
+      "c2_id": "C2-05",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-04_treasury.yaml",
+      "c2_id": "C2-04",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-10_security.yaml",
+      "c2_id": "C2-10",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-03_governance.yaml",
+      "c2_id": "C2-03",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-07_metrics.yaml",
+      "c2_id": "C2-07",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-09_knowledge.yaml",
+      "c2_id": "C2-09",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-02_poc.yaml",
+      "c2_id": "C2-02",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-11_gateway.yaml",
+      "c2_id": "C2-11",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-08_ethics.yaml",
+      "c2_id": "C2-08",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    },
+    {
+      "file": "assets/specs/openapi/C2-06_hubs.yaml",
+      "c2_id": "C2-06",
+      "changed": false,
+      "details": {
+        "replaced_servers": "skipped_no_yaml_parser",
+        "set_x_c2_id": "skipped_no_yaml_parser"
+      },
+      "errors": "Could not parse YAML."
+    }
+  ],
+  "summary": {
+    "scanned": 11,
+    "changed": 0,
+    "errors": 11
+  }
+}
