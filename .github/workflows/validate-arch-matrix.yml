@@ -1,0 +1,83 @@
+name: Validate Architecture – ID Matrix
+
+on:
+  push:
+    paths:
+      - "assets/diagrams/**"
+      - "assets/specs/**"
+      - "assets/docs/**"
+      - "scripts/**"
+      - ".github/workflows/validate-arch-matrix.yml"
+  pull_request:
+    paths:
+      - "assets/diagrams/**"
+      - "assets/specs/**"
+      - "assets/docs/**"
+      - "scripts/**"
+  workflow_dispatch: {}
+
+jobs:
+  matrix-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run matrix validator
+        run: |
+          python - <<'PY'
+          import re, json, glob, sys, os
+
+          # Collect references
+          c4_files = glob.glob("assets/diagrams/C4_sequences/*.mmd")
+          sm_files = glob.glob("assets/diagrams/C3_states/*.mmd")
+          c2_specs = glob.glob("assets/specs/openapi/*.y*ml")
+          ddd_evt = set(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("assets/specs/events/*.json"))
+
+          refs = {"c4":{}, "sm":{}, "openapi":{}}
+          evtre = re.compile(r"DDD-EVT-\d+")
+          c2re  = re.compile(r"C2-\d{2}")
+
+          def scan(path):
+            with open(path, "r", encoding="utf-8", errors="ignore") as f:
+              s = f.read()
+            return set(evtre.findall(s)), set(c2re.findall(s))
+
+          # C4
+          for p in c4_files:
+            ev, c2 = scan(p); refs["c4"][os.path.basename(p)] = {"ddd":sorted(ev), "c2":sorted(c2)}
+          # SM
+          for p in sm_files:
+            ev, c2 = scan(p); refs["sm"][os.path.basename(p)] = {"ddd":sorted(ev), "c2":sorted(c2)}
+          # OpenAPI: ensure info.x-c2-id presence and valid value
+          bad_openapi = []
+          for p in c2_specs:
+            with open(p, "r", encoding="utf-8", errors="ignore") as f:
+              txt = f.read()
+            c2s = c2re.findall(txt)
+            if "x-c2-id" not in txt:
+              bad_openapi.append((os.path.basename(p), "missing x-c2-id"))
+            else:
+              # naive check: the declared x-c2-id must look like C2-xx
+              if not re.search(r"x-c2-id:\s*C2-\d{2}", txt):
+                bad_openapi.append((os.path.basename(p), "invalid x-c2-id"))
+
+          # Missing event schemas
+          used = set()
+          for group in ("c4","sm"):
+            for v in refs[group].values():
+              used |= set(v["ddd"])
+          missing = sorted([e for e in used if e not in ddd_evt])
+
+          report = {
+            "c4_files": len(refs["c4"]),
+            "sm_files": len(refs["sm"]),
+            "openapi_files": len(c2_specs),
+            "missing_event_schemas": missing,
+            "openapi_issues": bad_openapi
+          }
+          print(json.dumps(report, indent=2))
+          if missing or bad_openapi:
+            sys.exit(1)
+          PY
