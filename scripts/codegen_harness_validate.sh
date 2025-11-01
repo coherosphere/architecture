@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="${1:-assets/specs/openapi}"
 PORT_BASE="${PORT_BASE:-41000}"
 PRISM_FLAGS="${PRISM_FLAGS:---errors=false --multiprocess=false}"
-STRICT="${STRICT_CONTRACTS:-false}"   # true => fehlende paths führen zum Fail
+STRICT="${STRICT_CONTRACTS:-false}"   # true = fehlende paths => Fehler
 
 echo "🔎 Contract test for specs under: ${ROOT}"
 
@@ -13,9 +13,9 @@ mkdir -p .harness_tmp/bundled .harness_logs_contracts .harness_out_contracts
 fail=0
 idx=0
 
-bundle() {
+bundle_spec() {
   local in="$1" out="$2"
-  # Redocly v2 (neuer Paketname @redocly/cli)
+  # Redocly CLI (neu)
   npx -y @redocly/cli@latest bundle "$in" \
     --ext yaml \
     --dereferenced \
@@ -27,19 +27,19 @@ has_paths() {
   python3 - "$1" <<'PY'
 import sys, yaml
 p = sys.argv[1]
-with open(p, 'r', encoding='utf-8') as f:
-    data = yaml.safe_load(f)
-paths = (data or {}).get('paths') or {}
-print('1' if len(paths)>0 else '0')
+try:
+    with open(p, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f)
+    print('1' if (data or {}).get('paths') else '0')
+except Exception:
+    print('0')
 PY
 }
 
 start_prism() {
   local spec="$1" port="$2" log="$3"
-  # Prism CLI v5
   npx -y @stoplight/prism-cli@5 mock "$spec" \
-    -p "$port" -h 127.0.0.1 $PRISM_FLAGS \
-    >"$log" 2>&1 &
+    -p "$port" -h 127.0.0.1 $PRISM_FLAGS >"$log" 2>&1 &
   echo $!
 }
 
@@ -56,16 +56,14 @@ wait_port() {
 
 run_schemathesis() {
   local spec="$1" base="$2" outdir="$3"
-  # wenige Beispiele, damit CI schnell bleibt
   schemathesis run "$spec" \
     --base-url "$base" \
     --checks all \
     --validate-schema \
     --max-examples 10 \
     --hypothesis-deadline=500 \
-    --seed 1 \
-    --report=md --report-file "$outdir/report.md" \
-    >/dev/null
+    --seed 42 \
+    --report=md --report-file "$outdir/report.md" >/dev/null
 }
 
 shopt -s nullglob
@@ -80,13 +78,11 @@ for f in "$ROOT"/C2-*.y?(a)ml; do
   echo "──────────────────────────────────────────────────────────────"
 
   bundled=".harness_tmp/bundled/${base}"
-  bundle "$f" "$bundled"
+  bundle_spec "$f" "$bundled"
 
   if [[ "$(has_paths "$bundled")" != "1" ]]; then
-    echo "  ⚠️  No operations (/paths empty) → $( $STRICT && echo 'FAIL' || echo 'skip' )"
-    if [[ "$STRICT" == "true" ]]; then
-      fail=1
-    fi
+    echo "  ⚠️  No operations found — ${STRICT:+failing}${STRICT:-skipping}"
+    if [[ "$STRICT" == "true" ]]; then fail=1; fi
     continue
   fi
 
@@ -100,14 +96,15 @@ for f in "$ROOT"/C2-*.y?(a)ml; do
     fail=1
     continue
   fi
-  echo "  ✅ Prism up on :${port} (pid=${pid})"
+  echo "  ✅ Prism running on :${port}"
 
   outdir=".harness_out_contracts/${name}"
   mkdir -p "$outdir"
+
   if run_schemathesis "$bundled" "http://127.0.0.1:${port}" "$outdir"; then
     echo "  ✅ Schemathesis OK → ${outdir}/report.md"
   else
-    echo "  ❌ Schemathesis reported failures (see ${outdir}/report.md)"
+    echo "  ❌ Schemathesis test failures → ${outdir}/report.md"
     fail=1
   fi
 
