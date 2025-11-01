@@ -2,23 +2,29 @@ name: Validate Codegen
 
 on:
   workflow_dispatch: {}
-  pull_request:
-    paths:
-      - "assets/specs/openapi/**/*.yml"
-      - "assets/specs/openapi/**/*.yaml"
-      - "scripts/codegen_harness.sh"
-      - ".github/workflows/validate-codegen.yml"
   push:
     paths:
-      - "assets/specs/openapi/**/*.yml"
       - "assets/specs/openapi/**/*.yaml"
+      - "assets/specs/openapi/**/*.yml"
+      - "scripts/codegen_harness.sh"
+      - ".github/workflows/validate-codegen.yml"
+  pull_request:
+    paths:
+      - "assets/specs/openapi/**/*.yaml"
+      - "assets/specs/openapi/**/*.yml"
       - "scripts/codegen_harness.sh"
       - ".github/workflows/validate-codegen.yml"
 
 jobs:
-  harness:
+  codegen:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    # Codegen-Only: Prism im Harness deaktivieren (kann auf soft/strict gestellt werden)
+    env:
+      PRISM_MODE: "off"   # off | soft | strict
+      OPENAPI_ROOT: "assets/specs/openapi"
 
     steps:
       - name: Checkout
@@ -29,27 +35,19 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Setup Python (for possible future checks)
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      - name: Make harness executable
+        run: chmod +x scripts/codegen_harness.sh
 
-      - name: Install CLI tools (Prism, OpenAPI Generator, jq/yq)
-        run: |
-          npm i -g @stoplight/prism-cli@5 @openapitools/openapi-generator-cli@2
-          sudo apt-get update
-          sudo apt-get install -y jq
-          VERSION=$(curl -sL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r '.tag_name' | tr -d 'v')
-          curl -L "https://github.com/mikefarah/yq/releases/download/v${VERSION}/yq_linux_amd64" -o yq && chmod +x yq && sudo mv yq /usr/local/bin/yq
-          echo "node $(node -v)"; echo "npm $(npm -v)"; prism --version; openapi-generator-cli version; yq --version; jq --version
+      - name: Run codegen harness (SDK build sanity)
+        run: bash scripts/codegen_harness.sh "$OPENAPI_ROOT"
 
-      - name: Run Codegen Harness
-        run: |
-          bash scripts/codegen_harness.sh
-
-      - name: Upload harness logs (always)
+      - name: Upload harness artifacts (SDKs + logs)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: codegen-harness-logs
-          path: .harness_logs/**
+          name: codegen_harness_artifacts
+          path: |
+            .harness_out/**
+            .harness_logs/**
+            .harness_tmp/**
+          if-no-files-found: ignore
