@@ -1,56 +1,59 @@
-name: Validate Codegen Harness (Prism + Schemathesis)
+name: Validate Codegen – Contracts (Prism + Schemathesis)
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - "assets/specs/openapi/**"
-      - "scripts/codegen_harness_validate.sh"
-      - ".github/workflows/validate-codegen-harness.yml"
-  pull_request:
-    paths:
-      - "assets/specs/openapi/**"
-      - "scripts/codegen_harness_validate.sh"
-      - ".github/workflows/validate-codegen-harness.yml"
-  workflow_dispatch: {}
+      - ".github/workflows/validate-codegen-contracts.yml"
+      - "scripts/codegen_contracts_validate.sh"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   contracts:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node (for Prism)
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Install Prism globally
-        run: |
-          npm install -g @stoplight/prism-cli@5.8.1
-          prism --version
-
-      - name: Setup Python (Schemathesis)
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install Schemathesis
+      - name: Install CLI deps (Prism, Redocly, Schemathesis, PyYAML)
         run: |
+          npm i -g @stoplight/prism-cli@5 @redocly/cli@latest
           python -m pip install --upgrade pip
-          pip install "schemathesis>=3.27,<4"
+          pip install "schemathesis>=3.27" pyyaml
 
-      - name: Run contract harness
+      - name: Make script executable
+        run: chmod +x scripts/codegen_contracts_validate.sh
+
+      - name: Run contracts harness (bundle → prism → schemathesis)
+        env:
+          PORT_BASE: "41000"
+          STRICT_CONTRACTS: "false"  # auf "true" setzen, falls Specs ohne paths als Fehler gelten sollen
         run: |
-          bash scripts/codegen_harness_validate.sh
+          bash scripts/codegen_contracts_validate.sh assets/specs/openapi
 
-      - name: Upload harness artifacts
+      - name: Upload logs & reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: codegen-contracts-artifacts
           path: |
-            .harness_logs_contracts/**
-            .harness_contracts/**
+            .harness_logs_contracts
+            .harness_out_contracts
+            .harness_tmp/bundled
