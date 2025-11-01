@@ -10,7 +10,9 @@ DST.mkdir(parents=True, exist_ok=True)
 
 evt_rx = re.compile(r"^DDD-EVT-(\d+)\.json$", re.IGNORECASE)
 
-def cloudevent_schema(evt_id: str, base_id: str, title: str|None):
+from typing import Optional
+
+def cloudevent_schema(evt_id: str, base_id: str, title: Optional[str]):
     # CloudEvents-Wrapper; Daten bleiben im bestehenden Schema via $ref
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
