@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "DDD-EVT-59",
+  "title": "DDD-EVT-59",
+  "description": "Schema for DDD-EVT-59. Replace 'payload' with the precise domain fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "timestamp",
+    "source",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "const": "DDD-EVT-59"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "did": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "hubId": {
+          "type": "string"
+        }
+      }
+    },
+    "correlationId": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Domain-specific payload. Tighten this per event definition.",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "eventId": "DDD-EVT-59",
+      "timestamp": "2025-01-01T00:00:00Z",
+      "source": "C2-XX",
+      "payload": {
+        "note": "Replace with real fields"
+      }
+    }
+  ]
+}
