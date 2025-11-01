@@ -6,7 +6,7 @@ on:
     paths:
       - "assets/specs/openapi/**"
       - ".github/workflows/validate-codegen-contracts.yml"
-      - "scripts/codegen_contracts_validate.sh"
+      - "scripts/codegen_harness_validate.sh"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
