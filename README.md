@@ -87,7 +87,7 @@ A fully automated or AI-assisted build of the system should follow the dependenc
 5. Export documentation to `docs.coherosphere.io`
 
 All dependencies and tasks are listed in  
-[`AI_build_checklist_v4.md`](AI_build_checklist_v4.md).
+https://docs.coherosphere.io/ai_guide
 
 ---
 
