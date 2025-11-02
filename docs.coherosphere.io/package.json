@@ -4,12 +4,12 @@
   "private": true,
   "description": "Documentation site for Coherosphere Architecture (Docusaurus v3)",
   "scripts": {
-    "clean": "rm -rf build static/assets node_modules",
-    "prebuild": "rm -rf static/assets && mkdir -p static/assets && rsync -a ../assets/ static/assets/",
-    "start": "docusaurus start",
+    "clean": "rimraf build .docusaurus static/assets",
+    "prebuild": "npm run clean && mkdir -p static/assets && rsync -a ../assets/ static/assets/ && node ./scripts/gen-asset-indexes.mjs",
     "build": "docusaurus build",
+    "start": "docusaurus start",
     "serve": "docusaurus serve",
-    "rebuild": "npm run clean && npm install && npm run prebuild && npm run build"
+    "deploy": "docusaurus deploy"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
