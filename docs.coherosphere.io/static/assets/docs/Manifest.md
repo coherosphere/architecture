@@ -8,7 +8,9 @@ description: Canonical reference for C1–C4, DDD, Events, and Specs mapping wit
 
 # Architecture Manifest
 
-_Last updated: 2025-11-02_
+Objective: Outline the guiding principles, structure, and intent of the Coherosphere architecture.
+Note: Describes how the system aligns human, technological, and governance layers for coherent collective intelligence.
+Serves as the conceptual anchor and reference frame for all architectural documents.
 
 ---
 
@@ -108,7 +110,4 @@ The AI build pipeline maps **C-IDs** to their source domains and code generation
 
 ---
 
-**Prepared by:** The Coherosphere Collective  
-**License:** CC BY 4.0  
-**Date:** November 2025
-
+**Prepared by:** the coherosphere collective 

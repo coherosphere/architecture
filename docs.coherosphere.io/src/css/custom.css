@@ -1,6 +1,9 @@
 /**
- * Coherosphere CI — Orange Accent Edition
- * Elegant dark-first documentation theme with warm orange primary
+ * Coherosphere CI — Orange Accent Edition (stable)
+ * Fixes dark-background banding + improves inactive button contrast,
+ * inline code coloring, and general polish.
+ *
+ * Drop this file at: docs.coherosphere.io/src/css/custom.css
  */
 
 /* ──────────────────────────────────────────────────────────────
@@ -30,43 +33,12 @@
   --cs-border: #e5e7eb;
 
   --docusaurus-highlighted-code-line-bg: rgba(249,115,22,0.08);
-    --cs-orange-400: #fb923c;  /* links/hover */
+  /* code token palette (light baseline, reused in dark) */
+  --cs-orange-400: #fb923c;  /* links/hover */
   --cs-orange-500: #f97316;  /* strings, attr values */
   --cs-orange-300: #fdba74;  /* functions, class names */
   --cs-amber-400:  #fbbf24;  /* properties/keys */
-  --cs-slate-200:  #e5e7eb;  /* default light text in code */
-}
-
-/* Strings / Attribute-Werte / Inserted */
-.token.string,
-.token.char,
-.token.attr-value,
-.token.inserted { color: var(--cs-orange-500) !important; }
-
-/* Objekt-Keys / Properties (z.B. JSON-Schlüssel) */
-.token.property,
-.token.attr-name { color: var(--cs-amber-400) !important; }
-
-/* Funktionen / Klassen / Titel */
-.token.function,
-.token.class-name { color: var(--cs-orange-300) !important; }
-
-/* Keywords darfst du mit einfärben – hier etwas heller */
-.token.keyword,
-.token.selector,
-.token.important { color: var(--cs-orange-400) !important; }
-
-/* Zahlen/Boolean leicht absetzen */
-.token.number,
-.token.boolean { color: #f59e0b !important; }
-
-/* Fallback für „normalen“ Code-Text in dunklem Modus */
-[data-theme='dark'] pre code { color: var(--cs-slate-200); }
-
-/* Links im Code (z.B. kommentierte URLs) dezenter Unterstreichungs-Akzent */
-.theme-code-block a {
-  color: var(--cs-orange-400);
-  text-decoration-color: color-mix(in oklab, var(--cs-orange-400) 40%, transparent);
+  --cs-slate-700:  #374151;  /* default light text in code */
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -80,7 +52,7 @@
   --ifm-color-primary-lighter: #fed7aa;   /* orange-200 */
   --ifm-color-primary-lightest: #ffedd5;  /* orange-100 */
 
-  --cs-bg: #0b0e13;
+  --cs-bg: #0b0e13;       /* <- single solid bg to remove banding */
   --cs-muted: #12151b;
   --cs-card: #0f1218;
   --cs-border: #1f2937;
@@ -89,67 +61,83 @@
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Layout
+   Global background fix (removes mid-page banding)
    ──────────────────────────────────────────────────────────── */
-html[data-theme='dark'] body {
-  background: var(--cs-bg);
+html, body {
+  background: var(--cs-bg) !important;
+}
+html[data-theme='dark'] body,
+html[data-theme='dark'] .main-wrapper,
+html[data-theme='dark'] .navbar,
+html[data-theme='dark'] .footer,
+html[data-theme='dark'] .container {
+  background: var(--cs-bg) !important;
+}
+/* Ensure doc page surface inherits the same solid bg */
+html[data-theme='dark'] .theme-doc-markdown,
+html[data-theme='dark'] .theme-doc-markdown > * {
+  background: transparent !important;
 }
 
+/* ──────────────────────────────────────────────────────────────
+   Layout
+   ──────────────────────────────────────────────────────────── */
 .navbar {
   box-shadow: none;
   border-bottom: 1px solid var(--cs-border);
   backdrop-filter: saturate(120%) blur(6px);
 }
+.navbar__brand .navbar__title { font-weight: 700; letter-spacing: .2px; }
+.navbar__logo { height: 22px; margin-right: .5rem; }
 
-.navbar__brand .navbar__title {
-  font-weight: 700;
-  letter-spacing: .2px;
-}
-
-.navbar__logo {
-  height: 22px;
-  margin-right: .5rem;
-}
-
-.main-wrapper {
-  padding-top: 0.25rem;
-}
+.main-wrapper { padding-top: 0.25rem; }
 
 .footer {
-  background: var(--cs-muted);
+  background: var(--cs-bg);
   border-top: 1px solid var(--cs-border);
 }
 
 /* Sidebar */
-.theme-doc-sidebar-container {
-  border-right: 1px solid var(--cs-border);
-}
+.theme-doc-sidebar-container { border-right: 1px solid var(--cs-border); }
 .menu__link--sublist,
-.menu__link {
-  border-radius: 8px;
-}
-.menu__link:hover {
-  background: rgba(251,146,60,.08);
-}
+.menu__link { border-radius: 8px; }
+.menu__link:hover { background: rgba(251,146,60,.08); }
 
 /* ──────────────────────────────────────────────────────────────
    Typography & links
    ──────────────────────────────────────────────────────────── */
-h1, h2, h3 {
-  letter-spacing: .2px;
-}
+h1, h2, h3 { letter-spacing: .2px; }
 a {
   text-underline-offset: 2px;
   text-decoration-color: color-mix(in oklab, var(--ifm-color-primary) 40%, transparent);
   transition: color .15s ease, text-decoration-color .15s ease;
 }
-a:hover {
+a:hover { color: var(--ifm-color-primary); text-decoration-color: currentColor; }
+
+/* ──────────────────────────────────────────────────────────────
+   Buttons (improved inactive state contrast)
+   ────────────────────────────────────────────────────────────── */
+.button { border-radius: 333px; font-weight: 500; transition: all 0.15s ease-in-out; }
+.button.button--primary {
+  background: var(--ifm-color-primary);
+  color: #fff;
+  border: 1px solid color-mix(in oklab, var(--ifm-color-primary) 40%, #333);
+  box-shadow: 0 6px 18px color-mix(in oklab, var(--ifm-color-primary) 40%, transparent);
+}
+.button.button--primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.button:not(.button--primary) {
+  background: color-mix(in oklab, #111 85%, var(--ifm-color-primary) 15%);
+  color: color-mix(in oklab, var(--ifm-color-primary) 65%, #ddd);
+  border: 1px solid color-mix(in oklab, var(--ifm-color-primary) 25%, #222);
+}
+.button:not(.button--primary):hover {
+  background: color-mix(in oklab, var(--ifm-color-primary) 22%, #111);
   color: var(--ifm-color-primary);
-  text-decoration-color: currentColor;
+  transform: translateY(-1px);
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Cards & callouts
+   Cards, admonitions & tables
    ──────────────────────────────────────────────────────────── */
 .card, .theme-admonition {
   border-radius: var(--cs-radius);
@@ -157,71 +145,11 @@ a:hover {
   border: 1px solid var(--cs-border);
   box-shadow: var(--cs-shadow);
 }
-.card__image {
-  border-bottom: 1px solid var(--cs-border);
-}
+.card__image { border-bottom: 1px solid var(--cs-border); }
+table, .table { border-color: var(--cs-border); }
+table thead th { border-bottom: 1px solid var(--cs-border); }
 
-/* ──────────────────────────────────────────────────────────────
-   Buttons (Coherosphere CI)
-   ────────────────────────────────────────────────────────────── */
-.button {
-  border-radius: 333px;
-  font-weight: 500;
-  transition: all 0.15s ease-in-out;
-}
-
-.button.button--primary {
-  background: var(--ifm-color-primary);
-  color: #fff;
-  border: 1px solid color-mix(in oklab, var(--ifm-color-primary) 40%, #333);
-  box-shadow: 0 6px 18px color-mix(in oklab, var(--ifm-color-primary) 40%, transparent);
-}
-.button.button--primary:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-}
-
-.button:not(.button--primary) {
-  background: color-mix(in oklab, var(--ifm-background-color) 90%, var(--ifm-color-primary) 5%);
-  color: color-mix(in oklab, var(--ifm-color-primary) 70%, #aaa);
-  border: 1px solid color-mix(in oklab, var(--ifm-color-primary) 20%, #444);
-}
-.button:not(.button--primary):hover {
-  background: color-mix(in oklab, var(--ifm-color-primary) 15%, var(--ifm-background-color) 85%);
-  color: var(--ifm-color-primary);
-  transform: translateY(-1px);
-}
-
-[data-theme='dark'] .button:not(.button--primary) {
-  background: color-mix(in oklab, #111 85%, var(--ifm-color-primary) 15%);
-  color: color-mix(in oklab, var(--ifm-color-primary) 60%, #ccc);
-  border: 1px solid color-mix(in oklab, var(--ifm-color-primary) 25%, #222);
-}
-[data-theme='dark'] .button:not(.button--primary):hover {
-  background: color-mix(in oklab, var(--ifm-color-primary) 20%, #111);
-  color: var(--ifm-color-primary);
-}
-
-/* ──────────────────────────────────────────────────────────────
-   Code blocks
-   ──────────────────────────────────────────────────────────── */
-code, pre code {
-  border-radius: 8px;
-}
-.theme-code-block {
-  border: 1px solid var(--cs-border);
-  border-radius: var(--cs-radius);
-}
-
-/* ──────────────────────────────────────────────────────────────
-   Tables & mermaid
-   ──────────────────────────────────────────────────────────── */
-table, .table {
-  border-color: var(--cs-border);
-}
-table thead th {
-  border-bottom: 1px solid var(--cs-border);
-}
+/* Mermaid wrapper looks like a card, keeps bg solid */
 .mermaid {
   background: var(--cs-card);
   border: 1px solid var(--cs-border);
@@ -231,12 +159,44 @@ table thead th {
 }
 
 /* ──────────────────────────────────────────────────────────────
+   Code blocks — orange syntax accents
+   ──────────────────────────────────────────────────────────── */
+code, pre code { border-radius: 8px; }
+.theme-code-block {
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius);
+}
+/* strings/values */
+.token.string,
+.token.char,
+.token.attr-value,
+.token.inserted { color: var(--cs-orange-500) !important; }
+/* object keys / properties */
+.token.property,
+.token.attr-name { color: var(--cs-amber-400) !important; }
+/* functions / class names */
+.token.function,
+.token.class-name { color: var(--cs-orange-300) !important; }
+/* keywords and selectors */
+.token.keyword,
+.token.selector,
+.token.important { color: var(--cs-orange-400) !important; }
+/* numbers/bools */
+.token.number,
+.token.boolean { color: #f59e0b !important; }
+/* readable default code color in dark */
+[data-theme='dark'] pre code { color: #e5e7eb; }
+
+/* Links inside code (commented URLs, etc.) */
+.theme-code-block a {
+  color: var(--cs-orange-400);
+  text-decoration-color: color-mix(in oklab, var(--cs-orange-400) 40%, transparent);
+}
+
+/* ──────────────────────────────────────────────────────────────
    Utility grids for dynamic lists (diagrams/specs)
    ──────────────────────────────────────────────────────────── */
-.cs-grid {
-  display: grid;
-  gap: .75rem;
-}
+.cs-grid { display: grid; gap: .75rem; }
 @media (min-width: 768px) {
   .cs-grid--cols-2 { grid-template-columns: 1fr 1fr; }
   .cs-grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -247,14 +207,42 @@ table thead th {
   background: var(--cs-card);
   border: 1px solid var(--cs-border);
 }
-.cs-item a {
-  display: inline-block;
-  font-weight: 600;
+.cs-item a { display: inline-block; font-weight: 600; }
+
+
+
+/* ──────────────────────────────────────────────────────────────
+   Footer contrast fix (Light mode)
+   Append this block at the very end of src/css/custom.css
+   ──────────────────────────────────────────────────────────── */
+[data-theme='light'] .footer {
+  background: #f8f9fb;               /* subtle light background */
+  color: #1f2937;                     /* readable body copy */
+  border-top: 1px solid #e5e7eb;      /* faint separator */
 }
 
-/* Search modal */
-.DocSearch-Modal {
-  border-radius: 16px !important;
-  border: 1px solid var(--cs-border) !important;
-  box-shadow: var(--cs-shadow) !important;
+[data-theme='light'] .footer__title {
+  color: #111827;                     /* strong section titles */
+}
+
+[data-theme='light'] .footer a,
+[data-theme='light'] .footer__link-item {
+  color: #1f2937;                     /* readable link color */
+  opacity: 1;                         /* undo any low-contrast opacity */
+}
+
+[data-theme='light'] .footer a:hover,
+[data-theme='light'] .footer__link-item:hover {
+  color: #d97706;                     /* coherosphere orange on hover */
+  text-decoration: none;
+}
+
+[data-theme='light'] .footer__copyright {
+  color: #374151;                     /* mid gray for meta line */
+  opacity: 1;
+}
+
+/* Make sure external-link icons remain visible in light mode */
+[data-theme='light'] .footer svg {
+  opacity: .85;
 }

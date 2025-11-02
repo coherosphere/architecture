@@ -83,29 +83,40 @@ const config: Config = {
     },
 
     footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Architecture',
-          items: [
-            { label: 'Manifest', to: '/manifest' },
-            { label: 'Status Report', to: '/architecture_status' },
-          ],
-        },
-        {
-          title: 'Specs',
-          items: [{ label: 'Specs Overview', to: '/specs' }],
-        },
-        {
-          title: 'More',
-          items: [
-            { label: 'Coherosphere.com', href: 'https://coherosphere.com' },
-            { label: 'GitHub', href: 'https://github.com/coherosphere/architecture' },
-          ],
-        },
+  style: 'dark',
+  links: [
+    {
+      title: 'Architecture',
+      items: [
+        { label: 'Manifest', to: '/manifest' },
+        { label: 'Status Report', to: '/architecture_status' },
+        { label: 'AI Build Guide', to: '/ai_guide' },
       ],
-      copyright: `© ${new Date().getFullYear()} coherosphere — CC BY 4.0`,
     },
+    {
+      title: 'Resources',
+      items: [
+        { label: 'Specs', to: '/specs' },
+        { label: 'Diagrams', to: '/diagrams' },
+        { label: 'Governance', to: '/param_governance' },
+      ],
+    },
+    {
+      title: 'Connect',
+      items: [
+        { label: 'Website ↗', href: 'https://coherosphere.com' },
+        { label: 'GitHub ↗', href: 'https://github.com/coherosphere' },
+      ],
+    },
+  ],
+  copyright: `
+    <div style="font-size:0.9rem;opacity:.9;margin-top:0.5rem">
+      © ${new Date().getFullYear()} coherosphere · Open Knowledge Framework  
+      <br/>
+      <span style="opacity:.7;">made with resonance ⚡</span>
+    </div>
+  `,
+},
 
     prism: {
       theme: prismThemes.github,

@@ -76,10 +76,7 @@ export default function Home() {
         <section className={styles.meta}>
           <p>
             All content is part of the <strong>coherosphere architecture repository</strong>.<br />
-            Licensed under <Link to="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</Link>.
-          </p>
-          <p>
-            View source on{' '}
+               View source on{' '}
             <Link href="https://github.com/coherosphere/architecture">GitHub</Link>.
           </p>
         </section>

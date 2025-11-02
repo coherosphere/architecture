@@ -7,14 +7,9 @@ sidebar_label: Parameter Governance
 
 # Parameter Governance SOP
 
-_Last updated: 2025-11-02_
-
-**Objective:**  
-Establish a consistent procedure for versioning, modification, and rollback of systemic parameters (`λ`, `α`, `q`, `θ`, rubric versions, etc.).  
-
-**Scope:**  
-Applies to the following modules:  
-**C2-01 Resonance**, **C2-02 Proof-of-Contribution**, **C2-03 Governance**, **C2-04 Treasury**, **C2-07 Metrics**, **C2-08 Ethics**.
+Objective: Specify the parameter governance framework controlling adjustable system constants and thresholds.
+Note: Covers parameter versioning, change authorization, and propagation policies across C1–C4 layers.
+This ensures traceable and auditable control over system tuning and policy evolution.
 
 ---
 
@@ -91,3 +86,6 @@ Applies to the following modules:
 - **Events:** `DecisionRecorded.v1`, `PolicyChanged.v1`  
 - **Flows:** `C4-02 Governance Lifecycle`, `C4-05 Decay Cycle`, `C4-11 Treasury Rebalancing`  
 - **State Machines:** `SM-03.01 (Proposal)`, `SM-01.01 (Resonance Calculation)`  
+---
+
+**Prepared by:** the coherosphere collective 

@@ -7,11 +7,9 @@ sidebar_label: Todo
 
 # To-Do List
 
-_Last updated: 2025-11-02_
-
-This document tracks the active and completed tasks toward **v1.0 release readiness**
-of the Coherosphere architecture. It reflects the verified state of `/architecture`
-as of November 2025 — CI stable and AI-build ready.
+Objective: Track pending design, integration, and validation tasks for the Coherosphere architecture.
+Note: This roadmap defines the remaining deliverables for the v4.x milestone, including automation, validation, and documentation readiness.
+The document functions as a living checklist guiding progress toward a stable and interoperable release.
 
 ---
 
@@ -136,6 +134,4 @@ as of November 2025 — CI stable and AI-build ready.
 
 ---
 
-**Prepared by:** The Coherosphere Collective  
-**License:** CC BY 4.0  
-**Date:** November 2025
+**Prepared by:** the coherosphere collective 

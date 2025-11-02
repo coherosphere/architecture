@@ -7,7 +7,9 @@ title: AI Build Guide
 
 # AI Build Guide
 
-_Last updated: 2025-11-02_
+Objective: Document the Coherosphere AI build process — from prompt design to integration testing.
+Note: Covers AI-assisted generation, model governance, and validation routines for architectural artifacts.
+This guide ensures that AI participation in build workflows is transparent, reproducible, and auditable.e.
 
 ---
 
@@ -115,6 +117,4 @@ Generation handled by [`scripts/gen-asset-indexes.mjs`](https://github.com/coher
 
 ---
 
-**Prepared by:** The Coherosphere Collective  
-**License:** CC BY 4.0  
-**Date:** November 2025
+**Prepared by:** the coherosphere collective 

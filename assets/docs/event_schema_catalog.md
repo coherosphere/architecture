@@ -8,10 +8,9 @@ sidebar_label: Event Schema Catalog
 
 # Event Schema Catalog
 
-_Last updated: 2025-11-02_
-
-**Scope:** Canonical, versioned **CloudEvents 1.0** definitions for inter-service events across C2 containers.  
-**Purpose:** Contracts-first integration; enable codegen, validation, and replay-safe analytics.
+Objective: Enumerate and describe all Coherosphere event schemas (DDD-EVT-xx) across domains.
+Note: Defines schema versions, validation criteria, and event flow alignment within the distributed system.
+Acts as the registry for event-driven interoperability and data consistency.
 
 ---
 
@@ -289,3 +288,7 @@ Types:
 - Event envelope: CloudEvents 1.0 (binary or structured)  
 - Suggested checks: `$schema` presence, required fields, enum coverage, RFC3339 timestamps, ULID shape  
 - CI: validate with `ajv`, `spectral`, or custom pipeline
+
+---
+
+**Prepared by:** the coherosphere collective 

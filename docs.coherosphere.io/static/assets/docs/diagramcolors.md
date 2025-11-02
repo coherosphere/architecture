@@ -7,11 +7,9 @@ sidebar_label: Diagram Colors
 
 # Diagram Color System
 
-_Last updated: 2025-11-02_
-
-This document defines the **visual language** used across all Coherosphere architecture diagrams  
-(C1–C4 levels) rendered in Mermaid.  
-Colors are **semantic**, not decorative — each hue communicates a specific type of responsibility, behavior, or systemic role.
+Objective: Define the canonical color palette and visual encoding rules for Coherosphere diagrams.
+Note: Ensures consistent semantics across all C4 layers — components, domains, and states.
+This document standardizes visual communication and CI compliance for architecture diagrams.
 
 ---
 
@@ -48,3 +46,6 @@ It lets you instantly recognize *what kind of thing* a node represents:
 > **Mnemonic:**  
 > **Yellow steers, Orange computes, Blue stores, Green emits, Red guards, Brown works, Purple shows, Gray connects.**
 
+---
+
+**Prepared by:** the coherosphere collective 
