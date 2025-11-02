@@ -3,6 +3,9 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
+  // ─────────────────────────────────────────────────────────
+  // Site basics
+  // ─────────────────────────────────────────────────────────
   title: 'Coherosphere Architecture',
   tagline: 'C1–C4 · DDD · Specs',
   favicon: 'img/favicon.ico',
@@ -13,30 +16,35 @@ const config: Config = {
   organizationName: 'coherosphere',
   projectName: 'architecture',
 
-  // Don’t fail the build while we wire pages
-  onBrokenLinks: 'warn',
-
-  // v3 syntax still valid; also add v4-style hook to quiet warnings
-  markdown: {
-    mermaid: true,
-    hooks: {
-      onBrokenMarkdownLinks: 'warn',
-    },
-  },
-  themes: ['@docusaurus/theme-mermaid'],
+  // Be strict in CI; change to 'warn' locally if needed
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
 
   i18n: { defaultLocale: 'en', locales: ['en'] },
 
+  // Serve raw assets directly from the repo (no copying)
+  // This makes /assets/** reachable at docs.coherosphere.io/assets/**
+  staticDirectories: ['static', '../assets'],
+
+  // Enable Mermaid in Markdown/MDX
+  markdown: { mermaid: true },
+  themes: ['@docusaurus/theme-mermaid'],
+
+  // ─────────────────────────────────────────────────────────
+  // Presets (main docs live in assets/docs)
+  // ─────────────────────────────────────────────────────────
   presets: [
     [
       'classic',
       {
         docs: {
-          path: '../assets/docs',          // your Markdown docs
-          routeBasePath: '/',              // docs on homepage
+          id: 'main',
+          path: '../assets/docs',
+          routeBasePath: '/',              // docs are the site root
           sidebarPath: require.resolve('./sidebars.ts'),
           editUrl: 'https://github.com/coherosphere/architecture/edit/main/docs.coherosphere.io/',
           showLastUpdateTime: true,
+          showLastUpdateAuthor: false,
         },
         blog: false,
         theme: { customCss: require.resolve('./src/css/custom.css') },
@@ -44,32 +52,37 @@ const config: Config = {
     ],
   ],
 
-  // Extra docs instances (must use the explicit plugin)
+  // ─────────────────────────────────────────────────────────
+  // Optional: curated mounts you can use later to add MDX
+  // pages that reference raw assets (keeps structure clean).
+  // These do nothing unless there are *.md / *.mdx files inside.
+  // ─────────────────────────────────────────────────────────
   plugins: [
-    // Diagrams section (folder exists, even if no .md yet)
     [
       '@docusaurus/plugin-content-docs',
       {
         id: 'diagrams',
-        path: '../assets/diagrams',       // <-- fixed (was ../assets/docs/diagrams)
-        routeBasePath: '/diagrams',
+        path: '../assets/diagrams',         // keep in assets
+        routeBasePath: 'diagrams',          // /diagrams/**
+        include: ['**/*.md', '**/*.mdx'],   // only render MD/MDX if you add any
         sidebarPath: false,
-        include: ['**/*.md', '**/*.mdx'], // ignore .mmd files (no pages yet, but OK)
       },
     ],
-    // Specs section (serves READMEs under /specs)
     [
       '@docusaurus/plugin-content-docs',
       {
         id: 'specs',
-        path: '../assets/specs',           // this folder exists
-        routeBasePath: '/specs',
+        path: '../assets/specs',            // keep in assets
+        routeBasePath: 'specs',             // /specs/**
+        include: ['**/*.md', '**/*.mdx'],   // only render MD/MDX if you add any
         sidebarPath: false,
-        include: ['**/README.md', 'README.md', '**/*.md', '**/*.mdx'],
       },
     ],
   ],
 
+  // ─────────────────────────────────────────────────────────
+  // Theme / UI
+  // ─────────────────────────────────────────────────────────
   themeConfig: {
     image: 'img/social-card.png',
     colorMode: { respectPrefersColorScheme: true },
@@ -80,10 +93,29 @@ const config: Config = {
         { to: '/', label: 'Docs', position: 'left' },
         { to: '/ARCHITECTURE_TODO_v4.3', label: 'Status (v4.3)', position: 'left' },
         { to: '/AI_BUILD_GUIDE_v4', label: 'AI Build Guide', position: 'left' },
-        // Link to section roots for now (avoid deep links to non-existent pages)
-        { to: '/diagrams', label: 'Diagrams', position: 'left' },
-        { to: '/specs', label: 'Specs', position: 'left' },
-        { href: 'https://github.com/coherosphere/architecture', label: 'GitHub', position: 'right' },
+        {
+          label: 'Diagrams',
+          position: 'left',
+          items: [
+            // Raw assets (served via staticDirectories) – no file moves needed
+            { to: '/assets/diagrams/overview/C4_Layers_Summary.mmd', label: 'C4 Layers (raw .mmd)' },
+            { to: '/assets/diagrams/overview/Architecture_Stack.mmd', label: 'Architecture Stack (raw .mmd)' },
+            // If you later add MD/MDX under assets/diagrams, those will appear under /diagrams/**
+          ],
+        },
+        {
+          label: 'Specs',
+          position: 'left',
+          items: [
+            { to: '/assets/specs/openapi/C2-11_Gateway.yaml', label: 'Gateway OpenAPI (raw .yaml)' },
+            { to: '/assets/specs/events/README.md', label: 'Event Schemas (catalog)' },
+          ],
+        },
+        {
+          href: 'https://github.com/coherosphere/architecture',
+          label: 'GitHub',
+          position: 'right',
+        },
       ],
     },
     footer: {
@@ -99,8 +131,8 @@ const config: Config = {
         {
           title: 'Specs',
           items: [
-            { label: 'OpenAPI', to: '/specs/openapi/README' },
-            { label: 'Events (JSON Schemas)', to: '/specs/events/README' },
+            { label: 'OpenAPI (raw)', to: '/assets/specs/openapi/' },
+            { label: 'Events (JSON Schemas)', to: '/assets/specs/events/' },
           ],
         },
         {
