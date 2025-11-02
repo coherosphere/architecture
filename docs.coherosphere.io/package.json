@@ -4,34 +4,35 @@
   "private": true,
   "description": "Documentation site for Coherosphere Architecture (Docusaurus v3)",
   "scripts": {
-    "clean": "rm -rf build static/assets",
-
+    "clean": "rm -rf build static/assets node_modules",
     "prebuild": "rm -rf static/assets && mkdir -p static/assets && rsync -a ../assets/ static/assets/",
-    
     "start": "docusaurus start",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
-    
-
-    "rebuild": "npm run clean && npm run prebuild && npm run build"
+    "rebuild": "npm run clean && npm install && npm run prebuild && npm run build"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
     "@docusaurus/preset-classic": "3.9.2",
     "@docusaurus/theme-mermaid": "3.9.2",
-    "prism-react-renderer": "^2.3.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "prism-react-renderer": "2.3.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "scheduler": "0.23.2"
   },
   "engines": {
     "node": ">=18.0.0"
   },
+  "author": "Coherosphere Collective",
+  "license": "CC-BY-4.0",
   "keywords": [
     "docusaurus",
     "coherosphere",
     "architecture",
     "documentation"
-  ],
-  "author": "Coherosphere Collective",
-  "license": "CC-BY-4.0"
+  ]
 }
