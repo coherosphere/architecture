@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor M as C1-02 Member / Contributor
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board / UI
+end
+
+box #fde68a Gateway
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core
+  participant GOV as C2-03 Governance & DAO
+  participant POC as C2-02 PoC
+  participant ID as C2-05 Identity (PoCI)
+  participant ETH as C2-08 Ethics Guard
+  participant TRE as C2-04 Treasury
+  participant MET as C2-07 Metrics / Analytics
+  participant SEC as C2-10 Security & Audit
+end
+
+M ->> UI: createProposal(draft)
+UI ->> API: submitProposal(draft)
+API ->> ID: verifyEligibility(memberId)
+ID -->> API: eligible
+
+API ->> ETH: preflightPolicyCheck(draft)
+ETH -->> API: ok
+
+API ->> GOV: openProposal(draft)
+GOV -->> MET: ProposalCreated (DDD EVT)
+
+par voting window
+  UI ->> API: castVote(proposalId, ballot)
+  API ->> ID: verifyVoter(memberId)
+  ID -->> API: ok
+  API ->> GOV: recordVote(proposalId, ballot, weight)
+  GOV -->> MET: VoteCast (DDD EVT)
+and tallying
+  GOV ->> GOV: quorum/threshold check
+  GOV -->> MET: VoteTallied (DDD EVT)
+end
+
+alt approved
+  GOV ->> TRE: executeDecision(proposalId)
+  TRE -->> GOV: fundingTx(ack)
+  GOV -->> MET: DecisionRecorded (DDD EVT)
+  SEC ->> SEC: auditTrail(proposalId)
+  SEC -->> MET: GovernanceAudited
+else rejected
+  GOV -->> UI: status=Rejected
+  GOV -->> MET: DecisionRecorded (rejected)
+end
+
+note over UI,MET: Outcome → decision & audit reflected in metrics

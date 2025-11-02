@@ -1,0 +1,29 @@
+{
+  "$id": "https://schemas.coherosphere.io/events/ethics/AttestationIssued.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ethics.AttestationIssued",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "subjectId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "type": {
+      "type": "string"
+    },
+    "issuerDid": {
+      "$ref": "../_meta/common.json#/$defs/Did"
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "subjectId",
+    "type",
+    "issuerDid",
+    "at"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,89 @@
+%%{init: {'theme':'base','themeVariables':{ 'primaryColor':'#ff8b00','edgeLabelBackground':'#ffffff','tertiaryColor':'#fef3c7'}}}%%
+stateDiagram-v2
+title: SM-10.01 — Incident Lifecycle (C2-10 Security & Audit)
+
+[*] --> DETECTED : IncidentOpened (DDD EVT 90)
+note right of DETECTED
+  Incident detected by:
+  • automated anomaly detector  
+  • manual report or audit finding  
+  • external alert from Treasury/Governance  
+  Context: type, severity, affected services
+end note
+
+DETECTED --> TRIAGE : IncidentClassified
+note right of TRIAGE
+  Initial assessment:
+  • verify validity & scope  
+  • assign priority (P1–P4)  
+  • notify stewards / SREs
+end note
+
+TRIAGE --> CONTAIN : ContainmentStarted
+note right of CONTAIN
+  Execute containment actions:  
+  • isolate nodes, pause payouts, revoke tokens  
+  • snapshot affected data  
+  • coordinate with governance / ops
+end note
+
+CONTAIN --> INVESTIGATE : Contained
+note right of INVESTIGATE
+  Root cause analysis (RCA):  
+  • identify vector, exploit, or misconfiguration  
+  • correlate across logs, metrics, and PoC ledger  
+  • document hypotheses
+end note
+
+INVESTIGATE --> MITIGATE : CauseConfirmed
+note right of MITIGATE
+  Apply fix or patch:  
+  • deploy config or code changes  
+  • restore affected components  
+  • monitor for recurrence
+end note
+
+MITIGATE --> VERIFY : FixDeployed
+note right of VERIFY
+  Verification loop:  
+  • rerun SIEM queries  
+  • validate KPIs & SRI coherence  
+  • confirm risk clearance
+end note
+
+VERIFY --> RESOLVED : IncidentResolved (DDD EVT 91)
+note right of RESOLVED
+  Resolution confirmed and logged  
+  • update incident status = resolved  
+  • trigger transparency pipeline  
+  • notify affected domains
+end note
+
+RESOLVED --> DISCLOSURE : PublishReport
+note right of DISCLOSURE
+  Prepare transparency report:  
+  • redact sensitive data  
+  • sign & timestamp audit log  
+  • publish via Metrics (C2-07) & UI (C2-12)
+end note
+
+DISCLOSURE --> CLOSED : TransparencyReportPublished (DDD EVT 92)
+CLOSED --> [*]
+
+%% ---- Exceptional paths ----
+INVESTIGATE --> ESCALATED : CriticalBreach / Multi-DomainImpact
+ESCALATED --> GOVERNANCE : GovernanceNotified (DDD EVT 93)
+GOVERNANCE --> CONTAIN : DirectiveIssued
+ESCALATED --> [*] : DeferredToGovernance
+
+MITIGATE --> FAILED : FixFailed / RegressionDetected
+FAILED --> INVESTIGATE : ReopenInvestigation
+
+%% ---- Recurrence tracking ----
+CLOSED --> MONITOR : RecurrenceWatch
+MONITOR --> DETECTED : ReDetected
+MONITOR --> [*] : Stable
+
+%% ===== Styling =====
+classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+class DETECTED,TRIAGE,CONTAIN,INVESTIGATE,MITIGATE,VERIFY,RESOLVED,DISCLOSURE,CLOSED,ESCALATED,GOVERNANCE,FAILED,MONITOR core;

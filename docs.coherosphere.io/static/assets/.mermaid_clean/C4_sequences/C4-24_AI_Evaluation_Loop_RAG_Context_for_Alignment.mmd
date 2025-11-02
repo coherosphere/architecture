@@ -1,0 +1,93 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor R as C1-02 Reviewer or Ethics Maintainer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant KG as C2-09 Knowledge Graph and Collective Intelligence
+  participant ETH as C2-08 Manifesto and Ethics Guard
+  participant RS as C2-01 Resonance Service
+  participant MET as C2-07 Metrics and Analytics
+end
+
+box #e5e7eb External
+  participant AI as C1-03 AI Systems and Agents
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Start evaluation with RAG context --------
+R ->> UI: open alignment evaluation
+UI ->> API: evaluateAlignment(targetRef, rubricVersion)
+API ->> KG: buildContext(targetRef)
+KG ->> KG: retrieve neighbors, sources, prior assessments
+KG ->> KG: collect chunks for RAG window
+
+%% -------- Vectorization (if needed) --------
+alt missing or stale embeddings
+  loop for each chunk
+    KG ->> AI: embedChunk(text)
+    AI -->> KG: vector and features
+    KG -->> MET: event EmbeddingGenerated DDD EVT 24
+  end
+else embeddings up to date
+  KG ->> KG: reuse cached vectors
+end
+
+%% -------- RAG assembly and model call --------
+KG ->> AI: ragEvaluate(content, rubric, citations)
+AI -->> KG: modelOutputs scores rationales highlights
+KG -->> MET: event InsightGenerated DDD EVT 49
+KG ->> ETH: deliverRagBundle(scores, rationales, citations)
+
+%% -------- Ethics verdict and metrics --------
+ETH ->> ETH: apply rubric, thresholds, guardrails
+ETH -->> MET: event AlignmentChecked DDD EVT 03
+MET ->> MET: compute KPI and deltas
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Optional resonance refresh --------
+alt alignment materially changed
+  ETH ->> RS: updateAlignmentFactor(targetRef, newA)
+  RS -->> MET: publish resonance aggregates
+  MET ->> MET: recompute SRI
+  MET -->> MET: event SRIComputed DDD EVT 27
+else minor delta
+  ETH ->> MET: publish alignment delta only
+end
+
+%% -------- Human-in-the-loop (confidence gating) --------
+alt low confidence or conflict detected
+  ETH ->> API: requestHumanReview(targetRef, reasons)
+  API -->> UI: prompt reviewer for decision
+  R ->> UI: supply decision and notes
+  UI ->> API: submitHumanDecision(verdict, notes)
+  API ->> ETH: recordHumanDecision(verdict, notes)
+  ETH -->> MET: event AlignmentChecked DDD EVT 03
+end
+
+%% -------- Audit trail --------
+ETH ->> SEC: log evaluation, inputs, hashes, rubricVersion
+KG ->> SEC: log sources and citation set
+
+%% -------- Completion --------
+API -->> UI: show verdict, scores, rationale, citations
+UI -->> R: display guidance and next actions
+
+%% Notes
+Note over KG: EmbeddingGenerated DDD EVT 24 occurs when vectors are created or refreshed
+Note over ETH,MET: AlignmentChecked DDD EVT 03 drives KPIUpdated DDD EVT 26
+Note over RS,MET: SRIComputed DDD EVT 27 emitted if resonance recalculated
+Note over KG: InsightGenerated DDD EVT 49 marks synthesized interpretation from RAG

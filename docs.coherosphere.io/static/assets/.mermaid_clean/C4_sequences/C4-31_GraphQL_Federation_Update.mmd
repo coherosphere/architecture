@@ -1,0 +1,108 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor D as C1-07 Developer or Maintainer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant MET as C2-07 Metrics and Analytics
+  participant KG as C2-09 Knowledge Graph
+  participant GOV as C2-03 Governance and DAO
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Propose subgraph schema change --------
+D ->> UI: open API console (schema workspace)
+UI ->> API: submitSubgraphSchema(service=KG, sdlDraft, changelog)
+API ->> KG: validateLocalSDL(sdlDraft)
+alt local validation failed
+  KG -->> API: errors with locations
+  API -->> UI: show errors and guidance
+  note right of API: stop here on failure
+end
+
+KG -->> MET: event SchemaProposed (DDD EVT 67)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+API ->> SEC: record schema proposal (hashes, author)
+
+%% -------- Federation composition (build supergraph) --------
+API ->> MET: fetch contract schemas (MET, GOV, etc.)
+API ->> KG: fetch updated subgraph schema (KG)
+API ->> API: run federation composer (supergraph SDL)
+
+alt composition errors
+  API ->> SEC: log composition failure
+  API -->> UI: report conflicts (namespaces, types, keys)
+else composition ok
+  API -->> API: supergraph SDL built
+  API -->> MET: event FederationComposed (DDD EVT 68)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+end
+
+%% -------- Governance gate (optional) --------
+opt governance approval required
+  UI ->> API: requestApproval(supergraph, diff)
+  API ->> GOV: createProposal(apiSchemaUpdate)
+  GOV -->> MET: GovernanceProposalCreated (DDD EVT 05)
+
+  loop voting window
+    D ->> UI: cast vote
+    UI ->> API: vote on proposal
+    API ->> GOV: recordVote
+    GOV -->> MET: VoteCast (DDD EVT 06)
+  end
+
+  API ->> GOV: closeAndTally
+  GOV -->> MET: VoteTallied (DDD EVT 07)
+  alt approved
+    GOV -->> MET: DecisionRecorded (DDD EVT 08)
+  else rejected
+    GOV ->> SEC: log rejection and rationale
+    API -->> UI: publish rejection outcome
+    note right of API: stop before publish
+  end
+end
+
+%% -------- Staged publish (canary → global) --------
+API ->> API: publish supergraph to canary router
+API ->> SEC: trace canary rollout start
+UI ->> API: subscribe canary health
+API ->> MET: register canary metrics stream
+MET -->> API: canary health KPIs
+API -->> UI: show canary status
+
+alt canary healthy (SLO met)
+  API ->> API: promote supergraph to global routers
+  API -->> MET: APISchemaPublished (DDD EVT 69)
+  MET -->> MET: KPIUpdated (DDD EVT 26)
+else canary degraded
+  API ->> API: rollback to previous supergraph
+  API ->> SEC: record rollback with evidence
+  API -->> UI: show rollback summary
+end
+
+%% -------- Client notification and docs sync --------
+API ->> UI: broadcast schema version and changelog
+UI ->> D: show introspection diff and migration hints
+
+%% -------- Audit & transparency --------
+API ->> SEC: store SDLs, diffs, composer logs, signatures
+SEC -->> MET: ReportGenerated (DDD EVT 36)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+
+%% -------- Completion --------
+UI -->> D: federation update completed (version, links)
+
+%% Notes
+Note over KG,MET: SchemaProposed (DDD EVT 67) on subgraph draft intake
+Note over API,MET: FederationComposed (DDD EVT 68) after successful composition
+Note over API,MET: APISchemaPublished (DDD EVT 69) on global rollout

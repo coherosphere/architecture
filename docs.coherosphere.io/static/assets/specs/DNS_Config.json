@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "generated": "2025-11-01",
+  "description": "Central DNS configuration manifest for coherosphere.io domains",
+  "rootDomain": "coherosphere.io",
+  "authoritativeNS": [
+    "ns1.coherosphere.io",
+    "ns2.coherosphere.io"
+  ],
+  "records": [
+    {
+      "fqdn": "coherosphere.com",
+      "type": "A",
+      "target": "185.199.108.153",
+      "ttl": 3600,
+      "layer": "Public Root",
+      "purpose": "Main landing page"
+    },
+    {
+      "fqdn": "api.coherosphere.io",
+      "type": "A",
+      "target": "185.199.108.154",
+      "ttl": 300,
+      "layer": "C2 Gateway",
+      "service": "C2-11",
+      "environment": ["prod", "staging"],
+      "ssl": {
+        "enforced": true,
+        "certificate": "Let's Encrypt"
+      }
+    },
+    {
+      "fqdn": "app.coherosphere.io",
+      "type": "CNAME",
+      "target": "frontend.cloudhost.net",
+      "ttl": 600,
+      "layer": "C1 UI",
+      "service": "C1-01",
+      "environment": ["prod"],
+      "ssl": { "enforced": true }
+    },
+    {
+      "fqdn": "docs.coherosphere.io",
+      "type": "CNAME",
+      "target": "pages.github.io",
+      "ttl": 3600,
+      "layer": "Docs",
+      "environment": ["prod"]
+    },
+    {
+      "fqdn": "ai.coherosphere.io",
+      "type": "A",
+      "target": "185.199.108.157",
+      "ttl": 300,
+      "layer": "AI Orchestration",
+      "service": "C2-09",
+      "ssl": { "enforced": true },
+      "purpose": "AI routing / agent orchestration"
+    },
+    {
+      "fqdn": "staging.api.coherosphere.io",
+      "type": "A",
+      "target": "185.199.108.158",
+      "ttl": 300,
+      "layer": "Staging Gateway",
+      "service": "C2-11",
+      "environment": ["staging"],
+      "ssl": { "enforced": false }
+    }
+  ],
+  "policy": {
+    "enforceHttps": true,
+    "ttlMin": 300,
+    "ttlMax": 86400,
+    "syncToCloudDNS": false,
+    "managedBy": "Architecture / Infra Tribe"
+  }
+}

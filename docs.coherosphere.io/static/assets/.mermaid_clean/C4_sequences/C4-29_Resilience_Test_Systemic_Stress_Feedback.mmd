@@ -1,0 +1,78 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor S as C1-02 SRE / Steward
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant SEC as C2-10 Security and Audit
+  participant MET as C2-07 Metrics and Analytics
+  participant RS as C2-01 Resonance Service
+  participant POC as C2-02 Proof of Contribution
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant HUB as C2-06 Local Hub and Federation
+end
+
+%% -------- Plan and start test --------
+S ->> UI: open resilience test cockpit
+UI ->> API: POST /resilience/tests plan(scenarios, scope, window)
+API ->> SEC: createTest(plan)
+SEC ->> SEC: register controls and baselines
+SEC -->> MET: event ResilienceTestStarted DDD EVT 64
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Execute stress scenarios --------
+loop for each scenario
+  SEC ->> RS: inject load or latency fault
+  SEC ->> HUB: simulate peer degradation or partition
+  SEC ->> TRE: simulate payout burst or throttle
+  SEC ->> POC: simulate spike in intake / decay jobs
+  par record metrics
+    RS -->> MET: resonance aggregates under stress
+    HUB -->> MET: HubSignal and error rates
+    TRE -->> MET: funding throughput and lag
+    POC -->> MET: CP/W backlog and latency
+  end
+  SEC -->> MET: event StressScenarioExecuted DDD EVT 65
+  MET -->> MET: event KPIUpdated DDD EVT 26
+end
+
+%% -------- Compute resilience and antifragility scores --------
+MET ->> MET: compute recovery time, error budgets, SRI delta
+MET ->> MET: compute antifragility index (post-stress improvement)
+MET -->> GOV: AntifragilityMetricUpdated DDD EVT 66
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Governance and guardrail suggestions --------
+alt thresholds breached
+  MET ->> GOV: recommend guardrail updates
+  GOV ->> GOV: consider mitigation proposal
+else within objectives
+  GOV ->> GOV: acknowledge resilience status
+end
+
+%% -------- Report and transparency --------
+SEC ->> SEC: compile stress report (scenarios, traces, deltas)
+SEC -->> MET: ReportGenerated DDD EVT 36
+MET -->> MET: event KPIUpdated DDD EVT 26
+SEC ->> API: publishReport(link, hashes)
+API -->> UI: show report link and scenario drilldowns
+
+%% -------- Close test and archive --------
+SEC ->> SEC: close test, store artifacts and hashes
+API -->> UI: mark test completed and archive pointer
+
+%% Notes
+Note over SEC,MET: ResilienceTestStarted DDD EVT 64 begins the exercise
+Note over SEC,MET: StressScenarioExecuted DDD EVT 65 emitted per scenario
+Note over MET,GOV: AntifragilityMetricUpdated DDD EVT 66 drives follow-up governance

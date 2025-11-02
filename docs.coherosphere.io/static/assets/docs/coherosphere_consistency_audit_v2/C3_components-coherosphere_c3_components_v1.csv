@@ -1,0 +1,70 @@
+C3-ID,Container (C2-ID),Component Name,Responsibilities,Key Inputs,Key Outputs,Interfaces/Protocols,Data Store,Status/Notes
+C3-01.01,C2-01,API Controller,Expose resonance endpoints and RPCs; route commands/queries.,API requests,Command messages; query responses,REST/gRPC,-,Stable
+C3-01.02,C2-01,Schema & Policy Guard,"Validate payloads, rate/cap limits, ethics pre-check gates.",Incoming commands,Validated commands or rejections,JSON-Schema; Policy rules,-,Stable
+C3-01.03,C2-01,Command Handler,"Coordinate create/update jobs, enqueue recomputes.",Validated commands,Jobs to Engine/Recompute,Internal bus,-,Stable
+C3-01.04,C2-01,Resonance Engine,Compute R = I × A × e^(−λΔt); produce W weights.,"CP, alignment, λ",Resonance events; weights W_i,In-proc; event bus,In-memory cache,Core
+C3-01.05,C2-01,Sublinear Mapper,Map contribution points to weights W = CP^α (0<α<1).,"CP, α",Weights W_i,In-proc,-,Core
+C3-01.06,C2-01,Anomaly Detector,Detect spam/sybil/outliers in resonance signals.,Event streams,Flags; alerts,Stream processor,-,Planned
+C3-01.07,C2-01,Recompute Worker,"Batch decay, snapshot recompute, backfill.",Recompute jobs,Updated resonance snapshots,Worker queue,Snapshot store,Stable
+C3-01.08,C2-01,Event Publisher,"Publish ResonanceUpdated, WeightComputed.",Engine outputs,Domain events,Kafka/NATS (event bus),-,Stable
+C3-02.01,C2-02,API Controller,Accept contributions; query CP ledger.,Contribution requests,Ack; CP queries,REST/gRPC,-,Stable
+C3-02.02,C2-02,Contribution Validator,"Validate structure, signatures, duplicates.",Raw contributions,Validated contributions or errors,In-proc,-,Stable
+C3-02.03,C2-02,CP Calculator,Compute contribution points (CP) from validated inputs.,Validated contributions,CP events,In-proc,-,Core
+C3-02.04,C2-02,Voting Weight Calculator,Derive provisional W for governance visibility.,"CP, α",Provisional W,In-proc,-,Planned
+C3-02.05,C2-02,PoC Ledger,Immutable CP ledger; state history.,CP events,Ledger snapshots,Append-only store,PoC-DB,Core
+C3-02.06,C2-02,Ethics Preflight Client,Call Ethics Guard for alignment gate.,Contribution metadata,Preflight decision,HTTP RPC,-,Stable
+C3-02.07,C2-02,Event Publisher,"Publish ContributionSubmitted, CPUpdated.",CP events,Domain events,Kafka/NATS,-,Stable
+C3-03.01,C2-03,Proposal Engine,Create/update proposals with references and IDs.,CreateProposal commands,ProposalCreated events,REST; events,Governance-DB,Core
+C3-03.02,C2-03,Quorum & Threshold Logic,"Evaluate quorum, thresholds, sublinear weights.",Votes; policy params,Vote validity decisions,In-proc,-,Core
+C3-03.03,C2-03,Voting Service,Cast and record votes; prevent double voting.,Vote commands,VoteCast; VoteTallied,REST/gRPC,Governance-DB,Core
+C3-03.04,C2-03,Execution Manager,Apply accepted decisions to downstream systems.,DecisionRecorded,Execution tasks,Workers; webhooks,-,Core
+C3-03.05,C2-03,Parameter Versioning,"Manage λ, α, q, θ versions; propagate.",Param change requests,ParamsVersioned events,REST; events,MetaGov-DB,Stable
+C3-03.06,C2-03,Audit Trail Writer,Persist auditable governance logs.,Event stream,Audit records,Log sink,Audit-DB,Stable
+C3-04.01,C2-04,QF Engine,Compute quadratic matching and allocations.,Donations; participation,Matching results,In-proc,-,Core
+C3-04.02,C2-04,Payout Orchestrator,Execute payouts (stream/escrow/milestones).,Approved allocations,Payout transactions,Workers; chain adapter,Treasury-DB,Core
+C3-04.03,C2-04,Reserve Manager,Manage reserves & rebalancing policy.,Policy; market data,Rebalance orders,Scheduler,Treasury-DB,Planned
+C3-04.04,C2-04,Compliance & Risk Checks,Run AML/risk rules; integrate Security.,Payout intents,Approve/hold flags,Service call to C2-10,-,Stable
+C3-04.05,C2-04,On-Chain Adapter,Interface to Bitcoin/Lightning or custodians.,Payout orders,Broadcasted tx; receipts,Bitcoin RPC/Lightning,-,Core
+C3-05.01,C2-05,DID Manager,Issue and resolve decentralized identifiers.,Identity requests,DID docs,DID methods,PoCI-DB,Core
+C3-05.02,C2-05,Credential Issuer (VC/SBT),Issue Verifiable Credentials / Soulbound Tokens.,Attestation data,VC/SBT artifacts,OIDC/VC,PoCI-DB,Core
+C3-05.3,C2-05,Reputation Graph,Maintain trust/reputation graph.,Attestations; events,Graph updates,Graph API,Graph-Store,Core
+C3-05.04,C2-05,Sybil Resistance,Proof-of-uniqueness & linkage checks.,Identity proofs,Sybil score,In-proc; ZK,-,Planned
+C3-05.05,C2-05,Verifier,Verify credentials and signatures.,VC/SBT; signatures,Verification result,REST,-,Stable
+C3-06.01,C2-06,Sync Orchestrator,Coordinate hub↔core synchronization.,Local changes,Sync jobs,gRPC/websocket,Hub-Store,Core
+C3-06.02,C2-06,CRDT Resolver,Merge concurrent updates safely.,Conflicting states,Resolved state,In-proc,Hub-Store,Core
+C3-06.03,C2-06,Project Registry,Register projects & milestones.,Project submissions,Project records,REST,Hub-DB,Stable
+C3-06.04,C2-06,Federation Client,Connect to federation bus; emit signals.,Local signals,HubSignal events,Event bus,-,Stable
+C3-06.05,C2-06,Health Monitor,Emit health/telemetry signals.,Metrics; heartbeats,Status events,Event bus,-,Stable
+C3-07.01,C2-07,KPI Aggregator,Aggregate KPIs by member/project/hub.,Event streams,KPI tables,Stream processor,Metrics-DB,Core
+C3-07.02,C2-07,SRI Engine,Compute Systemic Resonance Index.,Resonance; alignment; decay,SRI values,In-proc,Metrics-DB,Core
+C3-07.03,C2-07,Feature Store,Persist features for analytics/ML.,Aggregated metrics,Feature vectors,Batch/online store,Feature-DB,Stable
+C3-07.04,C2-07,Stream Ingest,Ingest events from services.,Domain events,Normalized streams,Kafka/NATS connectors,-,Stable
+C3-07.05,C2-07,Dashboard Feed,Serve real-time feeds to UI.,Metrics queries,Live feed,Websocket/GraphQL,-,Stable
+C3-08.01,C2-08,Alignment Evaluator,Score alignment against Manifesto rubrics.,Contribution metadata; KG context,Alignment score; flags,REST,-,Core
+C3-08.02,C2-08,Rubric Manager,Version and manage ethics rubrics.,Admin inputs,Rubric versions,REST,Ethics-DB,Stable
+C3-08.03,C2-08,Ethics Policy Engine,Apply allow/deny filters and constraints.,Requests from PoC/GOV,Preflight/approval decision,In-proc,-,Core
+C3-08.04,C2-08,Attestation Issuer,Issue alignment attestations to PoCI.,Alignment decisions,Attestation records,REST to C2-05,-,Planned
+C3-08.05,C2-08,Appeals Handler,Manage appeals and re-evaluation.,Appeal requests,Appeal outcomes,Workflow,Ethics-DB,Planned
+C3-09.01,C2-09,Ontology Manager,Manage schema/ontology for the graph.,Model updates,Ontology versions,Admin/API,KG-Store,Core
+C3-09.02,C2-09,Graph Ingest Pipeline,Ingest & normalize knowledge artifacts.,Docs; datasets; events,Graph nodes/edges,Pipelines,KG-Store,Core
+C3-09.03,C2-09,Embedding Generator,Create embeddings for search/RAG.,Text/artifacts,Vector embeddings,Batch/online workers,Vector-DB,Stable
+C3-09.04,C2-09,RAG Orchestrator,Coordinate retrieval-augmented generation.,Queries; context,Structured answers,GraphQL/HTTP,-,Stable
+C3-09.05,C2-09,Synthesis Engine,Summarize & synthesize insights.,Graph data; metrics,Reports; narratives,Workers,KG-Store,Planned
+C3-10.01,C2-10,Ledger Monitor,Verify integrity & reconcile ledgers.,Ledger snapshots,Integrity events,Batch/streams,Audit-DB,Core
+C3-10.02,C2-10,SIEM Collector,Collect logs/telemetry across services.,Logs; metrics,Normalized security events,SIEM protocols,SIEM-Store,Core
+C3-10.03,C2-10,Anomaly Detection,Detect threats & fraud patterns.,Security events,Alerts,ML/Rules engine,-,Stable
+C3-10.04,C2-10,Risk Scoring,Compute risk scores by service/project.,Signals,Risk scores,In-proc,-,Planned
+C3-10.05,C2-10,Incident Response,Coordinate detection→containment→disclosure.,Alerts; reports,IR workflows,Runbooks; tickets,IR-DB,Prototype
+C3-10.06,C2-10,Transparency Reporter,Publish public audit bundles.,Audit artifacts,Reports / proofs,Static site / IPFS,-,Planned
+C3-11.01,C2-11,Smart Router,Route/compose requests to services.,Incoming API calls,Composed responses,REST/gRPC,-,Core
+C3-11.02,C2-11,GraphQL Federation,Unify schemas and federate graphs.,Service schemas,GraphQL API,GraphQL,-,Stable
+C3-11.03,C2-11,Auth Hub,"AuthN/Z, keys, roles, scopes.",Requests; tokens,Allow/deny; tokens,OIDC/JWT,-,Core
+C3-11.04,C2-11,Rate & Quota Manager,Enforce limits; protect backends.,Request metadata,Throttle decisions,In-proc,-,Stable
+C3-11.05,C2-11,Schema Guard,Validate payloads & versioning.,Requests,Validation result,JSON-Schema,-,Stable
+C3-11.06,C2-11,Telemetry,Collect API metrics & traces.,Gateway events,Telemetry stream,OTLP,-,Stable
+C3-11.07,C2-11,Developer Portal,"Docs, keys, usage analytics for devs.",Admin/dev input,Keys; docs; dashboards,Web UI,Gateway-DB,Planned
+C3-12.01,C2-12,Dashboard Renderer,Render dashboards and widgets.,UI queries,Charts; pages,Web UI,-,Core
+C3-12.02,C2-12,Stream Client,Consume realtime metric streams.,Websocket feeds,Live updates,WebSocket/SSE,-,Stable
+C3-12.03,C2-12,Identity/Wallet Adapter,Handle PoCI auth & signatures.,User actions,Signed requests,Wallet APIs/OIDC,-,Stable
+C3-12.04,C2-12,Workbenches,Admin/member tools for projects & governance.,User workflows,Actions; exports,Web UI,-,Planned
+C3-12.05,C2-12,Accessibility & i18n,Accessibility and localization services.,UI texts,Localized UI,Web UI,-,Stable

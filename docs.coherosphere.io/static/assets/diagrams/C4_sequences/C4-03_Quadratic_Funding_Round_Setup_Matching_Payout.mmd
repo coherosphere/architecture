@@ -1,0 +1,59 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor M as C1-02 Member / Donor
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board / UI
+end
+
+box #fde68a Gateway
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core
+  participant GOV as C2-03 Governance
+  participant TRE as C2-04 Treasury & Funding
+  participant POC as C2-02 PoC
+  participant MET as C2-07 Metrics / Analytics
+  participant SEC as C2-10 Security & Audit
+end
+
+UI ->> API: openFundingRound(cfg)
+API ->> GOV: approveRound(cfg)
+GOV -->> TRE: RoundOpened (DDD EVT)
+TRE -->> MET: RoundOpened (metrics)
+
+M ->> UI: donate(projectId, amount)
+UI ->> API: recordDonation(projectId, amount)
+API ->> TRE: addDonation(projectId, amount)
+TRE -->> MET: DonationRecorded (DDD EVT)
+
+par periodic matching
+  TRE ->> TRE: computeQuadraticMatches()
+  TRE -->> MET: MatchingComputed
+and anomaly checks
+  SEC ->> SEC: anti-fraud / sybil review
+  SEC -->> TRE: ok
+end
+
+alt round close success
+  TRE ->> TRE: finalizeMatches()
+  TRE -->> MET: FundingAllocated (DDD EVT)
+  TRE ->> TRE: streamPayouts()
+  TRE -->> MET: RoundClosed
+else failed close or fraud
+  SEC -->> TRE: findingsDetected
+  TRE ->> TRE: haltPayouts()
+  TRE -->> MET: RoundClosed (halted)
+end
+
+note over UI,MET: Outcome → matching & payouts reflected in dashboards
+
+%% Failure branch
+alt failure: Round setup invalid / payout blocked
+  TRE --x GOV: payoutDenied(roundId, reason)
+  GOV --x AUD: record discrepancy
+  UI  --x DEV: show remediation hint
+end

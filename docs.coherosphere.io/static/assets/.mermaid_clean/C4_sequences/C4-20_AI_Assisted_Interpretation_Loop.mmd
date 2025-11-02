@@ -1,0 +1,87 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor V as C1-02 Viewer or Analyst
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant MET as C2-07 Metrics and Analytics
+  participant KG as C2-09 Knowledge Graph and Collective Intelligence
+  participant SEC as C2-10 Security and Audit
+end
+
+box #e5e7eb External
+  participant AI as C1-03 AI Systems and Agents
+end
+
+%% -------- Open interpretation workspace and subscribe --------
+V ->> UI: open interpretation workspace
+UI ->> API: subscribe stream sri kpis context
+API ->> MET: registerStream subscriptions
+MET -->> API: initialSnapshot sri and kpis
+API -->> UI: deliver initialSnapshot
+
+%% -------- Pull metric context and related knowledge --------
+UI ->> API: request interpretation for focus window and entities
+API ->> MET: getContext window entities segments
+MET -->> API: context bundle
+API ->> KG: enrichWithKnowledge context bundle
+KG ->> KG: retrieve graph facts claims sources
+KG ->> AI: build prompt with metrics graph facts and questions
+AI -->> KG: candidate narrative and citations
+KG -->> MET: event InsightGenerated DDD EVT 49
+KG -->> API: interpretation draft with citations
+
+%% -------- Vectorization and memory update --------
+API ->> KG: upsert interpretation to knowledge base
+KG ->> KG: embed narrative and citations
+KG -->> SEC: log provenance and hash
+KG -->> MET: event EmbeddingGenerated DDD EVT 24
+KG -->> MET: event KnowledgeUpdated DDD EVT 50
+
+%% -------- Live updates from metrics drive refresh --------
+par inbound updates
+  MET -->> MET: event KPIUpdated DDD EVT 26
+  MET -->> MET: event SRIComputed DDD EVT 27
+end
+MET ->> KG: push metric deltas for interpretation refresh
+KG ->> AI: refine narrative with deltas
+AI -->> KG: updated narrative and highlights
+KG -->> API: diff patch for interpretation
+
+%% -------- Stream to UI with backpressure control --------
+API -->> UI: push interpretation diff patch
+UI ->> UI: apply diff update narrative charts annotations
+
+%% -------- User feedback and corrections --------
+V ->> UI: suggest correction or add evidence
+UI ->> API: submitFeedback notes refs
+API ->> KG: recordFeedback and link evidence
+KG ->> KG: reconcile feedback and sources
+KG -->> MET: event KnowledgeUpdated DDD EVT 50
+SEC ->> SEC: persist feedback audit trail
+
+%% -------- Export and sharing --------
+V ->> UI: export interpretation and citations
+UI ->> API: buildExport interpretation window
+API ->> KG: assemble export bundle
+KG -->> API: export link
+API -->> UI: deliver export link
+
+%% -------- Completion --------
+UI -->> V: display interpreted insights with citations
+
+%% Notes
+Note over MET: KPIUpdated DDD EVT 26 and SRIComputed DDD EVT 27 drive refresh
+Note over KG: InsightGenerated DDD EVT 49 marks new analytical synthesis
+Note over KG: KnowledgeUpdated DDD EVT 50 records graph memory changes
+Note over KG: EmbeddingGenerated DDD EVT 24 tracks vectorization of new content

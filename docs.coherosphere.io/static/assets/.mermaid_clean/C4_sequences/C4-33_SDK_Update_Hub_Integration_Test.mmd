@@ -1,0 +1,89 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor M as SDK Maintainer (C1-07)
+actor H as Hub Operator (C1-02)
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI (Dev Portal)
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant HUB as C2-06 Local Hub / Federation
+  participant POC as C2-02 Proof of Contribution
+  participant MET as C2-07 Metrics & Analytics
+  participant SEC as C2-10 Security & Audit
+  participant ID as C2-05 Identity & Reputation (PoCI)
+end
+
+%% -------- Publish SDK release --------
+M ->> UI: publish SDK vX.Y.Z (changelog, semver, artifacts)
+UI ->> API: POST /dev/sdk/releases (metadata, hashes)
+API ->> SEC: verify signatures & store artifacts
+API -->> MET: event SDKReleasePublished (DDD EVT 74)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+API -->> UI: release acknowledged
+
+%% -------- Launch hub integration test --------
+H ->> UI: start integration test against vX.Y.Z
+UI ->> API: POST /dev/sdk/tests (hubId, sdkVersion)
+API ->> HUB: prepare sandbox env (keys, endpoints)
+API -->> MET: event IntegrationTestStarted (DDD EVT 75)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+
+%% -------- Execute compatibility suite --------
+par Auth & Identity
+  HUB ->> API: auth handshake via SDK
+  API ->> ID: validate DID / scopes
+  ID -->> API: IdentityVerified (DDD EVT 16)
+and Contribution flow
+  HUB ->> API: submit test contribution via SDK
+  API ->> POC: ingest test payload (dry-run)
+  POC -->> MET: ContributionSubmitted (DDD EVT 01)
+  POC -->> MET: ImpactScored (DDD EVT 02)
+and Federation basics
+  HUB ->> HUB: run CRDT ops (local)
+  HUB ->> API: push sync delta (dry-run)
+end
+
+%% -------- Collect results & assertions --------
+API ->> SEC: gather traces, timings, errors
+API ->> API: evaluate assertions (auth, contrib, sync)
+alt all assertions pass
+  API -->> MET: event IntegrationTestPassed (DDD EVT 76)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+  API ->> API: update compatibility matrix (hubId, sdkVersion, pass)
+  API -->> MET: event CompatibilityMatrixUpdated (DDD EVT 78)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+  API -->> UI: show green status & report link
+else one or more assertions fail
+  API -->> MET: event IntegrationTestFailed (DDD EVT 77)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+  API ->> SEC: attach failing logs & artifacts
+  API -->> UI: show failures, repro steps, logs
+end
+
+%% -------- Optional regression loop --------
+opt immediate retry
+  H ->> UI: rerun with patch config
+  UI ->> API: restart test (same suite)
+end
+
+%% -------- Publish artifacts --------
+API ->> SEC: store signed test report (hashes, sigs)
+SEC -->> UI: report link (immutable)
+
+%% -------- Completion --------
+UI -->> H: display final result and matrix entry
+UI -->> M: notify SDK maintainer of pass/fail and deltas
+
+%% Notes
+Note over API,MET: SDKReleasePublished (DDD EVT 74) announces the new SDK version
+Note over API,MET: IntegrationTestStarted/Passed/Failed (DDD EVT 75/76/77)
+Note over API,MET: CompatibilityMatrixUpdated (DDD EVT 78) records hub↔SDK support

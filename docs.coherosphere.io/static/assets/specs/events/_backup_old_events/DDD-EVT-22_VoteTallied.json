@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.coherosphere.io/events/v1/DDD-EVT-22_VoteTallied.json",
+  "title": "VoteTallied",
+  "description": "Coherosphere DDD Event 22: VoteTallied.",
+  "type": "object",
+  "properties": {
+    "specversion": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "urn:coh:C2-03"
+      ]
+    },
+    "type": {
+      "const": "coherosphere.voteTallied.v1"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "datacontenttype": {
+      "const": "application/json"
+    },
+    "c2Source": {
+      "const": "C2-03"
+    },
+    "dddEventId": {
+      "const": "DDD-EVT-22"
+    },
+    "correlationId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causationId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "data": {
+      "$ref": "#/$defs/data"
+    },
+    "c4Sequence": {
+      "type": "string",
+      "enum": [
+        "C4-02"
+      ]
+    }
+  },
+  "required": [
+    "specversion",
+    "id",
+    "source",
+    "type",
+    "subject",
+    "time",
+    "datacontenttype",
+    "c2Source",
+    "dddEventId",
+    "data",
+    "c4Sequence"
+  ],
+  "$defs": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "proposalId": {
+          "type": "string"
+        },
+        "yes": {
+          "type": "number"
+        },
+        "no": {
+          "type": "number"
+        },
+        "abstain": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

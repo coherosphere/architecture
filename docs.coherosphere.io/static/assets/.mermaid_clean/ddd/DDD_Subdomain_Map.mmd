@@ -1,0 +1,53 @@
+flowchart TB
+    %% ===== Styles =====
+    classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+    classDef support fill:#fde68a,stroke:#b45309,color:#1f2937;
+    classDef generic fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+    linkStyle default stroke:#334155,stroke-width:2px;
+
+    %% ===== Core Subdomains =====
+    subgraph CORE["Core Subdomains"]
+        GOV["C2-03 Governance and DAO"]:::core
+        POC["C2-02 Proof of Contribution"]:::core
+        RES["C2-01 Resonance Service"]:::core
+        TRE["C2-04 Treasury and Funding"]:::core
+        ETH["C2-08 Manifesto and Ethics Guard"]:::core
+    end
+
+    %% ===== Supporting Subdomains =====
+    subgraph SUPPORT["Supporting Subdomains"]
+        ID["C2-05 Identity and Reputation PoCI"]:::support
+        HUB["C2-06 Local Hub and Federation"]:::support
+        MET["C2-07 Metrics and Analytics"]:::support
+        KNOW["C2-09 Knowledge Graph and Collective Intelligence"]:::support
+    end
+
+    %% ===== Generic Subdomains =====
+    subgraph GENERIC["Generic and Infrastructure Subdomains"]
+        API["C2-11 Public API Gateway"]:::generic
+        SEC["C2-10 Security and Audit"]:::generic
+        UI["C2-12 Resonance Board UI"]:::generic
+        OPS["Ops and Deployment Layer (non C2)"]:::generic
+        LEDGER["Bitcoin and Hard Asset Layer (external)"]:::generic
+    end
+
+    %% ===== Logical Relations =====
+    %% Core interrelations
+    GOV --> TRE
+    GOV --> ETH
+    POC --> RES
+    RES --> MET
+    TRE --> LEDGER
+
+    %% Core to supporting
+    ETH --> ID
+    ID --> HUB
+    HUB --> MET
+    KNOW --> MET
+
+    %% Supporting to generic
+    MET --> SEC
+    SEC --> API
+    API --> UI
+    OPS --> API
+    UI --> GOV

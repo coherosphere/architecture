@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor B as C1-02 Beneficiary
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board / UI
+end
+
+box #fde68a Gateway
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core
+  participant TRE as C2-04 Treasury & Funding
+  participant POC as C2-02 PoC
+  participant MET as C2-07 Metrics / Analytics
+  participant SEC as C2-10 Security & Audit
+end
+
+UI ->> API: openStream(beneficiary, schedule, amount)
+API ->> TRE: createStream(beneficiary, schedule, amount)
+TRE -->> MET: StreamOpened (DDD EVT)
+
+loop periodic disbursement
+  TRE ->> TRE: accrueAndDisburse()
+  TRE -->> MET: StreamTick (KPIUpdated)
+end
+
+alt pause requested or risk breach
+  API ->> TRE: pauseStream(streamId)
+  TRE ->> TRE: haltDisbursement()
+  TRE -->> MET: StreamPaused (DDD EVT)
+  SEC ->> SEC: recordControlAction(streamId)
+else normal operation
+  TRE -->> UI: streamStatus(active)
+end
+
+alt resume conditions met
+  API ->> TRE: resumeStream(streamId)
+  TRE ->> TRE: resumeDisbursement()
+  TRE -->> MET: StreamResumed (DDD EVT)
+else close stream (completed or revoked)
+  API ->> TRE: closeStream(streamId)
+  TRE ->> TRE: settleEscrow()
+  TRE -->> MET: StreamClosed (DDD EVT)
+end
+
+note over UI,MET: Lifecycle reflects in payouts and KPIs

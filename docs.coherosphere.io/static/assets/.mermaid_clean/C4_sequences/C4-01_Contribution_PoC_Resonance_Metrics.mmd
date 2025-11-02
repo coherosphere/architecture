@@ -1,0 +1,45 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor M as C1-02 Member / Contributor
+
+box #8b5cf6 UI (🟪)
+  participant UI as C2-12 Resonance Board / UI
+end
+
+box #fde68a Control / API (🟨)
+  participant API as C2-11 Public API Gateway
+  participant ID as C2-05 Identity (PoCI)
+  participant ETH as C2-08 Manifesto & Ethics Guard
+end
+
+box #ff8b00 Compute (🟧)
+  participant POC as C2-02 Proof-of-Contribution (PoC)
+  participant RS as C2-01 Resonance Service
+  participant MET as C2-07 Metrics / Analytics
+end
+
+M ->> UI: Create contribution (payload, metadata)
+UI ->> API: submitContribution()
+
+API ->> ID: verifyIdentity(DID/VC)
+ID -->> API: IdentityVerified
+
+API ->> ETH: preflightAlignment(payload)
+ETH -->> API: AttestationIssued / AlignmentChecked
+
+API ->> POC: ingestContribution(payload)
+POC ->> POC: normalize & accumulate CP
+POC -->> MET: event ContributionSubmitted
+POC -->> API: Ingested (CPᵢ updated)
+
+POC ->> RS: requestResonance(impact, alignment, λ)
+RS ->> RS: compute R = I × A × e^(−λΔt)
+RS -->> MET: event ResonanceUpdated
+
+MET ->> MET: aggregate KPIs (Aⱼ, Rⱼ, CPᵢ, Wᵢ) & compute SRI
+MET -->> UI: stream KPIUpdated / SRIComputed
+
+note over UI,MET: Outcome → contribution recorded, resonance & KPIs updated, UI refreshed.

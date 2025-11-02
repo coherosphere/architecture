@@ -1,0 +1,17 @@
+{
+  "$id": "https://schemas.coherosphere.io/events/_meta/index.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Coherosphere Event Schemas Index",
+  "version": "1.0.0",
+  "domains": [
+    "poc",
+    "ethics",
+    "resonance",
+    "metrics",
+    "gov",
+    "treasury",
+    "hubs",
+    "security"
+  ],
+  "baseUrl": "https://schemas.coherosphere.io/events/"
+}

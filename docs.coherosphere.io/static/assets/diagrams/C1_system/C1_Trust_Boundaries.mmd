@@ -1,0 +1,110 @@
+---
+title: "C1 — Trust Boundaries (Zones & Data Flows)"
+config:
+  layout: elk
+---
+flowchart TB
+  %% ===== Styles (Coherosphere CI) =====
+  classDef zone_public fill:#eef2ff,stroke:#6366f1,color:#111827,stroke-width:2px;        %% Indigo-hell
+  classDef zone_semi   fill:#fef3c7,stroke:#f59e0b,color:#111827,stroke-width:2px;        %% Amber-hell
+  classDef zone_core   fill:#ffedd5,stroke:#fb923c,color:#111827,stroke-width:2px;        %% Orange-hell
+  classDef zone_secure fill:#dcfce7,stroke:#22c55e,color:#111827,stroke-width:2px;        %% Green-hell
+  classDef ext         fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+  classDef ui          fill:#8b5cf6,stroke:#4c1d95,color:#ffffff,font-weight:bold;
+  classDef control     fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef core        fill:#ff8b00,stroke:#333333,color:#ffffff,font-weight:bold;
+  classDef store       fill:#0ea5e9,stroke:#075985,color:#ffffff;
+  classDef risk        fill:#ef4444,stroke:#7f1d1d,color:#ffffff;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ===== Zone: Public Edge =====
+  subgraph ZP["Trust Zone A — PUBLIC EDGE (Browsers • Wallets • Public Web)"]
+    direction TB
+    USER["C1-02 Members / Contributors"]:::ui
+    PUB["C1-08 Public / Society"]:::ui
+    DEV["C1-07 Developers / Architects"]:::ui
+    UI["C2-12 Resonance Board / UI"]:::ui
+  end
+  class ZP zone_public;
+
+  %% ===== Zone: Semi-Trusted (Federation / API) =====
+  subgraph ZS["Trust Zone B — SEMI-TRUSTED (Federation • API Gateway)"]
+    direction TB
+    HUB["C2-06 Local Hubs / Federation"]:::control
+    APIGW["C2-11 Public API Gateway"]:::control
+  end
+  class ZS zone_semi;
+
+  %% ===== Zone: Coherosphere Core =====
+  subgraph ZC["Trust Zone C — CORE (Coherosphere Services)"]
+    direction TB
+    RS["C2-01 Resonance Service"]:::core
+    POC["C2-02 Proof-of-Contribution"]:::core
+    GOV["C2-03 Governance & DAO"]:::core
+    TRE["C2-04 Treasury & Funding"]:::core
+    ID["C2-05 Identity & Reputation (PoCI)"]:::core
+    MET["C2-07 Metrics / Analytics"]:::core
+    ETH["C2-08 Manifesto & Ethics Guard"]:::core
+    KG["C2-09 Knowledge Graph"]:::core
+  end
+  class ZC zone_core;
+
+  %% ===== Zone: Secure Ledger & Keys =====
+  subgraph ZS2["Trust Zone D — SECURE LEDGER & KEYS (Audit • Reserves • Attestations)"]
+    direction TB
+    SEC["C2-10 Security & Audit Layer"]:::risk
+    TLED["Treasury Ledger / Escrows"]:::store
+    ATTEST["Attestation Registry (PoCI / Ethics)"]:::store
+  end
+  class ZS2 zone_secure;
+
+  %% ===== External Ecosystem =====
+  subgraph ZE["External Ecosystem (Untrusted / Third-Party)"]
+    direction TB
+    BTC["C1-06 Bitcoin / Hard Asset Layer"]:::ext
+    EXTDAO["C1-04 External DAOs / Web3 Systems"]:::ext
+    AI["C1-03 AI Systems / Agents"]:::ext
+  end
+  class ZE ext;
+
+  %% ===== Data / Control Flows (directional, no reversed arrows) =====
+  %% Public → API/UI
+  USER --> UI
+  DEV  --> APIGW
+  UI   --> APIGW
+
+  %% API/Federation ↔ Core
+  APIGW --> POC
+  APIGW --> GOV
+  APIGW --> TRE
+  APIGW --> ID
+  APIGW --> RS
+  APIGW --> MET
+  APIGW --> KG
+  APIGW --> ETH
+  HUB   --> APIGW
+  HUB   --> MET
+  HUB   --> KG
+
+  %% Core → Secure
+  TRE --> TLED
+  ID  --> ATTEST
+  ETH --> ATTEST
+  MET --> SEC
+
+  %% Secure → Transparency / UI
+  SEC --> UI
+  TLED --> MET
+  ATTEST --> ID
+
+  %% External ↔ Core / Semi-Trusted
+  BTC --> TRE
+  EXTDAO --> GOV
+  AI --> RS
+  AI --> KG
+
+  %% ===== Notes (implicit boundary properties) =====
+  %% Zone A: public identities, browser wallets, no server trust
+  %% Zone B: authN/Z, quotas, schema guard, federation sync
+  %% Zone C: core business logic & resonance computation
+  %% Zone D: immutability, formal verification, audit evidence

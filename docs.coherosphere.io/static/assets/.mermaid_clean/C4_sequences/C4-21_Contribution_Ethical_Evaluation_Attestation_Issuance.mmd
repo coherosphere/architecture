@@ -1,0 +1,76 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor C as C1-02 Contributor
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant POC as C2-02 Proof of Contribution
+  participant ETH as C2-08 Manifesto and Ethics Guard
+  participant ID as C2-05 Identity PoCI
+  participant MET as C2-07 Metrics and Analytics
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Submit contribution --------
+C ->> UI: submit contribution refs evidence
+UI ->> API: POST contributions create
+API ->> POC: ingestContribution payload
+POC -->> MET: event ContributionSubmitted DDD EVT 01
+MET -->> MET: event KPIUpdated DDD EVT 26
+POC ->> SEC: log intake and hash refs
+
+%% -------- Impact scoring (technical quality etc.) --------
+POC ->> POC: normalize dedup and score impact
+POC -->> MET: event ImpactScored DDD EVT 02
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Ethical alignment evaluation --------
+POC ->> ETH: requestAlignmentCheck contributionId rubricVersion
+ETH ->> ETH: evaluate alignment signals and policy
+ETH -->> POC: alignment verdict and guidance
+ETH -->> MET: event AlignmentChecked DDD EVT 03
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Attestation issuance to identity ledger --------
+alt alignment pass
+  POC ->> ID: issueAttestation contributionId subject DID type ContributionQuality
+  ID -->> POC: attestation hash and link
+  ID -->> MET: event AttestationIssued DDD EVT 17
+  MET -->> MET: event KPIUpdated DDD EVT 26
+else alignment fail
+  POC ->> ID: do not issue attestation save rationale
+  opt later revocation path
+    ID -->> MET: event AttestationRevoked DDD EVT 18
+    MET -->> MET: event KPIUpdated DDD EVT 26
+  end
+end
+
+%% -------- Ledger and metrics updates --------
+POC ->> POC: update CP and W for subject
+POC -->> MET: publish CP and W deltas
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Completion --------
+API -->> UI: show evaluation result attestation link or guidance
+UI -->> C: display status and next steps
+
+%% -------- Transparency --------
+SEC ->> SEC: persist evaluation trail hashes and policy refs
+
+%% Notes
+Note over POC,ETH: AlignmentChecked DDD EVT 03 gates attestation
+Note over ID: AttestationIssued DDD EVT 17 or AttestationRevoked DDD EVT 18
+Note over MET: KPIUpdated DDD EVT 26 on each major step

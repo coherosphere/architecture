@@ -1,0 +1,69 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor DS as Data Subject
+participant SEC as C2-10 Security & Audit
+participant ID as C2-05 Identity & Reputation (PoCI)
+participant KG as C2-09 Knowledge Graph
+participant DPO as Data Protection Officer
+
+%% ========== Intake & Verification ==========
+DS ->> SEC: submit DSR (access or erasure, scope, evidence)
+note over SEC: DDD-EVT-79 (DSRSubmitted)
+
+SEC ->> ID: verifyIdentity(credentials)
+alt identity verified
+  ID -->> SEC: identityVerified
+else verification failed
+  SEC -->> DS: request additional proof / deny with reason
+  note over SEC: DDD-EVT-80 (DSRValidationFailed)
+end
+
+
+%% ========== ACCESS REQUEST FLOW ==========
+rect rgb(244,244,255)
+note over SEC: ACCESS flow
+SEC ->> SEC: classify request type == access
+SEC ->> KG: collect personal data (subject refs)
+KG -->> SEC: dataset bundle for export
+SEC ->> DS: provide export link (signed, expiring)
+note over SEC: DDD-EVT-81 (DSRAccessDelivered)
+SEC ->> DPO: record audit entry
+note over SEC: DDD-EVT-82 (DSRClosed)
+end
+
+
+%% ========== ERASURE REQUEST FLOW ==========
+rect rgb(255,244,244)
+note over SEC: ERASURE flow
+SEC ->> SEC: classify request type == erasure
+SEC ->> KG: locate items for deletion
+KG -->> SEC: deletion plan (targets, constraints)
+
+alt legal hold active
+  SEC -->> DS: partial erasure — legal hold items kept
+  note over SEC: Reverse path — limited erasure
+else no legal hold
+  SEC ->> KG: apply erasure (soft/hard delete)
+  KG -->> SEC: erasure confirmed
+end
+
+SEC ->> DS: confirmation + summary report
+note over SEC: DDD-EVT-81 (DSRErasureCompleted)
+SEC ->> DPO: record audit entry
+note over SEC: DDD-EVT-82 (DSRClosed)
+end
+
+
+%% ========== Exception Handling ==========
+opt timeout or unreachable subject
+  SEC ->> DPO: flag timed-out case (SLA breach)
+  SEC -->> DS: notice (resume window)
+end
+
+opt dispute or appeal
+  DS ->> DPO: appeal decision
+  DPO ->> SEC: reopen case and add evidence
+  SEC ->> SEC: re-evaluate and update audit record
+end

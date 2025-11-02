@@ -1,0 +1,87 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor L as C1-02 Learner or Analyst
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant MET as C2-07 Metrics and Analytics
+  participant ETH as C2-08 Ethics Guard
+  participant GOV as C2-03 Governance and DAO
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Observation phase --------
+L ->> UI: open learning workspace
+UI ->> API: request observation window and signals
+API ->> MET: getSnapshot sri kpi segments window
+MET -->> API: snapshot sri and kpis
+API -->> UI: deliver snapshot
+MET -->> MET: event KPIUpdated DDD EVT 26
+MET -->> MET: event SRIComputed DDD EVT 27
+
+%% -------- Evaluation phase --------
+UI ->> API: run evaluation job with rubrics
+API ->> ETH: evaluateAlignment window refs
+ETH ->> ETH: compute drift hotspots and deltas
+ETH -->> MET: publish AlignmentChecked DDD EVT 03
+MET -->> MET: event KPIUpdated DDD EVT 26
+API -->> UI: show evaluation with hotspots
+
+%% -------- Hypothesis and recommendation --------
+L ->> UI: author hypothesis and targets
+UI ->> API: submit recommendation and evidence
+API ->> ETH: recordLearningRecommendation payload
+ETH ->> ETH: synthesize guidance and guardrails
+ETH -->> GOV: RealignmentRecommended DDD EVT 46
+
+%% -------- Adaptation path via governance --------
+UI ->> API: create mitigation or improvement proposal
+API ->> GOV: createProposal learning changes
+GOV -->> MET: GovernanceProposalCreated DDD EVT 05
+
+loop voting window
+  L ->> UI: cast vote
+  UI ->> API: vote proposalId weight
+  API ->> GOV: recordVote
+  GOV -->> MET: VoteCast DDD EVT 06
+end
+
+API ->> GOV: closeAndTally proposalId
+GOV -->> MET: VoteTallied DDD EVT 07
+
+alt approved
+  GOV -->> MET: DecisionRecorded DDD EVT 08
+  GOV -->> ETH: apply rubric updates or guardrails
+  GOV -->> MET: signal rollout for monitoring
+else rejected
+  GOV -->> SEC: log rejection with rationale
+  API -->> UI: proposal rejected guidance
+end
+
+%% -------- Learning record and transparency --------
+ETH ->> SEC: compile learning record inputs and outputs
+SEC -->> MET: LearningRecordPublished DDD EVT 48
+MET -->> MET: event KPIUpdated DDD EVT 26
+API -->> UI: display learning record link and changelog
+
+%% -------- Post adaptation monitoring --------
+MET ->> MET: compare before after metrics
+MET -->> UI: trend charts and deltas
+alt improvement detected
+  MET ->> GOV: signal improvement sustained
+else no improvement
+  MET ->> GOV: recommend follow up exploration
+end

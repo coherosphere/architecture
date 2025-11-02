@@ -1,0 +1,93 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor OP as C1-02 Operator or Maintainer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant SEC as C2-10 Security and Audit
+  participant MET as C2-07 Metrics and Analytics
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant HUB as C2-06 Local Hub and Federation
+end
+
+%% -------- Detection --------
+par signals into SIEM
+  MET ->> SEC: stream anomalies and kpi outliers
+  HUB ->> SEC: hub health alerts
+  API ->> SEC: auth errors and rate limit breaches
+end
+SEC ->> SEC: correlate events and indicators
+alt anomaly exceeds threshold
+  SEC -->> MET: event AnomalyDetected DDD EVT 55
+  MET -->> MET: event KPIUpdated DDD EVT 26
+  SEC ->> SEC: open incident and assign severity
+  SEC -->> MET: event IncidentOpened DDD EVT 59
+else noise within tolerance
+  SEC ->> SEC: continue monitoring
+end
+
+%% -------- Notification and triage --------
+SEC ->> API: notifyIncident incidentId severity summary
+API -->> UI: display incident banner and details
+OP ->> UI: acknowledge incident and start runbook
+UI ->> API: startTriage incidentId
+API ->> SEC: startTriage incidentId
+
+%% -------- Containment --------
+alt containment required
+  SEC ->> HUB: isolate affected hub or service
+  SEC ->> TRE: freeze payouts if treasury impacted
+  SEC ->> GOV: request temporary policy guardrails
+  SEC -->> MET: event IncidentContained DDD EVT 60
+  MET -->> MET: event KPIUpdated DDD EVT 26
+else observation only
+  SEC ->> SEC: watch and collect evidence
+end
+
+%% -------- Eradication and recovery --------
+SEC ->> SEC: identify root cause and apply fixes
+SEC ->> HUB: roll patches or config changes
+SEC ->> API: rotate keys and revoke tokens if needed
+SEC ->> MET: push recovery signal for tracking
+
+%% -------- Verification and resolution --------
+SEC ->> SEC: validate no further indicators
+alt clean
+  SEC -->> MET: event IncidentResolved DDD EVT 61
+  MET -->> MET: event KPIUpdated DDD EVT 26
+else residual risk
+  SEC ->> SEC: keep incident open and iterate
+end
+
+%% -------- Disclosure and transparency --------
+SEC ->> SEC: compile transparency report bundle
+SEC -->> MET: event ReportGenerated DDD EVT 36
+MET -->> MET: event KPIUpdated DDD EVT 26
+SEC ->> API: registerPublicReport incidentId link hash
+API -->> UI: publish incident report link
+SEC -->> GOV: event ReportPublished DDD EVT 37
+
+%% -------- Postmortem and follow up --------
+OP ->> UI: open postmortem workspace
+UI ->> API: createPostmortem incidentId
+API ->> GOV: file lessons learned and proposals
+GOV -->> MET: KPIUpdated DDD EVT 26
+
+%% -------- Completion --------
+UI -->> OP: show resolution status timeline and report links
+
+%% Notes
+Note over SEC,MET: AnomalyDetected DDD EVT 55 may escalate to IncidentOpened DDD EVT 59
+Note over SEC,MET: IncidentContained DDD EVT 60 and IncidentResolved DDD EVT 61 mark state changes
+Note over SEC: ReportGenerated DDD EVT 36 then ReportPublished DDD EVT 37 for disclosure

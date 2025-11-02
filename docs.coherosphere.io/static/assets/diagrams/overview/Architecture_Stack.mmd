@@ -1,0 +1,133 @@
+---
+id: Architecture-Stack
+title: "Coherosphere — Architecture Stack"
+---
+flowchart TB
+  %% ---------- Styles ----------
+  classDef layer fill:#f8fafc,stroke:#94a3b8,color:#0f172a,stroke-width:1px;
+  classDef top fill:#e2e8f0,stroke:#475569,color:#0f172a;
+  classDef c1 fill:#dbeafe,stroke:#2563eb,color:#0f172a;
+  classDef c2 fill:#fde68a,stroke:#b45309,color:#0f172a;
+  classDef c3 fill:#e9d5ff,stroke:#7c3aed,color:#0f172a;
+  classDef c4 fill:#dcfce7,stroke:#16a34a,color:#0f172a;
+  classDef ddd fill:#fee2e2,stroke:#ef4444,color:#0f172a;
+  classDef spec fill:#e5e7eb,stroke:#6b7280,color:#0f172a;
+  classDef ci fill:#cffafe,stroke:#0891b2,color:#0f172a;
+  classDef run fill:#ffedd5,stroke:#fb923c,color:#0f172a;
+  classDef obs fill:#f5f5f5,stroke:#737373,color:#0f172a;
+
+  %% ---------- Top / Consumers ----------
+  subgraph L0["Users & Integrations"]
+    direction TB
+    U1["End Users / UI (C2-12)"]:::top
+    U2["Developers / Clients"]:::top
+    U3["External Systems"]:::top
+  end
+  class L0 layer
+
+  %% ---------- C1 ----------
+  subgraph L1["C1 — System Context"]
+    direction TB
+    C1A["Stakeholders"]:::c1
+    C1B["Trust Boundaries"]:::c1
+    C1C["External Policies"]:::c1
+  end
+  class L1 layer
+
+  %% ---------- C2 ----------
+  subgraph L2["C2 — Containers / Services"]
+    direction TB
+    C2A["C2-01 Resonance"]:::c2
+    C2B["C2-02 Proof of Contribution"]:::c2
+    C2C["C2-03 Governance"]:::c2
+    C2D["C2-04 Treasury"]:::c2
+    C2E["C2-05 Identity (PoCI)"]:::c2
+    C2F["C2-06 Local Hubs"]:::c2
+    C2G["C2-07 Metrics"]:::c2
+    C2H["C2-08 Ethics"]:::c2
+    C2I["C2-09 Knowledge Graph"]:::c2
+    C2J["C2-10 Security & Audit"]:::c2
+    C2K["C2-11 API Gateway"]:::c2
+  end
+  class L2 layer
+
+  %% ---------- C3 ----------
+  subgraph L3["C3 — Models & States"]
+    direction TB
+    C3M["Domain ERD / Aggregates"]:::c3
+    C3S["State Machines (SM-xx)"]:::c3
+  end
+  class L3 layer
+
+  %% ---------- C4 ----------
+  subgraph L4["C4 — Sequences (Behavior)"]
+    direction TB
+    C4A["C4-02 Proposal→Vote→Execution"]:::c4
+    C4B["C4-11 Treasury Rebalancing"]:::c4
+    C4C["C4-21 Ethical Evaluation"]:::c4
+    C4D["C4-34 DSR & Erasure Workflow"]:::c4
+    C4E["C4-35 Funding Pause/Resume via Risk"]:::c4
+  end
+  class L4 layer
+
+  %% ---------- Events / Specs ----------
+  subgraph L5["DDD — Events & Specifications"]
+    direction TB
+    E1["DDD-EVT-xx JSON Schemas"]:::ddd
+    E2["CloudEvents Envelope (source/subject/type)"]:::ddd
+    SP1["OpenAPI (C2-xx, HTTPS, x-c2-id)"]:::spec
+    SP2["Mermaid Diagrams (C1–C4, DDD)"]:::spec
+  end
+  class L5 layer
+
+  %% ---------- CI/CD ----------
+  subgraph L6["CI/CD — Validation & Codegen"]
+    direction TB
+    CI1["Validate OpenAPI (Redocly + Spectral)"]:::ci
+    CI2["C4 ↔ DDD Schema Alignment"]:::ci
+    CI3["Mermaid Syntax Guard (mmdc)"]:::ci
+    CI4["Codegen Harness (SDK)"]:::ci
+    CI5["Contract Tests (Prism + Schemathesis)"]:::ci
+    CI6["AI Build Mapping (cid-registry.json)"]:::ci
+  end
+  class L6 layer
+
+  %% ---------- Runtime / Observability ----------
+  subgraph L7["Runtime & Observability"]
+    direction TB
+    R1["Gateway (C2-11)"]:::run
+    R2["Service Mesh / Policies"]:::run
+    O1["Metrics & Logs (C2-07, C2-10)"]:::obs
+    O2["Transparency Reports"]:::obs
+  end
+  class L7 layer
+
+  %% ---------- Layered Flow ----------
+  U1 --> C2K
+  U2 --> C2K
+  U3 --> C2K
+
+  L1 --> L2
+  L2 --> L3
+  L3 --> L4
+  L4 --> L5
+  L5 --> L6
+  L6 --> L2
+  L2 --> L7
+
+  %% ---------- Cross-links ----------
+  C2K -. routes .-> C2A
+  C2K -. routes .-> C2B
+  C2K -. routes .-> C2C
+  C2K -. routes .-> C2D
+  C2K -. routes .-> C2E
+  C2K -. routes .-> C2F
+  C2K -. routes .-> C2G
+  C2K -. routes .-> C2H
+  C2K -. routes .-> C2I
+  C2K -. routes .-> C2J
+
+  C4D -. uses .-> E1
+  C4E -. emits .-> E1
+  SP1 -. documents .-> L2
+  SP2 -. documents .-> L1

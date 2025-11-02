@@ -1,0 +1,12 @@
+openapi: 3.1.0
+info:
+  title: C2-03 — Governance API
+  version: 0.1.0
+  x-c2-id: C2-03
+servers:
+  - url: https://api.coherosphere.io
+    description: Production
+  - url: https://staging.api.coherosphere.io
+    description: Staging
+paths: {}
+components: {}

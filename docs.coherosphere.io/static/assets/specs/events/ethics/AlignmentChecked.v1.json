@@ -1,0 +1,33 @@
+{
+  "$id": "https://schemas.coherosphere.io/events/ethics/AlignmentChecked.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ethics.AlignmentChecked",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "subjectId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "rubricId": {
+      "type": "string"
+    },
+    "alignment": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "explain": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "subjectId",
+    "rubricId",
+    "alignment",
+    "version"
+  ],
+  "additionalProperties": false
+}

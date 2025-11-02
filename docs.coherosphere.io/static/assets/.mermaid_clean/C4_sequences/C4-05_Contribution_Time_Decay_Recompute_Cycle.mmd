@@ -1,0 +1,68 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor S as Scheduler / Cron
+
+box #fde68a Control / API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant POC as C2-02 Proof of Contribution
+  participant RS as C2-01 Resonance Service
+  participant MET as C2-07 Metrics and Analytics
+  participant GOV as C2-03 Governance Param Registry
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Trigger --------
+S ->> API: POST /maintenance/recompute-decay
+API ->> POC: recomputeDecay(batchRef)
+
+%% -------- Parameter fetch (lambda etc.) --------
+POC ->> GOV: getParams(keys: lambda, alpha, window)
+GOV -->> POC: params{lambda, alpha, window}  note right of GOV: DDD-EVT-22 may have changed params earlier
+
+%% -------- Snapshot and safety --------
+POC ->> POC: createSnapshot(snapshotId)
+POC ->> SEC: logAuditStart(snapshotId)
+
+%% -------- Apply decay over CP ledger --------
+loop for each ledger entry in window
+  POC ->> POC: applyDecay(CP_i, lambda)\nupdate CP_i_t
+end
+POC ->> POC: recomputeWeights(W_i = CP_i^alpha)
+
+%% -------- Recompute resonance aggregates --------
+POC ->> RS: recomputeResonance(deltaCP, deltaW)
+RS -->> POC: resonanceUpdated(R aggregates)
+Note over RS,POC: Emits DDD-EVT-04 ResonanceUpdated
+
+%% -------- Publish metrics --------
+POC ->> MET: publish CP and W deltas
+RS ->> MET: publish resonance aggregates
+MET ->> MET: compute SRI
+MET -->> MET: event SRIComputed  DDD-EVT-27
+MET -->> MET: event KPIUpdated   DDD-EVT-26
+
+%% -------- Governance signal if thresholds crossed --------
+alt coherence drop or anomaly detected
+  MET ->> GOV: signal CoherenceAlert
+  SEC ->> GOV: attach anomaly report
+else normal cycle
+  MET ->> GOV: signal RecomputeFinished
+end
+
+%% -------- Audit close --------
+SEC -->> SEC: persist transparency logs
+SEC -->> POC: auditComplete(snapshotId)
+
+%% -------- Response --------
+POC -->> API: {snapshotId, updatedEntries, sriVersion}
+API -->> S: 200 OK
+
+%% Notes
+Note over POC,RS: Uses lambda from GOV (DDD-EVT-22 ParamsVersioned when updated)
+Note over MET: Publishes KPIUpdated (DDD-EVT-26) and SRIComputed (DDD-EVT-27)

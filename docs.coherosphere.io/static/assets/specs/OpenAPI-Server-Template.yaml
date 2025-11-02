@@ -1,0 +1,7 @@
+servers:
+  - url: https://api.coherosphere.io
+    description: Production environment
+  - url: https://staging.api.coherosphere.io
+    description: Staging environment
+  - url: http://localhost:8080
+    description: Local development

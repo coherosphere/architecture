@@ -1,0 +1,42 @@
+{
+  "$id": "https://schemas.coherosphere.io/events/gov/VoteCast.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gov.VoteCast",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "voteId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "proposalId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "voterId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "weight": {
+      "type": "number"
+    },
+    "choice": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No",
+        "Abstain"
+      ]
+    },
+    "castAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "voteId",
+    "proposalId",
+    "voterId",
+    "weight",
+    "choice",
+    "castAt"
+  ],
+  "additionalProperties": false
+}

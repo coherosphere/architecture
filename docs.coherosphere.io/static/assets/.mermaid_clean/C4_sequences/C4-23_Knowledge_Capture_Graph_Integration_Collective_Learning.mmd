@@ -1,0 +1,96 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor K as C1-02 Curator or Project Steward
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant KG as C2-09 Knowledge Graph & Collective Intelligence
+  participant MET as C2-07 Metrics & Analytics
+  participant ETH as C2-08 Manifesto & Ethics Guard
+end
+
+box #e5e7eb External
+  participant SRC as External Sources (repo/web/IPFS)
+  participant AI as C1-03 AI Systems & Agents
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security & Audit
+end
+
+%% -------- Capture kickoff --------
+K ->> UI: open knowledge capture
+UI ->> API: startCapture(project, hub, tags)
+API ->> KG: initCapture(sessionMeta)
+KG -->> MET: event SourceDiscovered (DDD EVT 53)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+
+%% -------- Source discovery and fetch --------
+UI ->> API: addSource(urls, refs, blobs)
+API ->> SRC: fetch content by refs
+SRC -->> API: content payload
+API ->> KG: ingestRawContent(payload, provenance)
+KG ->> SEC: record provenance and hashes
+
+%% -------- Extraction chunking and embedding --------
+KG ->> KG: extract text, detect language, split chunks
+loop for each chunk
+  KG ->> AI: embedChunk(textChunk)
+  AI -->> KG: vector, features
+  KG -->> MET: event EmbeddingGenerated (DDD EVT 24)
+end
+
+%% -------- Entity linking and graph upsert --------
+KG ->> KG: detect entities, link projects/hubs/people
+KG ->> KG: upsert nodes, edges, properties
+KG -->> MET: event KnowledgeUpdated (DDD EVT 50)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+
+%% -------- Ethics alignment on new knowledge --------
+KG ->> ETH: evaluate alignment(newNodes)
+ETH -->> KG: annotations, guidance
+opt Policy requires guard
+  KG ->> KG: mark guarded nodes
+end
+
+%% -------- Insight synthesis for collective learning --------
+KG ->> AI: synthesize narrative & questions
+AI -->> KG: summary, highlights, citations
+KG -->> MET: event InsightGenerated (DDD EVT 49)
+
+%% -------- Publish to UI and workspaces --------
+KG ->> API: deliver interpretation pack & citations
+API -->> UI: show knowledge cards & graph links
+
+%% -------- Feedback and correction loop --------
+K ->> UI: submit correction & evidence
+UI ->> API: recordFeedback(note, refs)
+API ->> KG: applyFeedback()
+KG -->> MET: event KnowledgeUpdated (DDD EVT 50)
+SEC ->> SEC: persist feedback audit trail
+
+%% -------- Export and sharing --------
+K ->> UI: export knowledge bundle
+UI ->> API: buildExport(window)
+API ->> KG: assembleExport()
+KG -->> API: export link
+API -->> UI: deliver export link
+
+%% -------- Completion --------
+UI -->> K: capture complete, searchable in Knowledge Graph
+
+%% Notes
+Note over KG: SourceDiscovered (DDD EVT 53) starts capture  
+Note over KG: EmbeddingGenerated (DDD EVT 24) for each chunk  
+Note over KG: KnowledgeUpdated (DDD EVT 50) after graph upsert/feedback  
+Note over KG: InsightGenerated (DDD EVT 49) marks synthesis output

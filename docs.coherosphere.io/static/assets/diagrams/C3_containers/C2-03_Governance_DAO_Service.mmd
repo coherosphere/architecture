@@ -1,0 +1,38 @@
+flowchart LR
+  %% --- Coherosphere CI Theme ---
+  classDef container fill:#111827,stroke:#111827,color:#ffffff,font-weight:bold;
+  classDef compute fill:#ff8b00,stroke:#333333,color:#ffffff;
+  classDef control fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef worker fill:#fb923c,stroke:#7c2d12,color:#1f2937;
+  classDef store fill:#0ea5e9,stroke:#075985,color:#ffffff;
+  classDef event fill:#22c55e,stroke:#065f46,color:#083344;
+  classDef risk fill:#ef4444,stroke:#7f1d1d,color:#ffffff;
+  classDef ext fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+  classDef ui fill:#8b5cf6,stroke:#4c1d95,color:#ffffff;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ===== Container & Components (C2-03 → C3-03.xx) =====
+  subgraph GOV["C2-03 Governance & DAO Service"]
+    class GOV container
+    PROP["C3-03.01 Proposal Engine"]:::control
+    QUO["C3-03.02 Quorum & Threshold Logic"]:::compute
+    VOTE["C3-03.03 Voting Service"]:::control
+    EXEC["C3-03.04 Execution Manager"]:::worker
+    PARAM["C3-03.05 Parameter Versioning (λ, α, q, θ)"]:::control
+    AUDW["C3-03.06 Audit Trail Writer"]:::store
+  end
+
+  %% Internal flows
+  PROP --> VOTE --> QUO --> EXEC
+  PARAM --> QUO
+  PARAM --> PROP
+  VOTE --> AUDW
+
+  %% External context links
+  UI["C2-12 Resonance Board / UI"]:::ui --> PROP
+  POC["C2-02 PoC Service"]:::ext --> VOTE
+  ID["C2-05 Identity (PoCI)"]:::ext --> VOTE
+  ETH["C2-08 Manifesto & Ethics Guard"]:::ext -. guidance .-> PROP
+  MET["C2-07 Metrics / Analytics"]:::ext -. policy insights .-> PROP
+  EXEC --> TRE["C2-04 Treasury & Funding"]:::ext
+  AUDW --> SEC["C2-10 Security & Audit"]:::ext

@@ -1,0 +1,45 @@
+%%{init: {"config":{"layout":"elk"}}}%%
+flowchart TB
+ subgraph COH["C1-01 Coherosphere System (Sphere of Coherence)"]
+        RS["C2-01 Resonance Service<br>(impact × alignment × time decay)"]
+        PoC["C2-02 Proof-of-Contribution Service<br>(contribution points • voting weight)"]
+        GOV["C2-03 Governance &amp; DAO Service<br>(proposals • voting • execution)"]
+        TRE["C2-04 Treasury &amp; Funding Service<br>(quadratic funding • streaming payouts)"]
+        ID["C2-05 Identity &amp; Reputation Service (PoCI)<br>(DID/VC/SBT • sybil resistance)"]
+        HUB["C2-06 Local Hub / Federation Service<br>(edge sync • CRDT • federation API)"]
+        METRICS["C2-07 Resonance Metric Stack / Analytics<br>(KPIs • systemic resonance index)"]
+        ETH["C2-08 Manifesto &amp; Ethics Guard<br>(alignment validation • rubrics)"]
+        KNOW["C2-09 Knowledge Graph / Collective Intelligence<br>(ontology • vector • RAG)"]
+        SEC["C2-10 Security &amp; Audit Layer<br>(SIEM • integrity • compliance)"]
+        UI["C2-12 Resonance Board / UI<br>(dashboards • transparency)"]
+  end
+    USER["C1-02 Member / Contributor<br>(creates contributions &amp; votes)"] --> PoC & GOV & HUB
+    AI["C1-03 AI Systems &amp; Agents<br>(alignment analytics &amp; feedback models)"] --> RS & METRICS
+    EXTDAO["C1-04 External DAOs &amp; Web3 Systems<br>(interoperable governance &amp; funding)"] <--> GOV
+    ORG["C1-05 Local Communities &amp; Institutions<br>(education • regeneration • healthcare)"] <--> HUB
+    DEV["C1-07 Developers &amp; Architects<br>(maintain open-source infrastructure)"] <--> COH
+    PoC --> GOV & METRICS
+    GOV --> TRE & ETH & METRICS
+    TRE --> BTC["C1-06 Bitcoin / Hard Asset Layer<br>(sound money • treasury base)"]
+    METRICS --> KNOW & SEC & PUBLIC["C1-08 Public / Society<br>(observes resonance • benefits from coherence)"]
+    KNOW --> ETH
+    ETH --> GOV & PUBLIC
+    RS --> PoC
+    SEC --> GOV
+    ID --> GOV & PoC
+    HUB --> GOV & METRICS & KNOW
+    UI --> PUBLIC
+     RS:::core
+     PoC:::core
+     GOV:::core
+     TRE:::core
+     ID:::core
+     HUB:::core
+     METRICS:::core
+     ETH:::core
+     KNOW:::core
+     SEC:::core
+     UI:::core
+     PUBLIC:::ghost
+    classDef core fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold
+    classDef ghost fill:#eee,stroke:#bbb,color:#333

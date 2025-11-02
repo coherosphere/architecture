@@ -1,0 +1,83 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor V as C1-02 Viewer Member
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant MET as C2-07 Metrics and Analytics
+  participant RS as C2-01 Resonance Service
+  participant POC as C2-02 Proof of Contribution
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Open dashboard and subscribe --------
+V ->> UI: open Resonance dashboard
+UI ->> API: subscribe channels sri kpi projects hubs
+API ->> MET: registerStream subscriptions auth
+MET -->> API: initialSnapshot sri kpis heatmaps
+API -->> UI: push initialSnapshot via websocket sse
+
+%% -------- Live update pipeline --------
+par inbound signals to metrics
+  POC ->> MET: CP and W deltas
+  RS ->> MET: resonance aggregates
+  GOV ->> MET: governance state changes
+  TRE ->> MET: funding signals
+end
+MET ->> MET: compute sri and kpis
+MET -->> MET: event SRIComputed DDD EVT 27
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Stream to UI with backpressure control --------
+loop streaming loop
+  MET ->> API: stream update diff patch version
+  alt high frequency
+    API ->> API: coalesce and downsample
+  else normal
+    API ->> API: pass through
+  end
+  API -->> UI: push update diff patch version
+  UI ->> UI: apply diff update charts tables heatmaps
+end
+
+%% -------- Thresholds highlights and alerts --------
+alt coherence drop or anomaly
+  MET ->> SEC: log anomaly and context
+  MET ->> API: emit alert signal
+  API -->> UI: show alert banner and highlight panels
+else stable
+  UI ->> UI: keep live rendering
+end
+
+%% -------- User interactions --------
+V ->> UI: filter by hub or project or time
+UI ->> API: request filtered stream
+API ->> MET: adjustStream filters
+MET -->> API: ack new filters
+API -->> UI: confirm and continue streaming
+
+%% -------- Export and sharing --------
+V ->> UI: export CSV and snapshot
+UI ->> API: request export sri kpis window
+API ->> MET: build export job
+MET -->> API: export link
+API -->> UI: deliver export link
+
+%% -------- Audit and transparency --------
+API ->> SEC: trace stream session and queries
+SEC -->> SEC: persist transparency logs
+
+%% Notes
+Note over MET: KPIUpdated DDD EVT 26 and SRIComputed DDD EVT 27 drive UI refresh
+Note over API:UI: Transport may be websocket or sse with diff patches and versions

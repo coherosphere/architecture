@@ -1,0 +1,51 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor C as C1-02 Curator / MetaGov Proposer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board / UI
+end
+
+box #fde68a Gateway
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core
+  participant GOV as C2-03 Governance
+  participant ETH as C2-08 Ethics Guard
+  participant POC as C2-02 PoC
+  participant TRE as C2-04 Treasury
+  participant MET as C2-07 Metrics / Analytics
+end
+
+C ->> UI: proposeParamChange({lambda, alpha, q, theta})
+UI ->> API: submitParamChange(proposal)
+API ->> ETH: checkConsistency(proposal)
+ETH -->> API: ok
+
+API ->> GOV: createProposal(paramUpdate)
+GOV -->> MET: ProposalCreated (DDD EVT)
+
+par voting
+  UI ->> API: castVote(proposalId, ballot)
+  API ->> GOV: recordVote(proposalId, ballot)
+  GOV -->> MET: VoteCast (DDD EVT)
+and tally
+  GOV ->> GOV: applyQuorumThreshold()
+  GOV -->> MET: VoteTallied (DDD EVT)
+end
+
+alt approved
+  GOV -->> POC: ParamsVersioned (DDD EVT)
+  GOV -->> TRE: ParamsVersioned (DDD EVT)
+  GOV -->> MET: ParamsVersioned (DDD EVT)
+  UI -->> C: status=Applied
+else rejected
+  UI -->> C: status=Rejected
+  ETH -->> MET: PolicyRejectionLogged
+end
+
+UI -->> C: notify outcome

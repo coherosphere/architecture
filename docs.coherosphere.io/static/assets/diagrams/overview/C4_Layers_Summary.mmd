@@ -1,0 +1,104 @@
+---
+id: C4-Layers-Summary
+title: "C4 — Layers Summary"
+---
+flowchart TB
+  %% Styles
+  classDef layer fill:#ffedd5,stroke:#fb923c,stroke-width:1px,color:#111827;
+  classDef sys fill:#dbeafe,stroke:#2563eb,color:#111827;
+  classDef c2 fill:#fde68a,stroke:#b45309,color:#111827;
+  classDef c3 fill:#e9d5ff,stroke:#7c3aed,color:#111827;
+  classDef c4 fill:#dcfce7,stroke:#16a34a,color:#111827;
+  classDef ddd fill:#fee2e2,stroke:#ef4444,color:#111827;
+  classDef spec fill:#e5e7eb,stroke:#6b7280,color:#111827;
+  classDef ci fill:#cffafe,stroke:#0891b2,color:#111827;
+
+  %% LAYER BOXES
+  subgraph L1["C1 — System Context"]
+    direction TB
+    C1A["Stakeholders & Trust Boundaries"]:::sys
+    C1B["External Systems & Policies"]:::sys
+  end
+  class L1 layer
+
+  subgraph L2["C2 — Containers / Services"]
+    direction TB
+    C2A["C2-01 Resonance Service"]:::c2
+    C2B["C2-02 Proof of Contribution"]:::c2
+    C2C["C2-03 Governance DAO"]:::c2
+    C2D["C2-04 Treasury"]:::c2
+    C2E["C2-05 Identity (PoCI)"]:::c2
+    C2F["C2-06 Local Hubs"]:::c2
+    C2G["C2-07 Metrics"]:::c2
+    C2H["C2-08 Ethics"]:::c2
+    C2I["C2-09 Knowledge Graph"]:::c2
+    C2J["C2-10 Security & Audit"]:::c2
+    C2K["C2-11 API Gateway"]:::c2
+  end
+  class L2 layer
+
+  subgraph L3["C3 — Models / States"]
+    direction TB
+    C3M["Domain Model (ERD)"]:::c3
+    C3S["State Machines (SM-xx)"]:::c3
+  end
+  class L3 layer
+
+  subgraph L4["C4 — Sequences (Behavior)"]
+    direction TB
+    C4A["C4-02 Proposal→Vote→Execution"]:::c4
+    C4B["C4-11 Treasury Rebalancing"]:::c4
+    C4C["C4-21 Ethical Evaluation"]:::c4
+    C4D["C4-34 DSR & Erasure Workflow"]:::c4
+    C4E["C4-35 Funding Pause/Resume via Risk"]:::c4
+  end
+  class L4 layer
+
+  subgraph DDDX["DDD — Events (DDD-EVT-xx)"]
+    direction TB
+    EVTA["Schemas + CloudEvents Envelope"]:::ddd
+    EVTB["C4 ↔ EVT Alignment (84/84)"]:::ddd
+  end
+  class DDDX layer
+
+  subgraph SPEC["Specifications"]
+    direction TB
+    S1["OpenAPI (C2-xx, HTTPS, x-c2-id)"]:::spec
+    S2["Event Schemas (/assets/specs/events)"]:::spec
+    S3["Mermaid Diagrams (/assets/diagrams)"]:::spec
+  end
+  class SPEC layer
+
+  subgraph TOOL["Validation & Build"]
+    direction TB
+    CI1["CI: Validate OpenAPI (Redocly+Spectral)"]:::ci
+    CI2["CI: C4 ↔ DDD Schema Check"]:::ci
+    CI3["CI: Mermaid Syntax Guard"]:::ci
+    CI4["AI Build Mapping (cid-registry.json)"]:::ci
+    CI5["Codegen Harness (SDK + Contracts)"]:::ci
+  end
+  class TOOL layer
+
+  %% FLOWS (top→down + feedback)
+  L1 --> L2
+  L2 --> L3
+  L3 --> L4
+  L4 --> DDDX
+  DDDX --> SPEC
+  SPEC --> TOOL
+  TOOL --> L2
+
+  %% Cross-links
+  C2K -.-> C2A
+  C2K -.-> C2B
+  C2K -.-> C2C
+  C2K -.-> C2D
+  C2K -.-> C2E
+  C2K -.-> C2F
+  C2K -.-> C2G
+  C2K -.-> C2H
+  C2K -.-> C2I
+  C2K -.-> C2J
+
+  C4D -. uses .-> EVTA
+  C4E -. emits .-> EVTA

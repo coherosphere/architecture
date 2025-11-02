@@ -1,0 +1,594 @@
+{
+  "spec": "CloudEvents 1.0 wrapper",
+  "count": 84,
+  "items": [
+    {
+      "eventId": "DDD-EVT-01",
+      "title": "DDD-EVT-01",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-01.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-01",
+      "typeConst": "coherosphere.events.DDD-EVT-01"
+    },
+    {
+      "eventId": "DDD-EVT-02",
+      "title": "DDD-EVT-02",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-02.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-02",
+      "typeConst": "coherosphere.events.DDD-EVT-02"
+    },
+    {
+      "eventId": "DDD-EVT-03",
+      "title": "DDD-EVT-03",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-03.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-03",
+      "typeConst": "coherosphere.events.DDD-EVT-03"
+    },
+    {
+      "eventId": "DDD-EVT-05",
+      "title": "DDD-EVT-05",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-05.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-05",
+      "typeConst": "coherosphere.events.DDD-EVT-05"
+    },
+    {
+      "eventId": "DDD-EVT-06",
+      "title": "DDD-EVT-06",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-06.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-06",
+      "typeConst": "coherosphere.events.DDD-EVT-06"
+    },
+    {
+      "eventId": "DDD-EVT-07",
+      "title": "DDD-EVT-07",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-07.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-07",
+      "typeConst": "coherosphere.events.DDD-EVT-07"
+    },
+    {
+      "eventId": "DDD-EVT-08",
+      "title": "DDD-EVT-08",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-08.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-08",
+      "typeConst": "coherosphere.events.DDD-EVT-08"
+    },
+    {
+      "eventId": "DDD-EVT-10",
+      "title": "DDD-EVT-10",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-10.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-10",
+      "typeConst": "coherosphere.events.DDD-EVT-10"
+    },
+    {
+      "eventId": "DDD-EVT-11",
+      "title": "DDD-EVT-11",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-11.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-11",
+      "typeConst": "coherosphere.events.DDD-EVT-11"
+    },
+    {
+      "eventId": "DDD-EVT-12",
+      "title": "DDD-EVT-12",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-12.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-12",
+      "typeConst": "coherosphere.events.DDD-EVT-12"
+    },
+    {
+      "eventId": "DDD-EVT-13",
+      "title": "DDD-EVT-13",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-13.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-13",
+      "typeConst": "coherosphere.events.DDD-EVT-13"
+    },
+    {
+      "eventId": "DDD-EVT-14",
+      "title": "DDD-EVT-14",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-14.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-14",
+      "typeConst": "coherosphere.events.DDD-EVT-14"
+    },
+    {
+      "eventId": "DDD-EVT-16",
+      "title": "DDD-EVT-16",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-16.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-16",
+      "typeConst": "coherosphere.events.DDD-EVT-16"
+    },
+    {
+      "eventId": "DDD-EVT-17",
+      "title": "DDD-EVT-17",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-17.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-17",
+      "typeConst": "coherosphere.events.DDD-EVT-17"
+    },
+    {
+      "eventId": "DDD-EVT-18",
+      "title": "DDD-EVT-18",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-18.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-18",
+      "typeConst": "coherosphere.events.DDD-EVT-18"
+    },
+    {
+      "eventId": "DDD-EVT-19",
+      "title": "DDD-EVT-19",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-19.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-19",
+      "typeConst": "coherosphere.events.DDD-EVT-19"
+    },
+    {
+      "eventId": "DDD-EVT-20",
+      "title": "DDD-EVT-20",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-20.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-20",
+      "typeConst": "coherosphere.events.DDD-EVT-20"
+    },
+    {
+      "eventId": "DDD-EVT-21",
+      "title": "DDD-EVT-21",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-21.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-21",
+      "typeConst": "coherosphere.events.DDD-EVT-21"
+    },
+    {
+      "eventId": "DDD-EVT-22",
+      "title": "DDD-EVT-22",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-22.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-22",
+      "typeConst": "coherosphere.events.DDD-EVT-22"
+    },
+    {
+      "eventId": "DDD-EVT-23",
+      "title": "DDD-EVT-23",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-23.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-23",
+      "typeConst": "coherosphere.events.DDD-EVT-23"
+    },
+    {
+      "eventId": "DDD-EVT-24",
+      "title": "DDD-EVT-24",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-24.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-24",
+      "typeConst": "coherosphere.events.DDD-EVT-24"
+    },
+    {
+      "eventId": "DDD-EVT-26",
+      "title": "DDD-EVT-26",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-26.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-26",
+      "typeConst": "coherosphere.events.DDD-EVT-26"
+    },
+    {
+      "eventId": "DDD-EVT-27",
+      "title": "DDD-EVT-27",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-27.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-27",
+      "typeConst": "coherosphere.events.DDD-EVT-27"
+    },
+    {
+      "eventId": "DDD-EVT-28",
+      "title": "DDD-EVT-28",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-28.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-28",
+      "typeConst": "coherosphere.events.DDD-EVT-28"
+    },
+    {
+      "eventId": "DDD-EVT-29",
+      "title": "DDD-EVT-29",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-29.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-29",
+      "typeConst": "coherosphere.events.DDD-EVT-29"
+    },
+    {
+      "eventId": "DDD-EVT-30",
+      "title": "DDD-EVT-30",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-30.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-30",
+      "typeConst": "coherosphere.events.DDD-EVT-30"
+    },
+    {
+      "eventId": "DDD-EVT-35",
+      "title": "DDD-EVT-35",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-35.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-35",
+      "typeConst": "coherosphere.events.DDD-EVT-35"
+    },
+    {
+      "eventId": "DDD-EVT-36",
+      "title": "DDD-EVT-36",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-36.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-36",
+      "typeConst": "coherosphere.events.DDD-EVT-36"
+    },
+    {
+      "eventId": "DDD-EVT-37",
+      "title": "DDD-EVT-37",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-37.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-37",
+      "typeConst": "coherosphere.events.DDD-EVT-37"
+    },
+    {
+      "eventId": "DDD-EVT-38",
+      "title": "DDD-EVT-38",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-38.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-38",
+      "typeConst": "coherosphere.events.DDD-EVT-38"
+    },
+    {
+      "eventId": "DDD-EVT-39",
+      "title": "DDD-EVT-39",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-39.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-39",
+      "typeConst": "coherosphere.events.DDD-EVT-39"
+    },
+    {
+      "eventId": "DDD-EVT-40",
+      "title": "DDD-EVT-40",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-40.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-40",
+      "typeConst": "coherosphere.events.DDD-EVT-40"
+    },
+    {
+      "eventId": "DDD-EVT-41",
+      "title": "DDD-EVT-41",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-41.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-41",
+      "typeConst": "coherosphere.events.DDD-EVT-41"
+    },
+    {
+      "eventId": "DDD-EVT-42",
+      "title": "DDD-EVT-42",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-42.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-42",
+      "typeConst": "coherosphere.events.DDD-EVT-42"
+    },
+    {
+      "eventId": "DDD-EVT-43",
+      "title": "DDD-EVT-43",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-43.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-43",
+      "typeConst": "coherosphere.events.DDD-EVT-43"
+    },
+    {
+      "eventId": "DDD-EVT-44",
+      "title": "DDD-EVT-44",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-44.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-44",
+      "typeConst": "coherosphere.events.DDD-EVT-44"
+    },
+    {
+      "eventId": "DDD-EVT-45",
+      "title": "DDD-EVT-45",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-45.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-45",
+      "typeConst": "coherosphere.events.DDD-EVT-45"
+    },
+    {
+      "eventId": "DDD-EVT-46",
+      "title": "DDD-EVT-46",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-46.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-46",
+      "typeConst": "coherosphere.events.DDD-EVT-46"
+    },
+    {
+      "eventId": "DDD-EVT-47",
+      "title": "DDD-EVT-47",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-47.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-47",
+      "typeConst": "coherosphere.events.DDD-EVT-47"
+    },
+    {
+      "eventId": "DDD-EVT-48",
+      "title": "DDD-EVT-48",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-48.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-48",
+      "typeConst": "coherosphere.events.DDD-EVT-48"
+    },
+    {
+      "eventId": "DDD-EVT-49",
+      "title": "DDD-EVT-49",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-49.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-49",
+      "typeConst": "coherosphere.events.DDD-EVT-49"
+    },
+    {
+      "eventId": "DDD-EVT-50",
+      "title": "DDD-EVT-50",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-50.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-50",
+      "typeConst": "coherosphere.events.DDD-EVT-50"
+    },
+    {
+      "eventId": "DDD-EVT-51",
+      "title": "DDD-EVT-51",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-51.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-51",
+      "typeConst": "coherosphere.events.DDD-EVT-51"
+    },
+    {
+      "eventId": "DDD-EVT-52",
+      "title": "DDD-EVT-52",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-52.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-52",
+      "typeConst": "coherosphere.events.DDD-EVT-52"
+    },
+    {
+      "eventId": "DDD-EVT-53",
+      "title": "DDD-EVT-53",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-53.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-53",
+      "typeConst": "coherosphere.events.DDD-EVT-53"
+    },
+    {
+      "eventId": "DDD-EVT-54",
+      "title": "DDD-EVT-54",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-54.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-54",
+      "typeConst": "coherosphere.events.DDD-EVT-54"
+    },
+    {
+      "eventId": "DDD-EVT-55",
+      "title": "DDD-EVT-55",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-55.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-55",
+      "typeConst": "coherosphere.events.DDD-EVT-55"
+    },
+    {
+      "eventId": "DDD-EVT-56",
+      "title": "DDD-EVT-56",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-56.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-56",
+      "typeConst": "coherosphere.events.DDD-EVT-56"
+    },
+    {
+      "eventId": "DDD-EVT-57",
+      "title": "DDD-EVT-57",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-57.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-57",
+      "typeConst": "coherosphere.events.DDD-EVT-57"
+    },
+    {
+      "eventId": "DDD-EVT-58",
+      "title": "DDD-EVT-58",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-58.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-58",
+      "typeConst": "coherosphere.events.DDD-EVT-58"
+    },
+    {
+      "eventId": "DDD-EVT-59",
+      "title": "DDD-EVT-59",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-59.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-59",
+      "typeConst": "coherosphere.events.DDD-EVT-59"
+    },
+    {
+      "eventId": "DDD-EVT-60",
+      "title": "DDD-EVT-60",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-60.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-60",
+      "typeConst": "coherosphere.events.DDD-EVT-60"
+    },
+    {
+      "eventId": "DDD-EVT-61",
+      "title": "DDD-EVT-61",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-61.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-61",
+      "typeConst": "coherosphere.events.DDD-EVT-61"
+    },
+    {
+      "eventId": "DDD-EVT-62",
+      "title": "DDD-EVT-62",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-62.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-62",
+      "typeConst": "coherosphere.events.DDD-EVT-62"
+    },
+    {
+      "eventId": "DDD-EVT-63",
+      "title": "DDD-EVT-63",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-63.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-63",
+      "typeConst": "coherosphere.events.DDD-EVT-63"
+    },
+    {
+      "eventId": "DDD-EVT-64",
+      "title": "DDD-EVT-64",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-64.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-64",
+      "typeConst": "coherosphere.events.DDD-EVT-64"
+    },
+    {
+      "eventId": "DDD-EVT-65",
+      "title": "DDD-EVT-65",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-65.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-65",
+      "typeConst": "coherosphere.events.DDD-EVT-65"
+    },
+    {
+      "eventId": "DDD-EVT-66",
+      "title": "DDD-EVT-66",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-66.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-66",
+      "typeConst": "coherosphere.events.DDD-EVT-66"
+    },
+    {
+      "eventId": "DDD-EVT-67",
+      "title": "DDD-EVT-67",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-67.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-67",
+      "typeConst": "coherosphere.events.DDD-EVT-67"
+    },
+    {
+      "eventId": "DDD-EVT-68",
+      "title": "DDD-EVT-68",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-68.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-68",
+      "typeConst": "coherosphere.events.DDD-EVT-68"
+    },
+    {
+      "eventId": "DDD-EVT-69",
+      "title": "DDD-EVT-69",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-69.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-69",
+      "typeConst": "coherosphere.events.DDD-EVT-69"
+    },
+    {
+      "eventId": "DDD-EVT-70",
+      "title": "DDD-EVT-70",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-70.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-70",
+      "typeConst": "coherosphere.events.DDD-EVT-70"
+    },
+    {
+      "eventId": "DDD-EVT-71",
+      "title": "DDD-EVT-71",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-71.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-71",
+      "typeConst": "coherosphere.events.DDD-EVT-71"
+    },
+    {
+      "eventId": "DDD-EVT-72",
+      "title": "DDD-EVT-72",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-72.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-72",
+      "typeConst": "coherosphere.events.DDD-EVT-72"
+    },
+    {
+      "eventId": "DDD-EVT-73",
+      "title": "DDD-EVT-73",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-73.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-73",
+      "typeConst": "coherosphere.events.DDD-EVT-73"
+    },
+    {
+      "eventId": "DDD-EVT-74",
+      "title": "DDD-EVT-74",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-74.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-74",
+      "typeConst": "coherosphere.events.DDD-EVT-74"
+    },
+    {
+      "eventId": "DDD-EVT-75",
+      "title": "DDD-EVT-75",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-75.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-75",
+      "typeConst": "coherosphere.events.DDD-EVT-75"
+    },
+    {
+      "eventId": "DDD-EVT-76",
+      "title": "DDD-EVT-76",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-76.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-76",
+      "typeConst": "coherosphere.events.DDD-EVT-76"
+    },
+    {
+      "eventId": "DDD-EVT-77",
+      "title": "DDD-EVT-77",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-77.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-77",
+      "typeConst": "coherosphere.events.DDD-EVT-77"
+    },
+    {
+      "eventId": "DDD-EVT-78",
+      "title": "DDD-EVT-78",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-78.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-78",
+      "typeConst": "coherosphere.events.DDD-EVT-78"
+    },
+    {
+      "eventId": "DDD-EVT-79",
+      "title": "DDD-EVT-79",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-79.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-79",
+      "typeConst": "coherosphere.events.DDD-EVT-79"
+    },
+    {
+      "eventId": "DDD-EVT-80",
+      "title": "DDD-EVT-80",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-80.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-80",
+      "typeConst": "coherosphere.events.DDD-EVT-80"
+    },
+    {
+      "eventId": "DDD-EVT-81",
+      "title": "DDD-EVT-81",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-81.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-81",
+      "typeConst": "coherosphere.events.DDD-EVT-81"
+    },
+    {
+      "eventId": "DDD-EVT-82",
+      "title": "DDD-EVT-82",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-82.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-82",
+      "typeConst": "coherosphere.events.DDD-EVT-82"
+    },
+    {
+      "eventId": "DDD-EVT-83",
+      "title": "DDD-EVT-83",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-83.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-83",
+      "typeConst": "coherosphere.events.DDD-EVT-83"
+    },
+    {
+      "eventId": "DDD-EVT-84",
+      "title": "DDD-EVT-84",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-84.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-84",
+      "typeConst": "coherosphere.events.DDD-EVT-84"
+    },
+    {
+      "eventId": "DDD-EVT-85",
+      "title": "DDD-EVT-85",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-85.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-85",
+      "typeConst": "coherosphere.events.DDD-EVT-85"
+    },
+    {
+      "eventId": "DDD-EVT-86",
+      "title": "DDD-EVT-86",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-86.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-86",
+      "typeConst": "coherosphere.events.DDD-EVT-86"
+    },
+    {
+      "eventId": "DDD-EVT-87",
+      "title": "DDD-EVT-87",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-87.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-87",
+      "typeConst": "coherosphere.events.DDD-EVT-87"
+    },
+    {
+      "eventId": "DDD-EVT-88",
+      "title": "DDD-EVT-88",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-88.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-88",
+      "typeConst": "coherosphere.events.DDD-EVT-88"
+    },
+    {
+      "eventId": "DDD-EVT-89",
+      "title": "DDD-EVT-89",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-89.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-89",
+      "typeConst": "coherosphere.events.DDD-EVT-89"
+    },
+    {
+      "eventId": "DDD-EVT-90",
+      "title": "DDD-EVT-90",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-90.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-90",
+      "typeConst": "coherosphere.events.DDD-EVT-90"
+    },
+    {
+      "eventId": "DDD-EVT-91",
+      "title": "DDD-EVT-91",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-91.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-91",
+      "typeConst": "coherosphere.events.DDD-EVT-91"
+    },
+    {
+      "eventId": "DDD-EVT-92",
+      "title": "DDD-EVT-92",
+      "schema": "assets/specs/events_cloudevents/DDD-EVT-92.cloudevent.json",
+      "baseSchemaId": "DDD-EVT-92",
+      "typeConst": "coherosphere.events.DDD-EVT-92"
+    }
+  ]
+}

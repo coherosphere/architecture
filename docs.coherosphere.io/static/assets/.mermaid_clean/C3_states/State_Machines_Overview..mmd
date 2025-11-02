@@ -1,0 +1,94 @@
+flowchart TB
+  %% ===== Styles =====
+  classDef logic fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef risk  fill:#ef4444,stroke:#7f1d1d,color:#ffffff;
+  classDef group fill:#ff8b00,stroke:#333333,color:#ffffff;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ===== C2-01 Resonance Service =====
+  subgraph C201["C2-01 — Resonance Service"]
+    RS_SM["SM-01.01 Resonance Calculation State\nEntity: RESONANCE_SAMPLE\nEvents: ResonanceRequested • ResonanceUpdated • AnomalyDetected"]
+  end
+  class C201 group
+  class RS_SM logic
+
+  %% ===== C2-02 Proof-of-Contribution =====
+  subgraph C202["C2-02 — Proof-of-Contribution"]
+    POC_CL["SM-02.01 Contribution Lifecycle\nEntity: CONTRIBUTION\nEvents: ContributionSubmitted • ImpactScored • AlignmentChecked • CPUpdated"]
+    POC_DEC["SM-02.02 Decay & Recompute Cycle\nEntity: LEDGER_ENTRY\nEvents: DecayApplied • RecomputeFinished"]
+  end
+  class C202 group
+  class POC_CL,POC_DEC logic
+
+  %% ===== C2-03 Governance & DAO =====
+  subgraph C203["C2-03 — Governance & DAO"]
+    GOV_PROP["SM-03.01 Proposal Lifecycle\nEntity: PROPOSAL\nEvents: ProposalCreated • VoteCast • VoteTallied • DecisionRecorded • PolicyChanged"]
+    GOV_APP["SM-03.02 Appeal / Dispute Flow\nEntity: APPEAL\nEvents: AppealOpened • AppealResolved"]
+  end
+  class C203 group
+  class GOV_PROP,GOV_APP logic
+
+  %% ===== C2-04 Treasury & Funding =====
+  subgraph C204["C2-04 — Treasury & Funding"]
+    TRE_QF["SM-04.01 Quadratic Funding Round\nEntity: QF_ROUND\nEvents: RoundOpened • DonationRecorded • FundingAllocated • RoundClosed"]
+    TRE_PAY["SM-04.02 Streaming Payout Lifecycle\nEntity: PAYOUT_STREAM\nEvents: StreamOpened • StreamPaused • StreamResumed • StreamClosed"]
+  end
+  class C204 group
+  class TRE_QF,TRE_PAY logic
+
+  %% ===== C2-05 Identity & Reputation (PoCI) =====
+  subgraph C205["C2-05 — Identity & Reputation (PoCI)"]
+    ID_VER["SM-05.01 Identity Verification & Attestation\nEntity: DID / ATTESTATION\nEvents: IdentityVerified • AttestationIssued • AttestationRevoked"]
+    ID_REP["SM-05.02 Reputation Update Cycle\nEntity: REPUTATION_SCORE\nEvents: ReputationUpdated • DecayApplied"]
+  end
+  class C205 group
+  class ID_VER,ID_REP logic
+
+  %% ===== C2-06 Local Hub / Federation =====
+  subgraph C206["C2-06 — Local Hub / Federation"]
+    HUB_SYNC["SM-06.01 Hub Sync State\nEntity: HUB_SYNC_FRAME\nEvents: SyncRequested • SyncMerged • SyncConfirmed"]
+    HUB_PROJ["SM-06.02 Project Lifecycle\nEntity: PROJECT\nEvents: ProjectCreated • MilestoneReported • ProjectCompleted"]
+  end
+  class C206 group
+  class HUB_SYNC,HUB_PROJ logic
+
+  %% ===== C2-07 Metrics / Analytics =====
+  subgraph C207["C2-07 — Metrics / Analytics"]
+    MET_SNAP["SM-07.01 Snapshot & KPI Aggregation\nEntity: KPI_SNAPSHOT\nEvents: SnapshotStarted • SRIComputed • KPIUpdated"]
+  end
+  class C207 group
+  class MET_SNAP logic
+
+  %% ===== C2-08 Manifesto & Ethics Guard =====
+  subgraph C208["C2-08 — Manifesto & Ethics Guard"]
+    ETH_EVAL["SM-08.01 Ethics Evaluation Flow\nEntity: ETHICS_EVAL\nEvents: AlignmentChecked • AttestationIssued • AppealResolved"]
+  end
+  class C208 group
+  class ETH_EVAL logic
+
+  %% ===== C2-09 Knowledge Graph / Collective Intelligence =====
+  subgraph C209["C2-09 — Knowledge Graph / Collective Intelligence"]
+    KG_PIPE["SM-09.01 Knowledge Ingestion Pipeline\nEntity: KG_ENTITY\nEvents: SourceDiscovered • EmbeddingGenerated • KnowledgeUpdated"]
+  end
+  class C209 group
+  class KG_PIPE logic
+
+  %% ===== C2-10 Security & Audit =====
+  subgraph C210["C2-10 — Security & Audit"]
+    SEC_INC["SM-10.01 Incident Lifecycle\nEntity: INCIDENT\nEvents: IncidentOpened • IncidentResolved • TransparencyReportPublished"]
+    SEC_TR["SM-10.02 Transparency Report Lifecycle\nEntity: TRANSPARENCY_REPORT\nEvents: ReportGenerated • ReportPublished"]
+  end
+  class C210 group
+  class SEC_INC,SEC_TR risk
+
+  %% ===== Logical Relations =====
+  POC_CL --> RS_SM
+  RS_SM  --> MET_SNAP
+  GOV_PROP --> TRE_QF
+  TRE_QF  --> TRE_PAY
+  ETH_EVAL --> ID_VER
+  KG_PIPE  --> MET_SNAP
+  HUB_PROJ --> TRE_PAY
+  HUB_SYNC --> MET_SNAP
+  MET_SNAP --> SEC_TR
+  SEC_INC  --> SEC_TR

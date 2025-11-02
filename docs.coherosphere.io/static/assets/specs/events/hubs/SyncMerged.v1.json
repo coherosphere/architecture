@@ -1,0 +1,25 @@
+{
+  "$id": "https://schemas.coherosphere.io/events/hubs/SyncMerged.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hubs.SyncMerged",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "hubId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "frameId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "mergedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "hubId",
+    "frameId",
+    "mergedAt"
+  ],
+  "additionalProperties": false
+}

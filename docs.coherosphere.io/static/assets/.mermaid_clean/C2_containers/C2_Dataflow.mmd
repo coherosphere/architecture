@@ -1,0 +1,87 @@
+flowchart LR
+  %% ====== Styles ======
+  classDef container fill:#ff8b00,stroke:#333,color:#fff,font-weight:bold;
+  classDef event fill:#22c55e,stroke:#065f46,color:#083344;
+  classDef control fill:#fde68a,stroke:#b45309,color:#1f2937;
+  classDef ui fill:#8b5cf6,stroke:#4c1d95,color:#ffffff;
+  classDef ext fill:#e5e7eb,stroke:#9ca3af,color:#111827;
+  linkStyle default stroke:#334155,stroke-width:2px;
+
+  %% ====== Containers ======
+  subgraph CORE["Coherosphere Core Services"]
+    RS["C2-01 Resonance Service"]:::container
+    POC["C2-02 Proof-of-Contribution (PoC)"]:::container
+    GOV["C2-03 Governance & DAO"]:::container
+    TRE["C2-04 Treasury & Funding"]:::container
+    ID["C2-05 Identity & Reputation (PoCI)"]:::container
+    HUB["C2-06 Local Hub / Federation"]:::container
+    MET["C2-07 Resonance Metric Stack / Analytics"]:::container
+    ETH["C2-08 Manifesto & Ethics Guard"]:::container
+    KG["C2-09 Knowledge Graph / Collective Intelligence"]:::container
+    SEC["C2-10 Security & Audit Layer"]:::container
+  end
+
+  subgraph ACCESS["Access & Interfaces"]
+    API["C2-11 Public API Gateway"]:::control
+    UI["C2-12 Resonance Board / UI"]:::ui
+  end
+
+  subgraph EXTERNAL["External Ecosystem"]
+    BTC["C1-06 Bitcoin / Hard Asset Layer"]:::ext
+    EXTDAO["C1-04 External DAOs / Web3 Systems"]:::ext
+    AI["C1-03 AI Systems / Agents"]:::ext
+  end
+
+  %% ====== Primary Data / Event Flows ======
+
+  %% === User / API Layer ===
+  UI --> API
+  API --> POC
+  API --> GOV
+  API --> TRE
+  API --> RS
+  API --> ID
+  API --> MET
+  API --> KG
+  API --> HUB
+  API --> ETH
+
+  %% === Core Interactions ===
+  POC --> RS
+  RS --> MET
+  POC --> GOV
+  GOV --> TRE
+  GOV --> ETH
+  GOV --> MET
+  TRE --> MET
+  ID --> GOV
+  ID --> POC
+  ETH --> POC
+  ETH --> GOV
+  ETH --> ID
+  KG --> ETH
+  KG --> MET
+  HUB --> GOV
+  HUB --> MET
+  HUB --> TRE
+  HUB --> KG
+  SEC --> GOV
+  SEC --> TRE
+  MET --> SEC
+
+  %% === External Dependencies ===
+  TRE --> BTC
+  GOV <--> EXTDAO
+  RS --> AI
+  KG --> AI
+
+  %% === Observability / Transparency ===
+  MET --> UI
+  SEC --> UI
+
+  %% === Legend (informal grouping) ===
+  %% Green arrows = events (implicit)
+  %% Yellow boxes = access layer
+  %% Orange boxes = core logic
+  %% Purple = UI layer
+  %% Grey = external ecosystems

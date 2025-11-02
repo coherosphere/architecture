@@ -1,0 +1,89 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor R as Ethics Maintainer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant ETH as C2-08 Manifesto and Ethics Guard
+  participant GOV as C2-03 Governance and DAO
+  participant MET as C2-07 Metrics and Analytics
+  participant ID as C2-05 Identity PoCI
+  participant HUB as C2-06 Local Hub and Federation
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Draft rubric change --------
+R ->> UI: open ethics workspace
+UI ->> API: createRubricDraft payload rationale sources
+API ->> ETH: createRubricDraft payload
+ETH -->> SEC: log draft created
+
+%% -------- Impact preview and KPI simulation --------
+UI ->> API: requestImpactPreview draftId
+API ->> MET: simulate rubric impact draftId window
+MET -->> API: preview kpi deltas sri sensitivity
+API -->> UI: show preview and risks
+
+%% -------- Governance proposal for versioning --------
+UI ->> API: submitRubricForVersioning draftId
+API ->> GOV: createProposal rubric versioning draftId
+GOV -->> MET: GovernanceProposalCreated DDD EVT 05
+GOV -->> SEC: log proposal created
+
+loop voting window
+  R ->> UI: cast vote
+  UI ->> API: vote proposalId weight
+  API ->> GOV: recordVote proposalId voter weight
+  GOV -->> MET: VoteCast DDD EVT 06
+end
+
+API ->> GOV: closeAndTally proposalId
+GOV -->> MET: VoteTallied DDD EVT 07
+
+alt approved
+  GOV ->> ETH: authorizeRubricVersioning draftId
+  ETH ->> ETH: finalize rubric and bump version
+  ETH -->> MET: RubricVersioned DDD EVT 51
+  MET -->> MET: KPIUpdated DDD EVT 26
+  GOV -->> MET: DecisionRecorded DDD EVT 08
+else rejected
+  GOV -->> SEC: log rejection
+  API -->> UI: rubric versioning rejected
+  UI -->> R: show guidance
+end
+
+%% -------- Manifesto version publication --------
+opt publish manifesto version
+  ETH ->> ID: registerManifestoVersion version hash refs
+  ID -->> ETH: manifesto version registered
+  ETH -->> MET: ManifestoVersionPublished DDD EVT 52
+  MET -->> MET: KPIUpdated DDD EVT 26
+end
+
+%% -------- Rollout to services and hubs --------
+ETH ->> HUB: broadcast manifesto version pin
+HUB -->> MET: publish rollout status KPIUpdated DDD EVT 26
+ETH ->> GOV: notify policy and guardrails updated
+GOV -->> MET: KPIUpdated DDD EVT 26
+SEC ->> SEC: persist version and hash attestations
+
+%% -------- Completion --------
+API -->> UI: show new rubric version and manifesto link
+UI -->> R: display rollout status and impact charts
+
+%% Notes
+Note over ETH,MET: RubricVersioned DDD EVT 51 marks the new rubric version
+Note over ETH,ID: ManifestoVersionPublished DDD EVT 52 records canonical version and hash
+Note over GOV: DecisionRecorded DDD EVT 08 confirms governance approval

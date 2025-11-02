@@ -34,5 +34,8 @@
     "coherosphere",
     "architecture",
     "documentation"
-  ]
+  ],
+  "devDependencies": {
+    "@docusaurus/plugin-client-redirects": "^3.9.2"
+  }
 }

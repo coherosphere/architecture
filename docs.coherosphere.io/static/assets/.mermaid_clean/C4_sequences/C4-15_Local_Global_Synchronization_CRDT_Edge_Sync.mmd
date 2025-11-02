@@ -1,0 +1,86 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor E as Edge Hub Agent
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant HUB as C2-06 Local Hub and Federation
+  participant MET as C2-07 Metrics and Analytics
+  participant GOV as C2-03 Governance and DAO
+  participant ETH as C2-08 Ethics Guard
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Preflight and version checks --------
+E ->> UI: open sync console
+UI ->> API: getSyncStatus hubId
+API ->> HUB: fetchSyncCursor hubId
+HUB -->> API: syncCursor manifests policyVersion
+API -->> UI: show status and policyVersion
+UI ->> API: preflight versions
+API ->> GOV: getParams versions lambda alpha q theta
+API ->> ETH: getManifestoVersion and rubric hash
+GOV -->> API: params versions
+ETH -->> API: manifesto version and hash
+
+%% -------- Request sync from edge to global --------
+E ->> UI: start sync now
+UI ->> API: POST hubs sync request
+API ->> HUB: beginSync hubId cursor deltas
+HUB -->> MET: event SyncRequested DDD EVT 41
+HUB -->> SEC: audit sync start hubId cursor
+
+%% -------- Chunked delta transfer and CRDT merge --------
+loop each delta chunk
+  API ->> HUB: pushDelta chunk vectorClock
+  HUB ->> HUB: crdtMerge chunk resolve with LWW and dot clocks
+  alt ethical constraint triggered
+    HUB ->> ETH: validate alignment on merged ops
+    ETH -->> HUB: guidance or block
+  end
+end
+HUB -->> MET: event SyncMerged DDD EVT 42
+HUB -->> SEC: record merge summary
+
+%% -------- Push merged state back to edge --------
+HUB ->> API: deliverMergedState snapshot and opset
+API -->> UI: merged state ready
+UI -->> E: apply merged state and advance cursor
+E ->> E: persist snapshot and cursor
+
+%% -------- Confirmation and health signal --------
+E ->> API: ACK sync confirmed
+API ->> HUB: confirmSync hubId cursor
+HUB -->> MET: event SyncConfirmed DDD EVT 43
+HUB -->> MET: publish HubSignal DDD EVT 14
+MET -->> MET: event KPIUpdated DDD EVT 26
+
+%% -------- Optional policy or rubric roll forward --------
+alt policy or rubric version behind
+  UI ->> API: request policy and rubric rollout
+  API ->> GOV: notify rollout to hub
+  API ->> ETH: notify manifesto version pin
+  GOV -->> HUB: broadcast PolicyChanged DDD EVT 10
+  ETH -->> HUB: broadcast Manifesto version pin
+  HUB -->> MET: publish rollout status KPIUpdated DDD EVT 26
+end
+
+%% -------- Completion and transparency --------
+SEC ->> SEC: persist sync transparency logs
+API -->> UI: show sync complete with cursor and versions
+UI -->> E: display success and next scheduled window
+
+%% Notes
+Note over HUB,MET: SyncRequested DDD EVT 41 SyncMerged DDD EVT 42 SyncConfirmed DDD EVT 43
+Note over HUB,ETH: Ethics guard may block or annotate specific ops during merge
+Note over HUB,MET: HubSignal DDD EVT 14 updates federation health

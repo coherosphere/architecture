@@ -1,0 +1,100 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor O as C1-02 Observer or Operator
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant MET as C2-07 Metrics and Analytics
+  participant RS as C2-01 Resonance Service
+  participant ETH as C2-08 Ethics Guard
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant POC as C2-02 Proof of Contribution
+end
+
+box #e5e7eb Security
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Continuous monitoring --------
+RS ->> MET: push resonance aggregates
+POC ->> MET: push CP and W deltas
+TRE ->> MET: push funding signals
+MET ->> MET: compute sri and kpis
+MET -->> MET: event KPIUpdated DDD EVT 26
+MET -->> MET: event SRIComputed DDD EVT 27
+
+%% -------- Detect coherence drop --------
+alt sri below threshold or fast negative slope
+  MET ->> SEC: log anomaly with context
+  MET -->> GOV: CoherenceDropDetected DDD EVT 45
+  MET -->> UI: emit alert to dashboards
+else normal
+  MET ->> MET: continue monitoring
+end
+
+%% -------- Ethics and root cause analysis --------
+API ->> ETH: request alignment analysis window refs
+ETH ->> ETH: analyze rubric drift and hot spots
+ETH -->> MET: publish alignment deltas
+MET -->> MET: event KPIUpdated DDD EVT 26
+ETH -->> GOV: RealignmentRecommended DDD EVT 46 with options
+
+%% -------- Governance decision on mitigation --------
+UI ->> API: open mitigation proposal wizard
+API ->> GOV: createProposal mitigation options
+GOV -->> MET: GovernanceProposalCreated DDD EVT 05
+
+loop voting window
+  O ->> UI: cast vote
+  UI ->> API: vote proposalId weight
+  API ->> GOV: recordVote
+  GOV -->> MET: VoteCast DDD EVT 06
+end
+
+API ->> GOV: closeAndTally proposalId
+GOV -->> MET: VoteTallied DDD EVT 07
+
+alt approved mitigation
+  GOV -->> MET: DecisionRecorded DDD EVT 08
+  GOV -->> ETH: instruct rubric change or guardrails
+  GOV -->> RS: adjust runtime parameters temporary caps
+  GOV -->> POC: adjust decay or weight policy
+  GOV -->> TRE: apply funding throttles or reweight envelopes
+  ETH -->> GOV: RealignmentApplied DDD EVT 47
+  %% optional when parameters versioned
+  GOV -->> POC: ParamsVersioned DDD EVT 22
+  GOV -->> TRE: ParamsVersioned DDD EVT 22
+else rejected mitigation
+  GOV -->> SEC: log rejection and rationale
+  UI -->> O: show rejection and guidance
+end
+
+%% -------- Post change monitoring --------
+RS ->> MET: push new aggregates after changes
+POC ->> MET: push new CP W deltas
+TRE ->> MET: push budget signals
+MET ->> MET: recompute sri
+MET -->> MET: KPIUpdated DDD EVT 26
+MET -->> MET: SRIComputed DDD EVT 27
+
+alt sri recovers
+  MET ->> GOV: signal version rollout complete
+else persistent drop
+  MET ->> GOV: signal follow up needed
+end
+
+%% -------- Transparency and closure --------
+SEC ->> SEC: persist incident and mitigation logs
+API -->> UI: show mitigation status sri trend and links
+UI -->> O: display recovery status and evidence

@@ -1,0 +1,40 @@
+{
+  "$id": "https://schemas.coherosphere.io/events/metrics/SRIComputed.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Metrics.SRIComputed",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "sri": {
+      "type": "number"
+    },
+    "window": {
+      "type": "string",
+      "enum": [
+        "1h",
+        "24h",
+        "7d",
+        "30d"
+      ]
+    },
+    "basis": {
+      "type": "string",
+      "enum": [
+        "events",
+        "projects",
+        "hubs"
+      ]
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "sri",
+    "window",
+    "basis",
+    "at"
+  ],
+  "additionalProperties": false
+}

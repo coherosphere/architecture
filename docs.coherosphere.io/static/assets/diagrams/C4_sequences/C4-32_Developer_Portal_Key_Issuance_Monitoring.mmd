@@ -1,0 +1,107 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+sequenceDiagram
+autonumber
+
+actor DEV as C1-07 Developer
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI (Dev Portal)
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant ID as C2-05 Identity & Reputation (PoCI)
+  participant SEC as C2-10 Security & Audit
+  participant MET as C2-07 Metrics & Analytics
+  participant GOV as C2-03 Governance & DAO
+end
+
+%% -------- Sign-in and org verification --------
+DEV ->> UI: sign in (DID / OAuth)
+UI ->> API: verifySession()
+API ->> ID: verifyDeveloperIdentity()
+ID -->> API: IdentityVerified (DDD EVT 16)
+API -->> UI: session established
+
+%% -------- Request API key with scopes --------
+DEV ->> UI: request API key (scopes, quotas)
+UI ->> API: POST /dev/keys (scopes, limits, purpose)
+API ->> SEC: policyCheck(scopes, risk)
+alt policy denies
+  SEC -->> API: deny(reason)
+  API -->> UI: request rejected (guidance)
+else policy ok
+  SEC -->> API: allow
+  API ->> SEC: mintKey(material, jwk, scopes, ttl)
+  SEC -->> API: key(handle, fingerprint, expiresAt)
+  API -->> MET: event APIKeyIssued (DDD EVT 70)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+  API -->> UI: show key (once), client config, scopes
+end
+
+%% -------- Telemetry & monitoring enrollment --------
+UI ->> API: enable monitoring (service, env)
+API ->> MET: registerTelemetryStream(devId, service)
+MET -->> API: streamId, endpoints, token
+API -->> MET: event TelemetryStreamStarted (DDD EVT 72)
+MET -->> MET: event KPIUpdated (DDD EVT 26)
+API -->> UI: monitoring endpoints + token
+
+%% -------- Usage and quota updates --------
+loop periodic usage aggregation
+  API ->> MET: usage metrics (calls, p95, errors)
+  MET ->> MET: compute quotas & SLO deltas
+  alt quota adjustment
+    MET -->> API: quotaDelta(new limits)
+    API -->> MET: event QuotaUpdated (DDD EVT 73)
+    MET -->> MET: event KPIUpdated (DDD EVT 26)
+  end
+end
+
+%% -------- Rotation, suspension, revocation --------
+opt key rotation
+  DEV ->> UI: rotate key
+  UI ->> API: POST /dev/keys/{id}/rotate
+  API ->> SEC: rotateAndInvalidate(oldKey)
+  SEC -->> API: newKey(handle, fingerprint)
+  API -->> UI: show new key (once)
+end
+
+alt suspicious activity detected
+  SEC ->> SEC: flag key (anomaly rules)
+  SEC ->> API: suspendKey(id, reason)
+  API -->> UI: notify suspension
+end
+
+opt manual revoke by developer
+  DEV ->> UI: revoke key
+  UI ->> API: DELETE /dev/keys/{id}
+  API ->> SEC: revokeKey(id)
+  SEC -->> API: revoked
+  API -->> MET: event APIKeyRevoked (DDD EVT 71)
+  MET -->> MET: event KPIUpdated (DDD EVT 26)
+  API -->> UI: key revoked confirmation
+end
+
+%% -------- Governance hooks (optional) --------
+opt governance-controlled scopes
+  API ->> GOV: request approval (elevated scopes)
+  GOV -->> MET: GovernanceProposalCreated (DDD EVT 05)
+  %% voting window omitted for brevity
+  GOV -->> API: approve/deny elevated scopes
+end
+
+%% -------- Observability & audit --------
+API ->> SEC: trace (keyId, scopes, actions)
+SEC ->> SEC: persist audit trail (hashes, signatures)
+
+%% -------- Completion --------
+UI -->> DEV: ready-to-use key, monitoring enabled, quotas visible
+
+%% Notes
+Note over API,MET: APIKeyIssued (DDD EVT 70), APIKeyRevoked (DDD EVT 71), QuotaUpdated (DDD EVT 73)
+Note over MET: TelemetryStreamStarted (DDD EVT 72) begins streaming usage to dashboards
+Note over SEC: All key lifecycle actions are auditable and signed

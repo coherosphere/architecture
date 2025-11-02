@@ -1,0 +1,99 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor PS as Project Steward
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board UI
+end
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant HUB as C2-06 Local Hub and Federation
+  participant GOV as C2-03 Governance and DAO
+  participant TRE as C2-04 Treasury and Funding
+  participant POC as C2-02 Proof of Contribution
+  participant MET as C2-07 Metrics and Analytics
+  participant ETH as C2-08 Ethics Guard
+  participant SEC as C2-10 Security and Audit
+end
+
+%% -------- Project initiation --------
+PS ->> UI: create project proposal metadata goals budget
+UI ->> API: POST projects create
+API ->> ETH: preflightAlignment project profile and intents
+ETH -->> API: AlignmentChecked DDD EVT 03 with guidance
+
+alt alignment ok
+  API ->> HUB: registerProject payload and attestations
+  HUB -->> API: projectId issued
+  HUB -->> MET: ProjectCreated DDD EVT 12
+  MET -->> MET: KPIUpdated DDD EVT 26
+else alignment failed
+  API -->> UI: creation rejected with guidance
+  UI -->> PS: show rejection and remediation
+  %% stop here on failure
+end
+
+%% -------- Optional governance approval path --------
+opt governance approval required
+  API ->> GOV: submitProjectForApproval projectId
+  GOV -->> MET: ProjectApproved pending signal
+  GOV ->> GOV: evaluate and vote per policy
+  GOV -->> MET: ProjectApproved DDD EVT 11
+end
+
+%% -------- Funding setup --------
+opt grant or stream setup
+  GOV ->> TRE: allocate budget envelope for project
+  TRE -->> MET: FundingAllocated DDD EVT 19
+  MET -->> MET: KPIUpdated DDD EVT 26
+  TRE ->> SEC: audit grant or stream setup
+end
+
+%% -------- Milestone reporting and validation --------
+loop each milestone
+  PS ->> UI: submit milestone report refs evidence
+  UI ->> API: POST projects milestone report
+  API ->> POC: ingest contributions and evidence
+  POC -->> MET: ImpactScored DDD EVT 02
+  POC -->> MET: AlignmentChecked DDD EVT 03
+  MET -->> MET: KPIUpdated DDD EVT 26
+
+  alt milestone accepted
+    POC -->> HUB: milestone accepted
+    TRE ->> TRE: release payout tranche if configured
+    TRE -->> SEC: audit payout
+    TRE -->> MET: FundingAllocated DDD EVT 19
+    MET -->> MET: KPIUpdated DDD EVT 26
+    HUB -->> MET: MilestoneReported DDD EVT 13
+  else milestone rejected
+    HUB -->> PS: request changes
+    SEC -->> HUB: record variance note
+  end
+end
+
+%% -------- Completion and archival --------
+alt all milestones completed
+  HUB ->> HUB: mark project complete
+  HUB -->> MET: ProjectCompleted DDD EVT 40
+  MET -->> MET: KPIUpdated DDD EVT 26
+  SEC ->> SEC: store final dossier and hashes
+else early termination
+  GOV ->> HUB: terminate project policy or failure
+  SEC -->> GOV: record termination
+end
+
+%% -------- Transparency and closure --------
+API -->> UI: show project status budgets payouts kpis
+UI -->> PS: display completion and links to reports
+
+%% Notes
+Note over HUB,MET: ProjectCreated DDD EVT 12 and MilestoneReported DDD EVT 13 drive lifecycle KPIs
+Note over TRE,MET: FundingAllocated DDD EVT 19 emitted on each approved payout
+Note over HUB,MET: ProjectCompleted DDD EVT 40 marks closure of the project

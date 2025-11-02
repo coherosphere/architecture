@@ -1,0 +1,60 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor S as Steward / SRE (C1-02)
+
+box #ff8b00 Core Services
+  participant SEC as C2-10 Security & Audit
+  participant TRE as C2-04 Treasury & Funding
+end
+
+%% Detection
+S ->> SEC: review risk dashboard (policy thresholds)
+SEC ->> SEC: evaluate SIEM signals, anomaly scores
+
+alt threshold breached
+  SEC -->> SEC: RiskThresholdBreachDetected (DDD EVT 83)
+  note right of SEC: Guardrails require pausing one or more streams
+
+else
+  note right of SEC: Continue monitoring
+
+end
+
+%% Pause flow
+alt breach confirmed AND active streams exist
+  SEC ->> TRE: pauseStream(streamId, reason, evidenceRef)
+  TRE ->> TRE: halt disbursement on escrow/stream
+  TRE -->> SEC: streamPaused(ack)
+  SEC -->> SEC: FundingStreamPaused (DDD EVT 84)
+  note over SEC,TRE: Payouts halted until risk cleared
+
+end
+
+%% Steward acknowledgement
+S ->> SEC: acknowledge pause (ticket linked)
+SEC -->> S: status: paused, evidence, next review window
+
+%% Monitoring loop (risk review)
+loop periodic risk review
+  SEC ->> SEC: reassess signals, incidents, mitigations
+
+  alt risk cleared
+    SEC -->> SEC: RiskCleared (DDD EVT 85)
+    SEC ->> TRE: resumeStream(streamId, rationale)
+    TRE ->> TRE: resume disbursement
+    TRE -->> SEC: streamResumed(ack)
+    SEC -->> SEC: FundingStreamResumed (DDD EVT 86)
+    note over SEC,TRE: Stream successfully resumed
+
+else
+  %% keep stream paused; retain evidence
+end
+
+end
+
+%% Completion
+SEC -->> S: final status (resumed or escalation)
+note over SEC: All actions audited with hashes/signatures

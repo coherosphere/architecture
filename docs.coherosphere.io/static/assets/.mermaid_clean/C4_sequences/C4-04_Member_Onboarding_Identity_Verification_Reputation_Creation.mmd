@@ -1,0 +1,54 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor M as C1-02 Member / Contributor
+
+box #8b5cf6 UI (🟪)
+  participant UI as C2-12 Resonance Board / UI
+end
+
+box #fde68a Control / API (🟨)
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services (🟧)
+  participant ID as C2-05 Identity (PoCI)
+  participant ETH as C2-08 Manifesto & Ethics Guard
+  participant GOV as C2-03 Governance & DAO
+  participant MET as C2-07 Metrics / Analytics
+end
+
+%% -------- Onboarding start --------
+M ->> UI: Start onboarding (profile, consent)
+UI ->> API: registerMember(profile, consent)
+
+%% -------- DID creation & credentials --------
+API ->> ID: createDID(memberProfile)
+ID -->> API: didCreated(DID)
+API ->> ID: issueCredentials(DID, baseVCs)
+ID -->> UI: deliverWalletCreds(VC pack)
+ID -->> MET: event ReputationUpdated (baseline)
+
+%% -------- Ethics preflight --------
+API ->> ETH: preflightAlignment(profile, intents)
+ETH -->> API: AlignmentChecked / Guidance
+
+%% -------- Identity verification (path based) --------
+alt Evidence required (eKYC / attestations)
+  API ->> ID: verifyEvidence(DID, refs)
+  ID -->> API: IdentityVerified (strong)
+else Minimal verification
+  ID -->> API: IdentityVerified (light)
+end
+
+%% -------- Governance registration (optional) --------
+API ->> GOV: registerMemberForVoting(DID)
+GOV -->> MET: event ProposalEligibilityUpdated
+
+%% -------- Completion --------
+API -->> UI: onboardingStatus=Completed
+UI -->> M: Show welcome & reputation baseline
+
+note over UI,MET: Outcome → DID created, credentials issued, identity verified, ethics preflight passed, metrics updated (baseline reputation).

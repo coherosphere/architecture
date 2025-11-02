@@ -1,0 +1,112 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor X as External Client (App or SDK)
+
+box #fde68a Control or API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant ID as C2-05 Identity & Reputation (PoCI)
+  participant RS as C2-01 Resonance Service
+  participant POC as C2-02 Proof of Contribution
+  participant GOV as C2-03 Governance & DAO
+  participant TRE as C2-04 Treasury & Funding
+  participant HUB as C2-06 Local Hub / Federation
+  participant MET as C2-07 Metrics & Analytics
+  participant ETH as C2-08 Manifesto & Ethics Guard
+  participant KG as C2-09 Knowledge Graph
+  participant SEC as C2-10 Security & Audit
+end
+
+%% -------- Request arrival --------
+X ->> API: HTTP or GraphQL request (query, vars, auth)
+
+%% -------- Gateway preflight --------
+API ->> API: validate token (JWKS) and scopes
+API ->> API: apply rate limit and quotas
+API ->> API: JSON schema validation and input shaping
+
+alt rate limit exceeded
+  API -->> X: 429 Too Many Requests (retry headers)
+  API ->> SEC: audit reject (rate limit)
+  note right of API: terminate request
+end
+
+alt auth failure or schema invalid
+  API -->> X: 401 or 400 (problem JSON)
+  API ->> SEC: audit reject (auth/schema)
+  note right of API: terminate request
+end
+
+%% -------- Cache and composition --------
+API ->> API: check response cache
+alt cache hit
+  API -->> X: 200 OK (cached)
+  API ->> SEC: audit cache serve
+else cache miss
+  API ->> API: build composition plan (fields→services)
+end
+
+%% -------- Fan-out to services --------
+par metrics and resonance
+  API ->> MET: fetch KPIs, SRI
+  API ->> RS: fetch resonance aggregates
+and contributions and identity
+  API ->> POC: fetch contributions, weights
+  API ->> ID: fetch DIDs, attestations
+and governance and treasury
+  API ->> GOV: fetch proposals, votes, decisions
+  API ->> TRE: fetch budgets, payouts
+and hubs and knowledge and ethics
+  API ->> HUB: fetch hub states
+  API ->> KG: fetch knowledge context
+  API ->> ETH: fetch ethics rubric
+end
+
+%% -------- Responses and aggregation --------
+par service responses
+  MET -->> API: metrics data
+  RS -->> API: resonance data
+  POC -->> API: contributions
+  ID -->> API: credentials
+  GOV -->> API: governance state
+  TRE -->> API: treasury data
+  HUB -->> API: hub snapshots
+  KG -->> API: knowledge data
+  ETH -->> API: ethics info
+end
+
+API ->> API: compose payload, redact, paginate
+API ->> API: store cache entry (TTL)
+
+%% -------- Observability --------
+API ->> SEC: emit trace, timings, correlation id
+
+%% -------- Response --------
+API -->> X: 200 OK (aggregated response)
+
+alt partial failure downstream
+  API ->> SEC: log partial errors, affected services
+  API -->> X: 206 Partial Content (warnings array)
+end
+
+alt total failure downstream
+  API ->> SEC: record fatal error and correlation id
+  API -->> X: 502 Bad Gateway (problem JSON)
+end
+
+%% -------- Realtime (optional) --------
+opt realtime subscription
+  X ->> API: subscribe(channel=SRI)
+  API ->> MET: registerStream
+  MET -->> API: update(diff patch)
+  API -->> X: push delta over SSE/WebSocket
+end
+
+%% Notes
+Note over API: The gateway orchestrates auth, schema, composition, caching, and observability
+Note over SEC: Every outcome is traced and logged for auditability

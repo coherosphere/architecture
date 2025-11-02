@@ -1,0 +1,87 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+actor M as C1-02 Member / Data Subject
+
+box #8b5cf6 UI
+  participant UI as C2-12 Resonance Board / UI (Privacy Center)
+end
+
+box #fde68a Control / API
+  participant API as C2-11 Public API Gateway
+end
+
+box #ff8b00 Core Services
+  participant ID as C2-05 Identity & Reputation (PoCI)
+  participant POC as C2-02 Proof of Contribution
+  participant RS as C2-01 Resonance Service
+  participant MET as C2-07 Metrics / Analytics
+  participant KG as C2-09 Knowledge Graph
+  participant GOV as C2-03 Governance & DAO
+end
+
+box #e5e7eb Security / Compliance
+  participant SEC as C2-10 Security & Audit (Compliance)
+end
+
+%% -------- DSAR intake --------
+M ->> UI: Submit DSAR (Access or Erasure)
+UI ->> API: POST /privacy/dsar {type, scope}
+API ->> ID: verifyIdentity(DID, credentials)
+ID -->> API: IdentityVerified (DDD EVT 16)
+API -->> SEC: DSARRequested (DDD EVT 79)
+SEC ->> SEC: open compliance case, assign SLA timer
+
+%% -------- Scope discovery --------
+API ->> SEC: getPolicyScope(scope)
+SEC -->> API: policy & data sources
+API ->> API: expand DSAR to relevant containers (POC, RS, MET, KG)
+
+%% -------- Access Request path --------
+alt DSAR.type == ACCESS
+  par collect user data
+    POC ->> POC: aggregate contributions, impact, CP/W
+    POC -->> API: contribution data
+    RS ->> RS: retrieve resonance samples (R = I × A × e^(−λΔt))
+    RS -->> API: resonance data
+    MET ->> MET: gather KPIs and time series
+    MET -->> API: KPI data
+    KG ->> KG: export semantic entries & embeddings
+    KG -->> API: knowledge data
+  end
+  API ->> SEC: sanitize / redact (3rd-party or sensitive)
+  SEC -->> API: sanitized dataset
+  API -->> SEC: DataPackagePrepared (DDD EVT 80)
+  SEC -->> UI: deliver secure download link
+  UI -->> M: notify and show access package
+else DSAR.type == ERASURE
+  %% -------- Erasure path --------
+  API ->> GOV: check legal holds / governance exemptions
+  alt Exemption exists
+    GOV -->> API: denyErasure(reason)
+    API -->> UI: notify denial & appeal path
+    SEC ->> SEC: record denial log
+  else proceed with deletion
+    par delete data
+      POC ->> POC: remove or anonymize CP/W history
+      RS ->> RS: purge resonance records
+      MET ->> MET: purge related KPIs
+      KG ->> KG: remove personal nodes
+    end
+    SEC ->> SEC: verify deletion & evidence log
+    SEC -->> API: ErasureCompleted (DDD EVT 81)
+    API -->> UI: show confirmation
+  end
+end
+
+%% -------- Case closure --------
+SEC ->> SEC: close DSAR case (audit, signatures)
+SEC -->> MET: DSARClosed (DDD EVT 82)
+MET -->> MET: KPIUpdated (DDD EVT 26)
+API -->> UI: show completion summary
+
+Note over SEC: DSARRequested (79) opens compliance case
+Note over SEC,API: DataPackagePrepared (80) for access, ErasureCompleted (81) for erasure
+Note over MET: DSARClosed (82) triggers compliance KPI update

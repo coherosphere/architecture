@@ -1,0 +1,120 @@
+- zone: coherosphere.com
+  name: '@'
+  type: A
+  value: 203.0.113.10
+  ttl: 300
+  note: Landing page IP (replace)
+- zone: coherosphere.com
+  name: '@'
+  type: AAAA
+  value: 2001:db8::10
+  ttl: 300
+  note: Landing page IPv6 (replace)
+- zone: coherosphere.com
+  name: app
+  type: CNAME
+  value: YOUR-BASE44-TARGET.example.com.
+  ttl: 300
+  note: Base44 app target CNAME
+- zone: coherosphere.io
+  name: api
+  type: CNAME
+  value: api-lb.your-cloud.example.com.
+  ttl: 60
+  note: API LB hostname
+- zone: coherosphere.io
+  name: staging.api
+  type: CNAME
+  value: staging-api-lb.your-cloud.example.com.
+  ttl: 60
+  note: Staging API LB hostname
+- zone: coherosphere.io
+  name: docs
+  type: CNAME
+  value: your-gh-pages.example.com.
+  ttl: 300
+  note: Docs (Pages)
+- zone: coherosphere.io
+  name: schemas
+  type: CNAME
+  value: schemas-cdn.your-cloud.example.com.
+  ttl: 300
+  note: Schemas CDN
+- zone: coherosphere.io
+  name: status
+  type: CNAME
+  value: status.uptimerobot.com.
+  ttl: 300
+  note: Status provider
+- zone: coherosphere.io
+  name: governance
+  type: CNAME
+  value: governance-ui.your-cloud.example.com.
+  ttl: 300
+  note: Governance portal
+- zone: coherosphere.io
+  name: dev
+  type: CNAME
+  value: dev-portal.your-cloud.example.com.
+  ttl: 300
+  note: Dev portal
+- zone: coherosphere.io
+  name: events
+  type: CNAME
+  value: events-broker.your-cloud.example.com.
+  ttl: 60
+  note: Event broker
+- zone: coherosphere.io
+  name: metric
+  type: CNAME
+  value: grafana.your-cloud.example.com.
+  ttl: 300
+  note: Metrics (or use 'metrics')
+- zone: coherosphere.io
+  name: audit
+  type: CNAME
+  value: audit-logs.your-cloud.example.com.
+  ttl: 300
+  note: Audit logs
+- zone: coherosphere.io
+  name: chat
+  type: CNAME
+  value: chat.copilot.example.com.
+  ttl: 300
+  note: Chat/Copilot
+- zone: coherosphere.io
+  name: data
+  type: CNAME
+  value: datalake.your-cloud.example.com.
+  ttl: 300
+  note: Data lake
+- zone: coherosphere.io
+  name: ai
+  type: CNAME
+  value: ai-semantic.your-cloud.example.com.
+  ttl: 300
+  note: AI layer
+- zone: coherosphere.io
+  name: '@'
+  type: CAA
+  value: 0 issue "letsencrypt.org"
+  ttl: 86400
+  note: CAA LE
+- zone: coherosphere.io
+  name: '@'
+  type: TXT
+  value: v=spf1 -all
+  ttl: 86400
+  note: SPF none
+- zone: coherosphere.com
+  name: '@'
+  type: CAA
+  value: 0 issue "letsencrypt.org"
+  ttl: 86400
+  note: CAA LE
+- zone: coherosphere.com
+  name: '@'
+  type: TXT
+  value: v=spf1 -all
+  ttl: 86400
+  note: SPF none

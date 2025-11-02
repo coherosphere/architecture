@@ -1,0 +1,40 @@
+{
+  "$id": "https://schemas.coherosphere.io/events/treasury/StreamCreated.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Treasury.StreamCreated",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "streamId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "projectId": {
+      "$ref": "../_meta/common.json#/$defs/ID"
+    },
+    "amount": {
+      "$ref": "../_meta/common.json#/$defs/Money"
+    },
+    "cadence": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "daily",
+        "weekly",
+        "monthly",
+        "milestone"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "streamId",
+    "projectId",
+    "amount",
+    "cadence",
+    "createdAt"
+  ],
+  "additionalProperties": false
+}

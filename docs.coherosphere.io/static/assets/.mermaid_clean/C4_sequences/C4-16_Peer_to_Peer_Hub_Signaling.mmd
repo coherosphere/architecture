@@ -1,0 +1,99 @@
+%%{init: {'theme':'base','themeVariables':{ 'sequenceNumberColor':'#334155'}}}%%
+
+sequenceDiagram
+autonumber
+
+box #8b5cf6 UI
+  participant UIA as C2-12 Resonance Board UI Hub A
+  participant UIB as C2-12 Resonance Board UI Hub B
+end
+
+box #ff8b00 Core Services
+  participant HUBA as C2-06 Local Hub and Federation A
+  participant HUBB as C2-06 Local Hub and Federation B
+  participant META as C2-07 Metrics and Analytics
+  participant SECA as C2-10 Security and Audit A
+  participant SECB as C2-10 Security and Audit B
+end
+
+box #e5e7eb Transport
+  participant BUS as Federation Transport P2P channel
+end
+
+%% -------- Establish link and capabilities --------
+UIA ->> HUBA: open federation console
+HUBA ->> BUS: initiatePeerLink offer caps versions
+BUS ->> HUBB: deliverPeerOffer
+HUBB ->> HUBB: validate caps and versions
+HUBB ->> BUS: acceptPeerLink and session keys
+BUS ->> HUBA: linkEstablished
+HUBA -->> SECA: audit link established
+HUBB -->> SECB: audit link established
+
+%% -------- Periodic health and resonance signals --------
+loop heartbeat interval
+  HUBA ->> BUS: send HubSignal metrics latency sri window
+  BUS ->> HUBB: forward HubSignal
+  HUBB -->> META: event HubSignal DDD EVT 14
+  META -->> META: event KPIUpdated DDD EVT 26
+
+  HUBB ->> BUS: send HubSignal metrics latency sri window
+  BUS ->> HUBA: forward HubSignal
+  HUBA -->> META: event HubSignal DDD EVT 14
+  META -->> META: event KPIUpdated DDD EVT 26
+end
+
+%% -------- Degradation detection and peer alert --------
+alt degradation detected at Hub B
+  HUBB ->> HUBB: detect packet loss or coherence drop
+  HUBB ->> BUS: send PeerAlert status degraded
+  BUS ->> HUBA: deliver PeerAlert
+  HUBA -->> META: event PeerAlert DDD EVT 44
+  HUBA -->> SECA: record peer alert and context
+else normal
+  HUBA ->> HUBA: update peer health registry
+end
+
+%% -------- Optional rate and backpressure control --------
+alt high load on Hub A
+  HUBA ->> BUS: throttle request new interval
+  BUS ->> HUBB: apply throttle
+  HUBB ->> HUBB: adjust heartbeat interval
+else balanced
+  HUBA ->> HUBA: keep current interval
+end
+
+%% -------- Optional failover path --------
+alt peer unresponsive
+  HUBA ->> BUS: ping and retry
+  BUS ->> HUBA: timeout
+  HUBA -->> SECA: open incident and timer
+  SECA ->> SECA: correlate with local anomalies
+  SECA -->> META: publish incident kpi update
+  META -->> META: event KPIUpdated DDD EVT 26
+else responsive
+  HUBA ->> HUBA: clear incident timers
+end
+
+%% -------- UI updates --------
+META -->> UIA: stream health and sri charts
+META -->> UIB: stream health and sri charts
+
+%% -------- Close or rotate session --------
+opt rotate session keys
+  HUBA ->> BUS: rotateKeys request
+  BUS ->> HUBB: rotateKeys execute
+  HUBB -->> SECB: audit key rotation
+  HUBA -->> SECA: audit key rotation
+end
+
+%% -------- Completion --------
+HUBA ->> BUS: closePeerLink
+BUS ->> HUBB: notify link closed
+HUBA -->> SECA: audit link closed
+HUBB -->> SECB: audit link closed
+
+%% Notes
+Note over HUBA,HUBB: HubSignal DDD EVT 14 carries health resonance and latency fields
+Note over HUBA,META: KPIUpdated DDD EVT 26 emitted on each processed signal batch
+Note over HUBA: PeerAlert DDD EVT 44 indicates degradation or policy breach on peer

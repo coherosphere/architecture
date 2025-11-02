@@ -1,0 +1,185 @@
+# Architecture Assets Manifest
+_Last update_: 2025-11-02T03:21:27.882119Z
+
+## Diagrams
+
+| File | Path |
+|---|---|
+| C1_Stakeholders.mmd | assets/diagrams/C1_system/C1_Stakeholders.mmd |
+| C1_System_Context_Diagram.mmd | assets/diagrams/C1_system/C1_System_Context_Diagram.mmd |
+| C1_Trust_Boundaries.mmd | assets/diagrams/C1_system/C1_Trust_Boundaries.mmd |
+| C2_API_Surface.mmd | assets/diagrams/C2_containers/C2_API_Surface.mmd |
+| C2_Container_Diagram.mmd | assets/diagrams/C2_containers/C2_Container_Diagram.mmd |
+| C2_Dataflow.mmd | assets/diagrams/C2_containers/C2_Dataflow.mmd |
+| C2_Deployment.mmd | assets/diagrams/C2_containers/C2_Deployment.mmd |
+| C2-01_Resonance_Service.mmd.mmd | assets/diagrams/C3_containers/C2-01_Resonance_Service.mmd.mmd |
+| C2-02_Proof_of_Contribution.mmd | assets/diagrams/C3_containers/C2-02_Proof_of_Contribution.mmd |
+| C2-03_Governance_DAO_Service.mmd | assets/diagrams/C3_containers/C2-03_Governance_DAO_Service.mmd |
+| C2-04_Treasury_Funding_Service.mmd | assets/diagrams/C3_containers/C2-04_Treasury_Funding_Service.mmd |
+| C2-05_Identity_Reputation_PoCI.mmd | assets/diagrams/C3_containers/C2-05_Identity_Reputation_PoCI.mmd |
+| C2-06_Local_Hub_Federation_Service.mmd | assets/diagrams/C3_containers/C2-06_Local_Hub_Federation_Service.mmd |
+| C2-07_Resonance_Metric_Stack.mmd | assets/diagrams/C3_containers/C2-07_Resonance_Metric_Stack.mmd |
+| C2-08_Manifesto_Ethics_Guard_Service.mmd | assets/diagrams/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd |
+| C2-09_Knowledge_Graph_Collective_Intelligence.mmd | assets/diagrams/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd |
+| C2-10_Security_Audit_Layer.mmd | assets/diagrams/C3_containers/C2-10_Security_Audit_Layer.mmd |
+| C2-11_Public_API_Gateway.mmd | assets/diagrams/C3_containers/C2-11_Public_API_Gateway.mmd |
+| C2-12_Resonance_Board_UI.mmd | assets/diagrams/C3_containers/C2-12_Resonance_Board_UI.mmd |
+| C3_Domain_ERD.mmd | assets/diagrams/C3_models/C3_Domain_ERD.mmd |
+| M-03.02_Appeal_Dispute_Flow.mmd | assets/diagrams/C3_states/M-03.02_Appeal_Dispute_Flow.mmd |
+| SM-01.01_Resonance_Calculation_State.mmd.mmd | assets/diagrams/C3_states/SM-01.01_Resonance_Calculation_State.mmd.mmd |
+| SM-02.01_Contribution_Lifecycle.mmd | assets/diagrams/C3_states/SM-02.01_Contribution_Lifecycle.mmd |
+| SM-02.02_Decay_Recompute_Cycle.mmd | assets/diagrams/C3_states/SM-02.02_Decay_Recompute_Cycle.mmd |
+| SM-03.01_Proposal_Lifecycle.mmd | assets/diagrams/C3_states/SM-03.01_Proposal_Lifecycle.mmd |
+| SM-04.01_Quadratic_Funding_Round.mmd | assets/diagrams/C3_states/SM-04.01_Quadratic_Funding_Round.mmd |
+| SM-04.02_Streaming_Payout_Lifecycle.mmd | assets/diagrams/C3_states/SM-04.02_Streaming_Payout_Lifecycle.mmd |
+| SM-05.01_Identity_Verification_Attestation.mmd | assets/diagrams/C3_states/SM-05.01_Identity_Verification_Attestation.mmd |
+| SM-05.02_Reputation_Update_Cycle.mmd | assets/diagrams/C3_states/SM-05.02_Reputation_Update_Cycle.mmd |
+| SM-06.01_Hub_Sync_State.mmd | assets/diagrams/C3_states/SM-06.01_Hub_Sync_State.mmd |
+| SM-06.02_Project_Lifecycle.mmd | assets/diagrams/C3_states/SM-06.02_Project_Lifecycle.mmd |
+| SM-07.01_Snapshot_KPI_Aggregation.mmd | assets/diagrams/C3_states/SM-07.01_Snapshot_KPI_Aggregation.mmd |
+| SM-08.01_Ethics_Evaluation_Flow.mmd | assets/diagrams/C3_states/SM-08.01_Ethics_Evaluation_Flow.mmd |
+| SM-09.01_Knowledge_Ingestion_Pipeline.mmd | assets/diagrams/C3_states/SM-09.01_Knowledge_Ingestion_Pipeline.mmd |
+| SM-10.01_Incident_Lifecycle.mmd | assets/diagrams/C3_states/SM-10.01_Incident_Lifecycle.mmd |
+| SM-10.02_Transparency_Report_Lifecycle.mmd | assets/diagrams/C3_states/SM-10.02_Transparency_Report_Lifecycle.mmd |
+| State_Machines_Overview..mmd | assets/diagrams/C3_states/State_Machines_Overview..mmd |
+| C4-01_Contribution_PoC_Resonance_Metrics.mmd | assets/diagrams/C4_sequences/C4-01_Contribution_PoC_Resonance_Metrics.mmd |
+| C4-02_Governance_Lifecycle_Proposal_Vote_Execution_Audit.mmd | assets/diagrams/C4_sequences/C4-02_Governance_Lifecycle_Proposal_Vote_Execution_Audit.mmd |
+| C4-03_Quadratic_Funding_Round_Setup_Matching_Payout.mmd | assets/diagrams/C4_sequences/C4-03_Quadratic_Funding_Round_Setup_Matching_Payout.mmd |
+| C4-04_Member_Onboarding_Identity_Verification_Reputation_Creation.mmd | assets/diagrams/C4_sequences/C4-04_Member_Onboarding_Identity_Verification_Reputation_Creation.mmd |
+| C4-05_Contribution_Time_Decay_Recompute_Cycle.mmd | assets/diagrams/C4_sequences/C4-05_Contribution_Time_Decay_Recompute_Cycle.mmd |
+| C4-06_Alignment_Feedback_Loop_AI_Human_Rubric_Update.mmd | assets/diagrams/C4_sequences/C4-06_Alignment_Feedback_Loop_AI_Human_Rubric_Update.mmd |
+| C4-07_Rule_Evolution_Parameter_Versioning_q.mmd | assets/diagrams/C4_sequences/C4-07_Rule_Evolution_Parameter_Versioning_q.mmd |
+| C4-08_Appeal_Dispute_Resolution_Flow.mmd | assets/diagrams/C4_sequences/C4-08_Appeal_Dispute_Resolution_Flow.mmd |
+| C4-09_Policy_Change_Treasury_Hub_Synchronization.mmd | assets/diagrams/C4_sequences/C4-09_Policy_Change_Treasury_Hub_Synchronization.mmd |
+| C4-10_Streaming_Continuous_Payouts_Escrow_Lifecycle.mmd | assets/diagrams/C4_sequences/C4-10_Streaming_Continuous_Payouts_Escrow_Lifecycle.mmd |
+| C4-11_Treasury_Rebalancing_Reserve_Adjustment.mmd | assets/diagrams/C4_sequences/C4-11_Treasury_Rebalancing_Reserve_Adjustment.mmd |
+| C4-12_Funding_Audit_Transparency_Report_Publication.mmd | assets/diagrams/C4_sequences/C4-12_Funding_Audit_Transparency_Report_Publication.mmd |
+| C4-13_Hub_Creation_Registration_Manifesto_Sync.mmd | assets/diagrams/C4_sequences/C4-13_Hub_Creation_Registration_Manifesto_Sync.mmd |
+| C4-14_Project_Lifecycle_Initiation_Milestones_Completion.mmd | assets/diagrams/C4_sequences/C4-14_Project_Lifecycle_Initiation_Milestones_Completion.mmd |
+| C4-15_Local_Global_Synchronization_CRDT_Edge_Sync.mmd | assets/diagrams/C4_sequences/C4-15_Local_Global_Synchronization_CRDT_Edge_Sync.mmd |
+| C4-16_Peer_to_Peer_Hub_Signaling.mmd | assets/diagrams/C4_sequences/C4-16_Peer_to_Peer_Hub_Signaling.mmd |
+| C4-17_Real_Time_Resonance_Dashboard_Update.mmd | assets/diagrams/C4_sequences/C4-17_Real_Time_Resonance_Dashboard_Update.mmd |
+| C4-18_Coherence_Drop_Detection_Re_alignment_Trigger.mmd | assets/diagrams/C4_sequences/C4-18_Coherence_Drop_Detection_Re_alignment_Trigger.mmd |
+| C4-19_Learning_Cycle_Observation_Evaluation_Adaptation.mmd | assets/diagrams/C4_sequences/C4-19_Learning_Cycle_Observation_Evaluation_Adaptation.mmd |
+| C4-20_AI_Assisted_Interpretation_Loop.mmd | assets/diagrams/C4_sequences/C4-20_AI_Assisted_Interpretation_Loop.mmd |
+| C4-21_Contribution_Ethical_Evaluation_Attestation_Issuance.mmd | assets/diagrams/C4_sequences/C4-21_Contribution_Ethical_Evaluation_Attestation_Issuance.mmd |
+| C4-22_Rubric_Evolution_Manifesto_Versioning.mmd | assets/diagrams/C4_sequences/C4-22_Rubric_Evolution_Manifesto_Versioning.mmd |
+| C4-23_Knowledge_Capture_Graph_Integration_Collective_Learning.mmd | assets/diagrams/C4_sequences/C4-23_Knowledge_Capture_Graph_Integration_Collective_Learning.mmd |
+| C4-24_AI_Evaluation_Loop_RAG_Context_for_Alignment.mmd | assets/diagrams/C4_sequences/C4-24_AI_Evaluation_Loop_RAG_Context_for_Alignment.mmd |
+| C4-25_Event_Logging_SIEM_Risk_Scoring.mmd | assets/diagrams/C4_sequences/C4-25_Event_Logging_SIEM_Risk_Scoring.mmd |
+| C4-26_Contract_Verification_ZK_Proof_Publication.mmd | assets/diagrams/C4_sequences/C4-26_Contract_Verification_ZK_Proof_Publication.mmd |
+| C4-27_Incident_Detection_Containment_Disclosure.mmd | assets/diagrams/C4_sequences/C4-27_Incident_Detection_Containment_Disclosure.mmd |
+| C4-28_Integrity_Snapshot_Transparency_Ledger_Update.mmd | assets/diagrams/C4_sequences/C4-28_Integrity_Snapshot_Transparency_Ledger_Update.mmd |
+| C4-29_Resilience_Test_Systemic_Stress_Feedback.mmd | assets/diagrams/C4_sequences/C4-29_Resilience_Test_Systemic_Stress_Feedback.mmd |
+| C4-30_API_Call_Gateway_Composition_Response.mmd | assets/diagrams/C4_sequences/C4-30_API_Call_Gateway_Composition_Response.mmd |
+| C4-31_GraphQL_Federation_Update.mmd | assets/diagrams/C4_sequences/C4-31_GraphQL_Federation_Update.mmd |
+| C4-32_Developer_Portal_Key_Issuance_Monitoring.mmd | assets/diagrams/C4_sequences/C4-32_Developer_Portal_Key_Issuance_Monitoring.mmd |
+| C4-33_SDK_Update_Hub_Integration_Test.mmd | assets/diagrams/C4_sequences/C4-33_SDK_Update_Hub_Integration_Test.mmd |
+| C4-34_Data_Subject_Request_Access_Erasure_Compliance_Workflow.mmd | assets/diagrams/C4_sequences/C4-34_Data_Subject_Request_Access_Erasure_Compliance_Workflow.mmd |
+| C4-35_Funding_Stream_Pause_Resume_via_Risk.mmd | assets/diagrams/C4_sequences/C4-35_Funding_Stream_Pause_Resume_via_Risk.mmd |
+| C4-36_Hub_Resource_Request_Governance_Treasury.mmd | assets/diagrams/C4_sequences/C4-36_Hub_Resource_Request_Governance_Treasury.mmd |
+| DDD_Contract_Types_Overview.mmd | assets/diagrams/ddd/DDD_Contract_Types_Overview.mmd |
+| DDD_Domain_Context_Map.mmd | assets/diagrams/ddd/DDD_Domain_Context_Map.mmd |
+| DDD_Subdomain_Map.mmd | assets/diagrams/ddd/DDD_Subdomain_Map.mmd |
+| DDD_Team_Context_Alignment.mmd | assets/diagrams/ddd/DDD_Team_Context_Alignment.mmd |
+| Architecture_Stack.mmd | assets/diagrams/overview/Architecture_Stack.mmd |
+| C4_Layers_Summary.mmd | assets/diagrams/overview/C4_Layers_Summary.mmd |
+
+
+## OpenAPI Specs
+
+| File | Path |
+|---|---|
+
+
+## Event Schemas
+
+| File | Path |
+|---|---|
+| DDD-EVT-01.json | assets/specs/events/DDD-EVT-01.json |
+| DDD-EVT-02.json | assets/specs/events/DDD-EVT-02.json |
+| DDD-EVT-03.json | assets/specs/events/DDD-EVT-03.json |
+| DDD-EVT-04.json | assets/specs/events/DDD-EVT-04.json |
+| DDD-EVT-05.json | assets/specs/events/DDD-EVT-05.json |
+| DDD-EVT-06.json | assets/specs/events/DDD-EVT-06.json |
+| DDD-EVT-07.json | assets/specs/events/DDD-EVT-07.json |
+| DDD-EVT-08.json | assets/specs/events/DDD-EVT-08.json |
+| DDD-EVT-10.json | assets/specs/events/DDD-EVT-10.json |
+| DDD-EVT-11.json | assets/specs/events/DDD-EVT-11.json |
+| DDD-EVT-12.json | assets/specs/events/DDD-EVT-12.json |
+| DDD-EVT-13.json | assets/specs/events/DDD-EVT-13.json |
+| DDD-EVT-14.json | assets/specs/events/DDD-EVT-14.json |
+| DDD-EVT-16.json | assets/specs/events/DDD-EVT-16.json |
+| DDD-EVT-17.json | assets/specs/events/DDD-EVT-17.json |
+| DDD-EVT-18.json | assets/specs/events/DDD-EVT-18.json |
+| DDD-EVT-19.json | assets/specs/events/DDD-EVT-19.json |
+| DDD-EVT-20.json | assets/specs/events/DDD-EVT-20.json |
+| DDD-EVT-21.json | assets/specs/events/DDD-EVT-21.json |
+| DDD-EVT-22.json | assets/specs/events/DDD-EVT-22.json |
+| DDD-EVT-23.json | assets/specs/events/DDD-EVT-23.json |
+| DDD-EVT-24.json | assets/specs/events/DDD-EVT-24.json |
+| DDD-EVT-26.json | assets/specs/events/DDD-EVT-26.json |
+| DDD-EVT-27.json | assets/specs/events/DDD-EVT-27.json |
+| DDD-EVT-28.json | assets/specs/events/DDD-EVT-28.json |
+| DDD-EVT-29.json | assets/specs/events/DDD-EVT-29.json |
+| DDD-EVT-30.json | assets/specs/events/DDD-EVT-30.json |
+| DDD-EVT-35.json | assets/specs/events/DDD-EVT-35.json |
+| DDD-EVT-36.json | assets/specs/events/DDD-EVT-36.json |
+| DDD-EVT-37.json | assets/specs/events/DDD-EVT-37.json |
+| DDD-EVT-38.json | assets/specs/events/DDD-EVT-38.json |
+| DDD-EVT-39.json | assets/specs/events/DDD-EVT-39.json |
+| DDD-EVT-40.json | assets/specs/events/DDD-EVT-40.json |
+| DDD-EVT-41.json | assets/specs/events/DDD-EVT-41.json |
+| DDD-EVT-42.json | assets/specs/events/DDD-EVT-42.json |
+| DDD-EVT-43.json | assets/specs/events/DDD-EVT-43.json |
+| DDD-EVT-44.json | assets/specs/events/DDD-EVT-44.json |
+| DDD-EVT-45.json | assets/specs/events/DDD-EVT-45.json |
+| DDD-EVT-46.json | assets/specs/events/DDD-EVT-46.json |
+| DDD-EVT-47.json | assets/specs/events/DDD-EVT-47.json |
+| DDD-EVT-48.json | assets/specs/events/DDD-EVT-48.json |
+| DDD-EVT-49.json | assets/specs/events/DDD-EVT-49.json |
+| DDD-EVT-50.json | assets/specs/events/DDD-EVT-50.json |
+| DDD-EVT-51.json | assets/specs/events/DDD-EVT-51.json |
+| DDD-EVT-52.json | assets/specs/events/DDD-EVT-52.json |
+| DDD-EVT-53.json | assets/specs/events/DDD-EVT-53.json |
+| DDD-EVT-54.json | assets/specs/events/DDD-EVT-54.json |
+| DDD-EVT-55.json | assets/specs/events/DDD-EVT-55.json |
+| DDD-EVT-56.json | assets/specs/events/DDD-EVT-56.json |
+| DDD-EVT-57.json | assets/specs/events/DDD-EVT-57.json |
+| DDD-EVT-58.json | assets/specs/events/DDD-EVT-58.json |
+| DDD-EVT-59.json | assets/specs/events/DDD-EVT-59.json |
+| DDD-EVT-60.json | assets/specs/events/DDD-EVT-60.json |
+| DDD-EVT-61.json | assets/specs/events/DDD-EVT-61.json |
+| DDD-EVT-62.json | assets/specs/events/DDD-EVT-62.json |
+| DDD-EVT-63.json | assets/specs/events/DDD-EVT-63.json |
+| DDD-EVT-64.json | assets/specs/events/DDD-EVT-64.json |
+| DDD-EVT-65.json | assets/specs/events/DDD-EVT-65.json |
+| DDD-EVT-66.json | assets/specs/events/DDD-EVT-66.json |
+| DDD-EVT-67.json | assets/specs/events/DDD-EVT-67.json |
+| DDD-EVT-68.json | assets/specs/events/DDD-EVT-68.json |
+| DDD-EVT-69.json | assets/specs/events/DDD-EVT-69.json |
+| DDD-EVT-70.json | assets/specs/events/DDD-EVT-70.json |
+| DDD-EVT-71.json | assets/specs/events/DDD-EVT-71.json |
+| DDD-EVT-72.json | assets/specs/events/DDD-EVT-72.json |
+| DDD-EVT-73.json | assets/specs/events/DDD-EVT-73.json |
+| DDD-EVT-74.json | assets/specs/events/DDD-EVT-74.json |
+| DDD-EVT-75.json | assets/specs/events/DDD-EVT-75.json |
+| DDD-EVT-76.json | assets/specs/events/DDD-EVT-76.json |
+| DDD-EVT-77.json | assets/specs/events/DDD-EVT-77.json |
+| DDD-EVT-78.json | assets/specs/events/DDD-EVT-78.json |
+| DDD-EVT-79.json | assets/specs/events/DDD-EVT-79.json |
+| DDD-EVT-80.json | assets/specs/events/DDD-EVT-80.json |
+| DDD-EVT-81.json | assets/specs/events/DDD-EVT-81.json |
+| DDD-EVT-82.json | assets/specs/events/DDD-EVT-82.json |
+| DDD-EVT-83.json | assets/specs/events/DDD-EVT-83.json |
+| DDD-EVT-84.json | assets/specs/events/DDD-EVT-84.json |
+| DDD-EVT-85.json | assets/specs/events/DDD-EVT-85.json |
+| DDD-EVT-86.json | assets/specs/events/DDD-EVT-86.json |
+| DDD-EVT-87.json | assets/specs/events/DDD-EVT-87.json |
+| DDD-EVT-88.json | assets/specs/events/DDD-EVT-88.json |
+| DDD-EVT-89.json | assets/specs/events/DDD-EVT-89.json |
+| DDD-EVT-90.json | assets/specs/events/DDD-EVT-90.json |
+| DDD-EVT-91.json | assets/specs/events/DDD-EVT-91.json |
+| DDD-EVT-92.json | assets/specs/events/DDD-EVT-92.json |
+| _manifest.json | assets/specs/events/_manifest.json |
+
