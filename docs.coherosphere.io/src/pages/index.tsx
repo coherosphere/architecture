@@ -1,45 +1,19 @@
-import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import Heading from '@theme/Heading';
 
-import styles from './index.module.css';
-
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+export default function Home() {
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/Manifest"
-          >
-            Open the Architecture Manifest
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Coherosphere Architecture — C1–C4 · DDD · Specs"
-    >
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
+    <Layout title="Coherosphere Architecture" description="C1–C4 · DDD · Specs">
+      <main style={{maxWidth: 880, margin: '0 auto', padding: '3rem 1rem'}}>
+        <h1 style={{marginBottom: '1rem'}}>Coherosphere Architecture</h1>
+        <p style={{opacity:.85, marginBottom:'2rem'}}>C1–C4 · DDD · Specs</p>
+        <ul style={{lineHeight:1.8}}>
+          <li><Link to="/architecture_todo">Status</Link></li>
+          <li><Link to="/ai_guide">AI Build Guide</Link></li>
+          <li><Link to="/manifest">Manifest</Link></li>
+          <li><Link to="/diagrams">Diagrams</Link></li>
+          <li><Link to="/specs">Specs</Link></li>
+        </ul>
       </main>
     </Layout>
   );

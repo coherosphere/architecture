@@ -1,12 +1,12 @@
 ---
-id: Manifest
-slug: /Manifest
-title: Coherosphere — Canonical Domain Manifest
+id: manifest
+slug: /manifest
+title: Canonical Domain Manifest
 sidebar_label: Manifest
 description: Canonical reference for C1–C4, DDD, Events, and Specs mapping within the Coherosphere architecture.
 ---
 
-# Coherosphere — Architecture Manifest (v4)
+# Architecture Manifest
 
 The **Coherosphere Manifest** defines the canonical linkage between:
 - **C1–C4 architecture layers** (System → Container → Component → Sequence)
@@ -16,7 +16,7 @@ The **Coherosphere Manifest** defines the canonical linkage between:
 
 ---
 
-## 🧭 Structure Overview
+## Structure Overview
 
 | Layer | Focus | Assets | Description |
 |-------|--------|---------|-------------|
@@ -29,7 +29,7 @@ The **Coherosphere Manifest** defines the canonical linkage between:
 
 ---
 
-## 🧩 Cross-Layer Consistency
+## Cross-Layer Consistency
 
 | Reference | Linked Element | Description |
 |------------|----------------|-------------|
@@ -40,7 +40,7 @@ The **Coherosphere Manifest** defines the canonical linkage between:
 
 ---
 
-## 📦 Validation & CI
+## Validation & CI
 
 - **Validated via CI workflows** (`validate-arch-openapi.yml`, `validate-mermaid.yml`, `validate-codegen-contracts.yml`)
 - **Automatic schema validation** for events and OpenAPI specs
@@ -49,7 +49,7 @@ The **Coherosphere Manifest** defines the canonical linkage between:
 
 ---
 
-## 🪶 License & Attribution
+## License & Attribution
 
 - **License:** Creative Commons Attribution (CC BY 4.0)  
 - **Source:** [`coherosphere/architecture`](https://github.com/coherosphere/architecture)  

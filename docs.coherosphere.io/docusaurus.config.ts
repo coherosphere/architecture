@@ -1,15 +1,10 @@
+import path from 'node:path';
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-// ────────────────────────────────────────────────────────────────
-// Coherosphere Docusaurus Configuration
-// Serves docs from /assets/docs and static content from /assets/
-// ────────────────────────────────────────────────────────────────
-
 const config: Config = {
-  // ── Site basics ───────────────────────────────────────────────
-  title: 'Coherosphere Architecture',
+  title: 'coherosphere Architecture',
   tagline: 'C1–C4 · DDD · Specs',
   favicon: 'img/favicon.ico',
 
@@ -20,12 +15,10 @@ const config: Config = {
   organizationName: 'coherosphere',
   projectName: 'architecture',
 
-  // ── Link handling ─────────────────────────────────────────────
   onBrokenLinks: 'throw',
   markdown: {
     mermaid: true,
     hooks: {
-      // Do not fail build for links pointing to static assets
       onBrokenMarkdownLinks: 'warn',
     },
   },
@@ -33,36 +26,35 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [
-  [
-    '@docusaurus/plugin-client-redirects',
-    {
-      redirects: [
-        { from: ['/docs/intro'], to: '/Manifest' },
-      ],
-    },
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          { from: ['/docs/intro'], to: '/manifest' },
+        ],
+      },
+    ],
   ],
-],
 
-  // ── Localization ──────────────────────────────────────────────
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
   },
 
-  // ── Presets ───────────────────────────────────────────────────
   presets: [
     [
       'classic',
       {
         docs: {
-          path: '../assets/docs',
-          routeBasePath: '/', // Docs appear at site root
+          path: path.resolve(__dirname, '../assets/docs'),
+          routeBasePath: '/', 
           sidebarPath: require.resolve('./sidebars.ts'),
-          editUrl: 'https://github.com/coherosphere/architecture/edit/main/docs.coherosphere.io/',
+          editUrl:
+            'https://github.com/coherosphere/architecture/edit/main/docs.coherosphere.io/',
           showLastUpdateTime: true,
           showLastUpdateAuthor: false,
         },
-        blog: false, // No blog for now
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -70,29 +62,21 @@ const config: Config = {
     ],
   ],
 
-  // ── Theme / UI Configuration ──────────────────────────────────
   themeConfig: {
     image: 'img/social-card.png',
     colorMode: { respectPrefersColorScheme: true },
 
     navbar: {
-      title: 'Coherosphere',
+      title: 'coherosphere',
       logo: {
         alt: 'Coherosphere Logo',
         src: 'img/logo.svg',
       },
       items: [
-        { to: '/', label: 'Docs', position: 'left' },
-        { to: '/ARCHITECTURE_TODO_v4.3', label: 'Status (v4.3)', position: 'left' },
-        { to: '/AI_BUILD_GUIDE_v4', label: 'AI Build Guide', position: 'left' },
-        { to: '/Manifest', label: 'Manifest', position: 'left' },
-        {
-          label: 'Diagrams',
-          position: 'left',
-          items: [
-            { to: '/diagrams', label: 'Overview' },
-          ],
-        },
+        { to: '/architecture_todo', label: 'Todo', position: 'left' },
+        { to: '/ai_guide', label: 'AI Build', position: 'left' },
+        { to: '/manifest', label: 'Manifest', position: 'left' },
+        { to: '/diagrams', label: 'Diagrams', position: 'left' },
         { to: '/specs', label: 'Specs', position: 'left' },
         {
           href: 'https://github.com/coherosphere/architecture',
@@ -108,15 +92,13 @@ const config: Config = {
         {
           title: 'Architecture',
           items: [
-            { label: 'Manifest', to: '/Manifest' },
-            { label: 'Status Report', to: '/ARCHITECTURE_STATUS_REPORT_v4' },
+            { label: 'Manifest', to: '/manifest' },
+            { label: 'Status Report', to: '/architecture_status' },
           ],
         },
         {
           title: 'Specs',
-          items: [
-            { label: 'Specs Overview', to: '/specs' },
-          ],
+          items: [{ label: 'Specs Overview', to: '/specs' }],
         },
         {
           title: 'More',
@@ -126,7 +108,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Coherosphere — CC BY 4.0`,
+      copyright: `© ${new Date().getFullYear()} coherosphere — CC BY 4.0`,
     },
 
     prism: {

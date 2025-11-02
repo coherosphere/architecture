@@ -1,4 +1,11 @@
-# Coherosphere Diagram Color System (Mermaid CI)
+---
+id: diagram_color
+slug: /diagram_color
+title: Diagram Colors
+sidebar_label: Diagram Colors
+---
+
+# Diagram Color System
 
 This document defines the **visual language** used across all Coherosphere architecture diagrams  
 (C1–C4 levels) rendered in Mermaid.  

@@ -1,11 +1,12 @@
 ---
-id: ARCHITECTURE_TODO_v4.3
-slug: /ARCHITECTURE_TODO_v4.3
-title: Architecture TODO (v4.3)
+id: architecture_todo
+slug: /architecture_todo
+title: Architecture — To-Do List
+sidebar_label: Todo
 ---
 
 
-# Architecture — To-Do List
+# To-Do List
 
 _Last updated: 2025-11-01_
 
