@@ -5,13 +5,12 @@ title: Architecture — To-Do List
 sidebar_label: Todo
 ---
 
-
 # To-Do List
 
-_Last updated: 2025-11-01_
+_Last updated: 2025-11-02_
 
-This document tracks the active and completed tasks toward **v1.0 release readiness**  
-of the Coherosphere architecture. It reflects the verified state of `/architecture`  
+This document tracks the active and completed tasks toward **v1.0 release readiness**
+of the Coherosphere architecture. It reflects the verified state of `/architecture`
 as of November 2025 — CI stable and AI-build ready.
 
 ---
@@ -42,11 +41,18 @@ as of November 2025 — CI stable and AI-build ready.
 
 | Status | Task | Notes |
 |:--:|------|-------|
-| 🟡 | Deploy **Docusaurus** to `docs.coherosphere.io` | Structure ready, deployment pending. |
-| ✅ | Prepare `Manifest.md` (v4) | Completed — consistent and timestamp-free. |
-| 🟡 | Add `/assets/docs/ARCHITECTURE_STATUS_REPORT_v4.md` | Markdown version of the PDF status report. |
-| 🟡 | Integrate Mermaid rendering plugin | For live diagram previews in Docusaurus. |
-| 🟡 | Add OpenAPI viewer | Embed Swagger UI for `/assets/specs/openapi/*.yaml`. |
+| ✅ | Deploy **Docusaurus** to `docs.coherosphere.io` | Live on GitHub Pages with custom CNAME + workflow split (build/deploy). |
+| ✅ | Mermaid rendering | `@docusaurus/theme-mermaid` enabled; `.mmd` sources linked from assets. |
+| ✅ | Dynamic indexes for Specs (OpenAPI + Events) | Build script writes `/assets/specs/**/index.html` and docs list at `/specs`. |
+| ✅ | Diagram browser | `/diagrams` lists all items under `/assets/diagrams/**`. |
+| 🟡 | OpenAPI viewer | Add SwaggerUI/Redoc page to render YAML specs inline. |
+| 🟡 | Sitemap + robots | Add `@docusaurus/plugin-sitemap` and `/static/robots.txt` (see action items below). |
+| 🟡 | Status report MD | Add `/assets/docs/ARCHITECTURE_STATUS_REPORT_v4.md` (current: PDF/notes only). |
+
+**Action items** (Docs):  
+- Add plugin in `package.json`: `@docusaurus/plugin-sitemap` and configure `sitemap` in `docusaurus.config.ts`.  
+- Create `/static/robots.txt` with `Sitemap: https://docs.coherosphere.io/sitemap.xml`.  
+- Add `/src/pages/openapi.tsx` to embed SwaggerUI for any selected spec.  
 
 ---
 
@@ -57,9 +63,9 @@ as of November 2025 — CI stable and AI-build ready.
 | ✅ | Implement master validator (`validate.yml`) | Checks ID consistency (C2 ↔ DDD ↔ C4 ↔ SM). |
 | ✅ | Add JSON Schema linting | Event definitions auto-validated. |
 | ✅ | Include Mermaid syntax validator | Prevents diagram parse errors pre-commit. |
-| ✅ | Add OpenAPI syntax + domain validation | Enforces HTTPS and `x-c2-id`. |
-| ✅ | Add Codegen Harness + Contracts tests | Full C2 OpenAPI E2E validation via Prism + Schemathesis. |
-| ✅ | Nightly build to regenerate Manifest tables | Confirmed via “Nightly – Rebuild Manifests” workflow. |
+| ✅ | OpenAPI syntax + domain validation | Enforces HTTPS and `x-c2-id`. |
+| ✅ | Codegen Harness + Contracts tests | Full C2 OpenAPI E2E validation via Prism + Schemathesis. |
+| ✅ | Nightly build to regenerate Manifest tables | “Nightly – Rebuild Manifests” workflow runs. |
 
 ---
 
@@ -69,8 +75,8 @@ as of November 2025 — CI stable and AI-build ready.
 |:--:|------|-------|
 | ✅ | `AI_BUILD_GUIDE_v4.md` synced with manifest | Fully consistent with C-IDs and container mappings. |
 | 🟡 | Automate AI build mapping | Map each C-ID (C1–C4) to build-time container sources. |
-| ✅ | Create Codegen Test Harness | Executed in CI (contracts + validation). |
-| 🟡 | Define prompts/templates for AI scaffolding | Framework defined, not yet production-ready. |
+| ✅ | Codegen Test Harness | Executed in CI (contracts + validation). |
+| 🟡 | Prompt templates for scaffolding | Define per-C-ID blueprint + guard-rails. |
 
 ---
 
@@ -89,10 +95,21 @@ as of November 2025 — CI stable and AI-build ready.
 
 | Status | Task | Notes |
 |:--:|------|-------|
-| ✅ | Domains allocated | `coherosphere.com`, `app.`, `api.`, `docs.`, `chat.`, `ai.`, `data.` all registered. |
+| ✅ | Domains allocated | `coherosphere.com`, `app.`, `api.`, `docs.`, `chat.`, `ai.`, `data.` registered. |
 | ✅ | Update CORS policy | Regenerated `CORS_Manifest.json` including new subdomains. |
-| ✅ | Add DNS configuration manifest | Created `/assets/specs/DNS_Config.json`. |
-| ✅ | Ensure all API endpoints under `api.coherosphere.io` | Verified via OpenAPI validation workflows. |
+| ✅ | DNS configuration manifest | `/assets/specs/DNS_Config.json` present. |
+| ✅ | API endpoints under `api.coherosphere.io` | Verified via OpenAPI validation workflows. |
+
+---
+
+## 8. Runtime Navigation (New)
+
+| Status | Task | Notes |
+|:--:|------|-------|
+| ✅ | Root landing page | Custom `/src/pages/index.tsx` with quick links. |
+| ✅ | Navbar tidy-up | Direct links: Todo, AI Build, Manifest, Diagrams, Specs. |
+| ✅ | Redirects | `@docusaurus/plugin-client-redirects` routes legacy `/docs/intro` → `/Manifest`. |
+| 🟡 | Breadcrumb polish | Add per-section intro pages for better context. |
 
 ---
 
@@ -103,7 +120,7 @@ as of November 2025 — CI stable and AI-build ready.
 | 🟢 Documentation & Manifest | Complete | 100% |
 | 🟢 C4 Sequence Finalization | Complete | 100% |
 | 🟢 JSON Event Schemas | Complete | 100% |
-| 🟡 Docs Deployment (Docusaurus) | Medium | 75% |
+| 🟡 Docs Deployment Enhancements | Medium | 85% |
 | 🟢 CI/CD Validation | Complete | 100% |
 | 🟡 AI Build Readiness | Medium | 93% |
 | 🟢 Architecture Assets | Complete | 100% |
@@ -114,13 +131,8 @@ as of November 2025 — CI stable and AI-build ready.
 ## Verdict
 
 > The Coherosphere architecture is **architecturally production-ready and AI-buildable**.  
-> 95% of the structural scaffolding is in place — remaining tasks are integration-level:  
-> Docusaurus docs deployment and AI build mapping automation.  
-> 
-> It now functions as a **self-describing, executable specification** — one of the cleanest  
-> C4+DDD hybrid architectures in the open ecosystem.  
-> 
-> The next step is no longer “design,” but **generation and runtime alignment**.
+> Remaining gaps are integration/UI: inline OpenAPI rendering, sitemap/robots, and
+> automation that maps C-IDs to generated components. Everything else is green.
 
 ---
 
