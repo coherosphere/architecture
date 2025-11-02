@@ -4,22 +4,15 @@
   "private": true,
   "description": "Documentation site for Coherosphere Architecture (Docusaurus v3)",
   "scripts": {
-    // Clean old build + assets
     "clean": "rm -rf build static/assets",
-    
-    // Robust prebuild: mirror ../assets → static/assets (keeps structure)
-    // -a preserves timestamps and permissions
-    // -v prints file changes (useful in CI logs)
-    // -r handles recursive directories
-    // -L follows symlinks if any
+
     "prebuild": "rm -rf static/assets && mkdir -p static/assets && rsync -a ../assets/ static/assets/",
     
-    // Standard Docusaurus scripts
     "start": "docusaurus start",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
     
-    // Optional: local preview build (cleans and rebuilds)
+
     "rebuild": "npm run clean && npm run prebuild && npm run build"
   },
   "dependencies": {
