@@ -5,7 +5,7 @@ title: Architecture — Status Report
 sidebar_label: Status
 ---
 
-# Coherosphere — Architecture Status Report
+# Architecture Status Report
 
 _Last updated: 2025-11-02_
 

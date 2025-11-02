@@ -8,8 +8,12 @@ sidebar_label: Event Schema Catalog
 
 # Event Schema Catalog
 
+_Last updated: 2025-11-02_
+
 **Scope:** Canonical, versioned **CloudEvents 1.0** definitions for inter-service events across C2 containers.  
 **Purpose:** Contracts-first integration; enable codegen, validation, and replay-safe analytics.
+
+---
 
 > Conventions:  
 > - `specversion: "1.0"`  

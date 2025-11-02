@@ -7,6 +7,8 @@ sidebar_label: Parameter Governance
 
 # Parameter Governance SOP
 
+_Last updated: 2025-11-02_
+
 **Objective:**  
 Establish a consistent procedure for versioning, modification, and rollback of systemic parameters (`λ`, `α`, `q`, `θ`, rubric versions, etc.).  
 

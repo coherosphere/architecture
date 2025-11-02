@@ -1,78 +1,64 @@
-// Build-time generator: creates JSON & HTML indexes for assets we copy to /static/assets
+// scripts/gen-asset-indexes.mjs
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-const STATIC_ROOT = path.resolve(process.cwd(), 'static/assets');
-const INDEX_DIR   = path.join(STATIC_ROOT, 'indexes'); // where JSON manifests live
+const ROOT_STATIC = path.resolve(process.cwd(), 'static/assets');
+const ASSETS_SRC  = path.resolve(process.cwd(), '../assets'); // repo_root/assets
+const OUT_DIR     = path.join(ROOT_STATIC, 'indexes');        // <- KORREKT: /static/assets/indexes
 
-const TARGETS = [
-  { base: 'specs/openapi', title: 'OpenAPI Specs',   exts: ['.yaml', '.yml'] , json: 'specs-openapi.json' },
-  { base: 'specs/events',  title: 'Event Schemas',   exts: ['.json', '.md']   , json: 'specs-events.json' },
-  { base: 'diagrams',      title: 'Architecture Diagrams', exts: ['.mmd','.md','.png','.svg','.jpg','.jpeg','.webp'], json: 'diagrams.json' },
-];
+const toPosix = p => p.split(path.sep).join('/');
 
-async function exists(p) {
-  try { await fs.access(p); return true; } catch { return false; }
-}
+async function ensureDir(p){ await fs.mkdir(p,{recursive:true}); }
 
-async function listFiles(rootAbs, allowExts) {
+async function listRecursive(dir, {allowExts}) {
   const out = [];
-  async function walk(dir, rel='') {
-    const entries = await fs.readdir(dir, { withFileTypes: true });
+  async function walk(abs, rel='') {
+    const entries = await fs.readdir(abs, {withFileTypes:true});
     for (const e of entries) {
-      const full = path.join(dir, e.name);
-      const relPath = path.join(rel, e.name);
-      if (e.isDirectory()) await walk(full, relPath);
-      else if (allowExts.includes(path.extname(e.name))) {
-        out.push(relPath.replaceAll('\\','/'));
-      }
+      if (e.name.startsWith('.')) continue;              // ignoriere .DS_Store etc.
+      const absChild = path.join(abs, e.name);
+      const relChild = path.join(rel, e.name);
+      if (e.isDirectory()) await walk(absChild, relChild);
+      else if (allowExts.includes(path.extname(e.name).toLowerCase())) out.push(toPosix(relChild));
     }
   }
-  await walk(rootAbs);
-  out.sort();
+  await walk(dir);
+  out.sort((a,b)=>a.localeCompare(b));
   return out;
 }
 
-function htmlIndex(title, files, baseHref) {
-  const items = files.map(f => `<li><a href="./${f}">${f}</a></li>`).join('\n') || '<li><em>No files found</em></li>';
-  const crumbUp = baseHref.split('/').filter(Boolean).length > 1 ? '../' : '/';
-  return `<!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>${title} — Coherosphere</title>
-<style>
-body{font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:2rem;color:#e5e7eb;background:#0b0e13}
-a{color:#86c5ff;text-decoration:none} a:hover{text-decoration:underline}
-h1{margin:0 0 1rem;font-size:1.6rem} ul{line-height:1.6}
-.breadcrumbs{margin-bottom:1rem;opacity:.7}
-code{background:#111827;padding:.15rem .35rem;border-radius:.35rem}
-footer{margin-top:2rem;opacity:.6;font-size:.9rem}
-</style></head>
-<body>
-<div class="breadcrumbs"><a href="${crumbUp}">/assets</a> / <code>${baseHref}</code></div>
-<h1>${title}</h1>
-<ul>${items}</ul>
-<footer>Generated at build time • Coherosphere</footer>
-</body></html>`;
+async function writeJSON(name, data) {
+  await ensureDir(OUT_DIR);
+  const file = path.join(OUT_DIR, name);
+  await fs.writeFile(file, JSON.stringify(data, null, 2), 'utf8');
+  console.log(`✓ Wrote ${toPosix(path.relative(process.cwd(), file))} (${data.length} entries)`);
 }
 
-async function main() {
-  await fs.mkdir(INDEX_DIR, { recursive: true });
+async function indexDiagrams() {
+  const dir = path.join(ASSETS_SRC, 'diagrams');
+  try { await fs.access(dir); }
+  catch { return writeJSON('diagrams.json', []); }
+  const files = await listRecursive(dir, {allowExts:['.mmd','.svg','.png']});
+  await writeJSON('diagrams.json', files);
+}
 
-  for (const t of TARGETS) {
-    const abs = path.join(STATIC_ROOT, t.base);
-    const ok = await exists(abs);
-    if (!ok) continue;
-
-    const files = await listFiles(abs, t.exts);
-    const jsonPath = path.join(INDEX_DIR, t.json);
-    await fs.writeFile(jsonPath, JSON.stringify(files, null, 2), 'utf8');
-
-    const html = htmlIndex(t.title, files, `/assets/${t.base}/`);
-    await fs.writeFile(path.join(abs, 'index.html'), html, 'utf8');
-
-    console.log(`✓ Indexed ${files.length} files in ${t.base}`);
+async function indexSpecs() {
+  const targets = [
+    ['specs/openapi',           'specs_openapi.json',         ['.yaml','.yml']],
+    ['specs/events',            'specs_events.json',          ['.json','.md']],
+    ['specs/events_cloudevents','specs_events_cloudevents.json',['.json']],
+    ['specs/cors',              'specs_cors.json',            ['.json','.md']],
+  ];
+  for (const [folder, outName, exts] of targets) {
+    const dir = path.join(ASSETS_SRC, folder);
+    try { await fs.access(dir); 
+      const files = await listRecursive(dir, {allowExts: exts});
+      await writeJSON(outName, files);
+    } catch { await writeJSON(outName, []); }
   }
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+(async () => {
+  await ensureDir(OUT_DIR);
+  await Promise.all([indexDiagrams(), indexSpecs()]);
+})().catch(err => { console.error(err); process.exit(1); });

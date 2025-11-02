@@ -6,8 +6,12 @@ title: SLO Table
 
 # SLO/SLA Targets
 
+_Last updated: 2025-11-02_
+
 **Objective:** Define non-functional requirements (availability, latency, freshness) for core services (C2-01…C2-12).  
 **Note:** SLO = target objective; SLA = contractual guarantee (applies to public APIs only).
+
+---
 
 | C2-ID | Service | Metric | Target | Window | Notes |
 |------:|----------|---------|---------|---------|-------|

@@ -7,6 +7,8 @@ sidebar_label: Diagram Colors
 
 # Diagram Color System
 
+_Last updated: 2025-11-02_
+
 This document defines the **visual language** used across all Coherosphere architecture diagrams  
 (C1–C4 levels) rendered in Mermaid.  
 Colors are **semantic**, not decorative — each hue communicates a specific type of responsibility, behavior, or systemic role.

@@ -68,11 +68,7 @@ const config: Config = {
 
     navbar: {
       title: 'coherosphere',
-      logo: {
-        alt: 'Coherosphere Logo',
-        src: 'img/logo.svg',
-      },
-      items: [
+       items: [
         { to: '/architecture_todo', label: 'Todo', position: 'left' },
         { to: '/ai_guide', label: 'AI Build', position: 'left' },
         { to: '/manifest', label: 'Manifest', position: 'left' },
