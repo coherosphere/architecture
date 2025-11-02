@@ -1,5 +1,5 @@
 # Architecture Assets Manifest
-_Last update_: 2025-11-01T20:07:15.770727Z
+_Last update_: 2025-11-02T03:21:27.882119Z
 
 ## Diagrams
 
@@ -82,6 +82,8 @@ _Last update_: 2025-11-01T20:07:15.770727Z
 | DDD_Domain_Context_Map.mmd | assets/diagrams/ddd/DDD_Domain_Context_Map.mmd |
 | DDD_Subdomain_Map.mmd | assets/diagrams/ddd/DDD_Subdomain_Map.mmd |
 | DDD_Team_Context_Alignment.mmd | assets/diagrams/ddd/DDD_Team_Context_Alignment.mmd |
+| Architecture_Stack.mmd | assets/diagrams/overview/Architecture_Stack.mmd |
+| C4_Layers_Summary.mmd | assets/diagrams/overview/C4_Layers_Summary.mmd |
 
 
 ## OpenAPI Specs
