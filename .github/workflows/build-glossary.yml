@@ -49,7 +49,7 @@ jobs:
           GLOSSARY_OUTPUT: docs/audit/glossary.md
           MAX_TOP_TERMS: "75"
         run: |
-          python .github/scripts/build_glossary.py
+          python .scripts/build_glossary.py
 
       - name: Commit changes (if any)
         run: |
