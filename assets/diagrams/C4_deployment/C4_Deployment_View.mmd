@@ -1,0 +1,73 @@
+---
+config:
+  layout: elk
+---
+flowchart TB
+ subgraph Client["Clients (Internet)"]
+        Web["Web App — app.coherosphere.com"]
+        Tool["Contributor Tools (CLI/API)"]
+        Wallet["User Wallet / Keys (non-custodial)"]
+  end
+ subgraph Edge["Edge / Access"]
+        OIDC["Auth Gateway (OIDC)"]
+        WAF["WAF / CDN"]
+  end
+ subgraph Svc["Microservices"]
+        RS["Resonance Service"]
+        PS["Proposal Service"]
+        FS["Funding Service"]
+        IS["Identity Aggregator (PoCI)"]
+        GS["Guardian / Policy Service"]
+        AS["Anomaly Service"]
+        MS["Metrics / SRI Service"]
+  end
+ subgraph Cloud["Cohere Cloud (Prod)"]
+        APIGW["API Gateway — api.coherosphere.io"]
+        Svc
+        EV["Event Bus"]
+        ODB["Operational DB (HA)"]
+        DL["Analytics Lake / Warehouse"]
+        AUD2["Audit Mirror (immutable-like)"]
+        MON["Monitoring / Alerts"]
+  end
+ subgraph Chain["Public Blockchain (Mainnet)"]
+        GSC["Governance SCs"]
+        TSC["Treasury SCs"]
+        ISC["Identity / PoCI SCs"]
+        MSC["Meta-Gov SCs"]
+        LGR2["On-chain Logs"]
+  end
+ subgraph Ext["External Infra"]
+        IPFS["IPFS / Pinning (artifacts)"]
+        Reserve["BTC / Stable Reserve (treasury base)"]
+  end
+ subgraph Hubs["Local Hubs / Field Nodes"]
+        HubNode["Hub Node (local cache, chain sync)"]
+        HubOps["Hub Ops (programs, events)"]
+  end
+    Web --> WAF
+    WAF --> OIDC
+    OIDC --> APIGW
+    Tool --> APIGW
+    Wallet --- Web
+    APIGW --> RS & PS & FS & IS & GS & AS & MS
+    RS --> EV & ODB
+    PS --> EV & ODB
+    FS --> EV & ODB
+    IS --> EV & ODB
+    GS --> EV & ODB
+    AS --> EV & ODB
+    MS --> EV & ODB & DL
+    AUD2 --- ODB
+    MON --- APIGW & RS & PS & FS & IS & GS & AS & MS & EV & ODB
+    PS -- propose / vote / exec --> GSC
+    FS -- match / disburse --> TSC
+    IS -- issue / update proofs --> ISC
+    MSC -- param updates --- GSC
+    GSC --- LGR2
+    TSC --- LGR2
+    ISC --- LGR2
+    HubNode -- periodic sync --> GSC
+    HubNode -- sync --> ISC
+    FS -- reserve mgmt --> Reserve
+    RS -- pin artifacts --> IPFS

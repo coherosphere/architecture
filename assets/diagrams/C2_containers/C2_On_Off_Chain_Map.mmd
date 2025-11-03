@@ -1,0 +1,47 @@
+---
+config:
+  layout: dagre
+---
+flowchart LR
+ subgraph TB1["Trust Boundary: Public Blockchain (On-Chain)"]
+        C2_01["C2-01 Governance SCs\nProposals • Voting • Execution"]
+        C2_02["C2-02 Treasury SCs\nQF Matching • Disbursements"]
+        C2_03["C2-03 Identity/PoCI SCs\nProof-of-Contribution Ledger"]
+        C2_04["C2-04 Meta-Governance SCs\nParam/Rules Versioning"]
+        LGR["On-chain Event Log\n(Immutable)"]
+  end
+ subgraph TB2["Trust Boundary: Cohere Cloud (Off-Chain Services)"]
+        C2_05["C2-05 API Gateway\nhttps://api.coherosphere.io"]
+        C2_06["C2-06 Resonance Service\nImpact×Alignment • Time Decay"]
+        C2_07["C2-07 Proposal Service\nLifecycle/Quorum"]
+        C2_08["C2-08 Funding Service\nQF Calc • Payout Orchestration"]
+        C2_09["C2-09 Identity Aggregator\nPoCI Aggregation"]
+        C2_10["C2-10 Guardian Service\nAlignment/Policy Checks"]
+        C2_11["C2-11 Anomaly Service\nSybil/Spam/Outliers"]
+        C2_12["C2-12 Metrics/SRI Service\nDashboards • KPIs"]
+        BUS["Event/Messaging Bus"]
+        DB["Operational DB"]
+        LAKE["Analytics Lake"]
+        AUD["Audit Log (off-chain mirror)"]
+  end
+ subgraph TB3["Trust Boundary: Clients & Hubs"]
+        APP["Member UI (Web)\nhttps://app.coherosphere.com"]
+        CLI["Contributor CLI/API"]
+        HUB["Local Hub Node\n(sync w/ chain)"]
+  end
+    APP --> C2_05
+    CLI --> C2_05
+    C2_05 --> C2_06 & C2_07 & C2_08 & C2_09 & C2_10 & C2_11 & C2_12
+    C2_06 --> BUS & DB
+    C2_07 --> C2_01 & DB
+    C2_08 --> C2_02 & DB
+    C2_09 --> C2_03 & DB
+    C2_04 --- C2_01
+    C2_01 --- LGR
+    C2_02 --- LGR
+    C2_03 --- LGR
+    C2_10 --> DB
+    C2_11 --> DB
+    C2_12 --> DB & LAKE
+    AUD --- DB
+    HUB -- periodic sync --> C2_01 & C2_03
