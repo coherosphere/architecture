@@ -1,0 +1,46 @@
+---
+config:
+  layout: elk
+---
+flowchart LR
+ subgraph TB_CLIENTS["Trust Boundary: Clients"]
+        UI["Member Web App\n(app.coherosphere.com)"]
+        EVALS["Evaluators / Guardians\n(human+AI)"]
+        PUB["Public Dashboard\n(metrics.coherosphere)"]
+  end
+ subgraph TB_OFF["Trust Boundary: Cohere Cloud (Off-Chain)"]
+        APIGW["API Gateway\n(api.coherosphere.io)"]
+        PROP_SVC["Proposal Service\n(lifecycle, quorum checks)"]
+        GUARD["Guardian / Policy Service\n(alignment, eligibility)"]
+        ANOM["Anomaly Service\n(sybil/spam/outliers)"]
+        RESO["Resonance Service\n(impact×alignment • time-decay)"]
+        METRICS["Metrics / SRI Service\n(KPIs, SRI, trend)"]
+        AUD_OFF["Audit Mirror (off-chain)"]
+  end
+ subgraph TB_ON["Trust Boundary: Public Blockchain (On-Chain)"]
+        GOV_SC["Governance Smart Contracts\n(proposals, voting, execution)"]
+        META_SC["Meta-Governance SCs\n(params, rule versioning)"]
+        TREAS_SC["Treasury SCs\n(QF, disbursements)"]
+        ID_SC["Identity/PoCI SCs\n(contribution proofs)"]
+        LOGS["On-chain Event Log\n(immutable)"]
+  end
+    UI --> APIGW
+    APIGW --> PROP_SVC
+    EVALS --> GUARD
+    PROP_SVC --> GUARD
+    GUARD --> ANOM
+    ANOM --> PROP_SVC
+    GUARD -- approve/flag --> PROP_SVC
+    PROP_SVC -- submit / schedule --> GOV_SC
+    GOV_SC --- LOGS & METRICS
+    GOV_SC -- execute passed proposals --> TREAS_SC
+    RESO --> METRICS
+    TREAS_SC --- METRICS
+    ID_SC --- METRICS
+    METRICS --> AUD_OFF & PUB
+    METRICS -- thresholds reached / trends --> PROP_SVC
+    PROP_SVC -- "create meta-proposal" --> META_SC
+    META_SC --- LOGS
+    META_SC -- update parameters --> GOV_SC & TREAS_SC & RESO
+    LOGS --> PUB
+    AUD_OFF --> PUB

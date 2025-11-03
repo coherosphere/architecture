@@ -1,0 +1,85 @@
+flowchart LR
+  %% C3 — Metrics System / Dynamic Radar / KPI Heatmap / Realtime Visibility
+  %% Mermaid v10 kompatibel, keine Mehrfach-Edges in einer Zeile
+
+  %% -------- Trust Boundary: On-Chain
+  subgraph TB_ON["Trust Boundary: Public Blockchain"]
+    ON_GOV["Governance SCs\n(votes, exec events)"]
+    ON_TRE["Treasury SCs\n(payouts, qf events)"]
+    ON_ID["Identity/PoCI SCs\n(proofs)"]
+  end
+
+  %% -------- Trust Boundary: Off-Chain Processing
+  subgraph TB_PROC["Trust Boundary: Cohere Cloud — Processing"]
+    EVT_IN["Ingest Gateway\n(webhooks, indexers)"]
+    STREAM["Event Stream\n(kinesis/kafka/nats)"]
+    RESO["Resonance Engine\n(I×A, decay)"]
+    ENRICH["Signal Enricher\n(tags, cohort, hub)"]
+    AGGR["Metrics Aggregator\n(windowed rollups)"]
+    SRI["SRI Calculator\n(Systemic Resonance Index)"]
+    RADAR["Radar Composer\n(multiaxial buckets)"]
+    HEAT["Heatmap Builder\n(grid tiles)"]
+    ALERT["Threshold/Trend Detector\n(alerts)"]
+  end
+
+  %% -------- Trust Boundary: Data Stores
+  subgraph TB_DATA["Trust Boundary: Data Stores"]
+    TSDB["Time-Series DB\n(raw, rollups)"]
+    WARE["Analytics Lake\n(historical/ML)"]
+    CACHE["Realtime Cache\n(WS/SSE payloads)"]
+    AUD["Audit Mirror\n(immutable-like)"]
+  end
+
+  %% -------- Trust Boundary: Delivery & UI
+  subgraph TB_UI["Trust Boundary: Delivery & UI"]
+    API["Metrics API\n(/radar, /heatmap, /kpis)"]
+    RT["Realtime Gateway\n(WebSocket/SSE)"]
+    DASH["Public Dashboard\n(metrics.coherosphere)"]
+    WIDGET_R["Radar Widget\n(dynamic axes)"]
+    WIDGET_H["Heatmap Widget\n(zoom/pan)"]
+    WIDGET_K["KPI Tiles\n(SLA, health, trend)"]
+  end
+
+  %% -------- Flows: On-Chain -> Processing
+  ON_GOV --> EVT_IN
+  ON_TRE --> EVT_IN
+  ON_ID  --> EVT_IN
+
+  EVT_IN --> STREAM
+  STREAM --> RESO
+  RESO --> ENRICH
+  ENRICH --> AGGR
+  AGGR --> SRI
+  SRI --> RADAR
+  AGGR --> HEAT
+  AGGR --> ALERT
+
+  %% -------- Persistence
+  RESO --> TSDB
+  AGGR --> TSDB
+  SRI  --> TSDB
+  AGGR --> WARE
+  TSDB --> AUD
+
+  %% -------- API & Realtime Delivery
+  RADAR --> API
+  HEAT  --> API
+  SRI   --> API
+  ALERT --> API
+
+  RADAR --> CACHE
+  HEAT  --> CACHE
+  SRI   --> CACHE
+  ALERT --> CACHE
+
+  API --> DASH
+  API --> WIDGET_R
+  API --> WIDGET_H
+  API --> WIDGET_K
+
+  RT --> DASH
+  RT --> WIDGET_R
+  RT --> WIDGET_H
+  RT --> WIDGET_K
+
+  CACHE --> RT
