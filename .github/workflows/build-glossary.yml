@@ -18,7 +18,7 @@ on:
       - '**/*.md'
       - 'assets/specs/events/**/*.json'
   schedule:
-    - cron: '17 3 * * *'  # daily 03:17 UTC
+    - cron: '17 3 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -28,6 +28,9 @@ permissions:
 jobs:
   glossary:
     runs-on: ubuntu-latest
+    env:
+      GLOSSARY_OUTPUT: assets/docs/audit/glossary.md   # ← Ziel innerhalb von architecture/
+      MAX_TOP_TERMS: "75"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,18 +48,26 @@ jobs:
           pip install pandas pyyaml
 
       - name: Build glossary
-        env:
-          GLOSSARY_OUTPUT: assets/docs/audit/glossary.md
-          MAX_TOP_TERMS: "75"
         run: |
-          python scripts/build_glossary.py
+          mkdir -p "$(dirname "$GLOSSARY_OUTPUT")"
+          python scripts/build_glossary.py              # ← scripts/ liegt auf Repo-Root
 
       - name: Commit changes (if any)
         run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
+          CHANGES="$(git status --porcelain)"
+          if [[ -n "$CHANGES" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add docs/audit/glossary.md
+
+            git add "$GLOSSARY_OUTPUT"
+
+            if git diff --cached --quiet; then
+              echo "No staged changes to commit."
+              exit 0
+            fi
+
             git commit -m "chore(glossary): auto-update glossary [skip ci]"
             git push
+          else
+            echo "No changes."
           fi
