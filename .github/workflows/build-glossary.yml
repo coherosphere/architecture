@@ -51,7 +51,12 @@ jobs:
         run: |
           mkdir -p "$(dirname "$GLOSSARY_OUTPUT")"
           python scripts/build_glossary.py              # ← scripts/ liegt auf Repo-Root
-
+          
+      - name: Normalize MDX breaks
+        run: |
+          # Ersetze <br> in der generierten Datei durch <br />
+          sed -i 's/<br>/<br \/>/g' assets/docs/audit/glossary.md
+          
       - name: Commit changes (if any)
         run: |
           CHANGES="$(git status --porcelain)"
