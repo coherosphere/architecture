@@ -2,7 +2,7 @@
 """
 Builds a repository glossary by scanning Mermaid (.mmd), Markdown (.md),
 and Event spec JSON files under assets/specs/events/**.
-MDX-safe output (self-closing <br />; table cell escaping).
+MDX-safe output (self-closing <br />, table cell escaping including braces).
 
 Usage (in GitHub Actions or locally):
   GLOSSARY_OUTPUT="assets/docs/audit/glossary.md" python scripts/build_glossary.py
@@ -20,7 +20,7 @@ try:
 except Exception:
     yaml = None
 
-# --- Repo layout assumptions -------------------------------------------------
+# --- Repo layout -------------------------------------------------------------
 # Script is located at repo_root/scripts/build_glossary.py
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,12 +38,11 @@ MM_EXT = {".mmd"}
 MD_EXT = {".md"}
 JSON_EXT = {".json"}
 
-# Mermaid patterns (robuste, aber nicht „perfekte“ Parser – reichen für Labels)
+# Mermaid patterns (robust label extraction; not a full parser)
 RE_NODE_LABEL       = re.compile(r'[A-Za-z0-9_]+\s*\[\s*"([^"]+)"\s*\]')
 RE_SUBGRAPH_LABEL   = re.compile(r'subgraph\s+[^\["\n]+?\s*\[\s*"([^"]+)"\s*\]', re.I)
 RE_PARTICIPANT      = re.compile(r'participant\s+[A-Za-z0-9_]+\s+as\s+(.+)$', re.I)
-# Optional: state labels (falls ihr stateDiagram nutzt)
-RE_STATE_LABEL      = re.compile(r'state\s+"([^"]+)"', re.I)
+RE_STATE_LABEL      = re.compile(r'state\s+"([^"]+)"', re.I)  # stateDiagram notes
 
 # Markdown headings as “terms”
 RE_H1 = re.compile(r'^\#\s+(.+)$')
@@ -53,12 +52,12 @@ RE_H3 = re.compile(r'^\#\#\#\s+(.+)$')
 # JSON fields to pick
 JSON_KEYS = ("title", "name", "summary")
 
-# Default deny/allow lists (lowercased keys)
+# Default deny/allow lists (lowercased)
 DEFAULT_DENY = {
     "service", "api", "gateway", "event bus", "database", "db", "monitoring", "alerts",
     "participant", "note", "subgraph", "mermaid", "sequence diagram", "flowchart"
 }
-DEFAULT_ALLOW = set()  # leave empty to include all non-deny terms
+DEFAULT_ALLOW = set()  # empty means allow all not-denied
 
 
 # --- Helpers -----------------------------------------------------------------
@@ -150,7 +149,7 @@ def extract_terms_from_md(p: Path):
             for rx in (RE_H1, RE_H2, RE_H3):
                 m = rx.match(line)
                 if m:
-                    terms.append(norm(m.group(1)))
+                    terms.append(norm(m.group(1))))
     except Exception:
         pass
     return terms
@@ -190,9 +189,11 @@ def should_keep(term: str) -> bool:
 
 # --- MDX-safe escaping -------------------------------------------------------
 def mdx_cell(s: str) -> str:
-    """Escape content for MDX table cells (HTML + pipe)."""
+    """Escape content for MDX table cells (HTML + pipe + MDX braces)."""
     s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     s = s.replace("|", "&#124;")
+    # Prevent MDX expression evaluation like {id}
+    s = s.replace("{", "&#123;").replace("}", "&#125;")
     return s
 
 
@@ -200,15 +201,21 @@ def main():
     by_layer = defaultdict(list)
     origin_map = defaultdict(list)
 
+    out_abs = (ROOT / OUT).resolve()
+    out_rel_norm = str(OUT).replace("\\", "/")
+
     for p in iter_files(ROOT):
+        # Skip generated output to avoid re-ingesting our own file
+        if str(p.resolve()) == str(out_abs):
+            continue
+        if str(p).replace("\\", "/").endswith(out_rel_norm):
+            continue
+
         ext = p.suffix.lower()
         terms = []
         if ext in MM_EXT:
             terms = extract_terms_from_mmd(p)
         elif ext in MD_EXT:
-            # Skip generated output to avoid re-ingesting our own file
-            if str(p).replace("\\", "/").endswith(str(OUT).replace("\\", "/")):
-                continue
             terms = extract_terms_from_md(p)
         elif ext in JSON_EXT and "assets/specs/events/" in str(p).replace("\\", "/"):
             terms = extract_terms_from_json(p)
@@ -239,7 +246,7 @@ def main():
         global_counter.update(terms)
 
     # Write MDX-safe Markdown
-    OUT.parent.mkdir(parents=True, exist_ok=True)
+    (ROOT / OUT).parent.mkdir(parents=True, exist_ok=True)
     max_top = int(os.getenv("MAX_TOP_TERMS", "50"))
 
     lines = []
@@ -271,12 +278,12 @@ def main():
         for t in terms:
             srcs = sorted(set(origin_map[(layer, t)]))[:8]
             srcs = [mdx_cell(x) for x in srcs]
-            # MDX requires self-closing <br /> inside tables:
+            # MDX requires self-closing <br /> inside tables
             src_str = "<br />".join(srcs)
             lines.append(f"{mdx_cell(t)} | {src_str}")
         lines.append("")
 
-    Path(OUT).write_text("\n".join(lines), encoding="utf-8")
+    (ROOT / OUT).write_text("\n".join(lines), encoding="utf-8")
     print(f"Wrote {OUT}")
 
 
