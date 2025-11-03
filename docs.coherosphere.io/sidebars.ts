@@ -19,7 +19,17 @@ const sidebars: SidebarsConfig = {
         'specs/specs',
       ],
     },
+    {
+      type: 'category',
+      label: 'Audit & Glossary',
+      items: [
+              'audit/glossary',
+              ],
+    },
   ],
 };
 
 export default sidebars;
+
+
+
