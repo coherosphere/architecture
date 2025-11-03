@@ -1,8 +1,62 @@
-name: Build Glossary (sanity)
+name: Build Glossary
+
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.mmd'
+      - '**/*.md'
+      - 'assets/specs/events/**/*.json'
+      - '.github/workflows/build-glossary.yml'
+      - '.github/scripts/build_glossary.py'
+      - '.github/scripts/canonical_names.yaml'
+      - 'docs/audit/glossary.md'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**/*.mmd'
+      - '**/*.md'
+      - 'assets/specs/events/**/*.json'
+  schedule:
+    - cron: '17 3 * * *'  # daily 03:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  ping:
+  glossary:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "OK"
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas pyyaml
+
+      - name: Build glossary
+        env:
+          GLOSSARY_OUTPUT: docs/audit/glossary.md
+          MAX_TOP_TERMS: "75"
+        run: |
+          python .github/scripts/build_glossary.py
+
+      - name: Commit changes (if any)
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs/audit/glossary.md
+            git commit -m "chore(glossary): auto-update glossary [skip ci]"
+            git push
+          fi
