@@ -1,36 +1,60 @@
-# Repository Glossary
+---
+id: glossary
+title: Repository Glossary
+description: Auto-generated glossary across diagrams, docs, and specs (canonicalized & MDX-safe).
+sidebar_label: Glossary
+---
 
-_Generated_: 2025-11-03T13:01:29.145883Z
+_Generated_: 2025-11-03T13:40:28.534506Z
 
-This document is auto-generated from Mermaid (`.mmd`), Markdown (`.md`), and Event specs (`assets/specs/events/*.json`).
+This page is auto-generated from Mermaid (`.mmd`), Markdown (`.md`), and Event specs (`assets/specs/events/*.json`).
 Canonicalization and synonyms are applied from `scripts/canonical_names.yaml`.
 
 ## Overview (Top Terms)
 
 Term | Count
 ---|---
-C2-01 Resonance Service | 6
-C2-11 Public API Gateway | 5
-C2-01 Resonance | 4
-C2-10 Security &amp; Audit Layer | 4
-C2-12 Resonance Board / UI | 4
+C2-01 Resonance Service | 7
+C2-11 Public API Gateway | 6
+C2-12 Resonance Board / UI | 5
+C2-08 Manifesto &amp; Ethics Guard | 5
+C2-09 Knowledge Graph | 5
+C1-06 Bitcoin / Hard Asset Layer | 4
 C2-03 Governance &amp; DAO | 4
 C2-04 Treasury &amp; Funding | 4
-C2-08 Manifesto &amp; Ethics Guard | 4
-C1-06 Bitcoin / Hard Asset Layer | 4
-C2-09 Knowledge Graph | 4
-C2-02 Proof of Contribution | 3
-C2-07 Metrics / Analytics | 3
+C2-10 Security &amp; Audit Layer | 4
+C2-07 Metrics / Analytics | 4
+C2-02 Proof of Contribution | 4
+C2-05 Identity (PoCI) | 4
+C2-10 Security &amp; Audit | 4
+C2-01 Resonance | 4
+C1-02 Member / Contributor | 3
+C2-06 Local Hub / Federation | 3
 C2-07 Resonance Metric Stack / Analytics | 3
+C2-09 Knowledge Graph / Collective Intelligence | 3
+C1-07 Developers / Architects | 3
+Core Subdomains | 3
+C2-03 Governance and DAO | 3
+C2-04 Treasury and Funding | 3
+C2-08 Manifesto and Ethics Guard | 3
+Supporting Subdomains | 3
+C2-05 Identity and Reputation PoCI | 3
+C2-06 Local Hub and Federation | 3
+C2-07 Metrics and Analytics | 3
+C2-09 Knowledge Graph and Collective Intelligence | 3
+C2-10 Security and Audit | 3
+C2-12 Resonance Board UI | 3
+C2-02 PoC Service | 3
+C2-03 Governance Service | 3
 C2-03 Governance | 3
 C2-04 Treasury | 3
 C2-06 Local Hubs | 3
-C2-10 Security &amp; Audit | 3
-C2-05 Identity (PoCI) | 3
-C2-06 Local Hub / Federation | 3
-C1-07 Developers / Architects | 3
-C2-09 Knowledge Graph / Collective Intelligence | 3
-C1-02 Member / Contributor | 3
+C1-01 Coherosphere System (Sphere of Coherence) | 2
+C1-04 External DAOs / Web3 Systems | 2
+C1-08 Public / Society&lt;br&gt;(observes resonance • benefits from coherence) | 2
+C1-03 AI Systems / Agents | 2
+C2-05 Identity &amp; Reputation (PoCI) | 2
+Public Dashboard\n(metrics.coherosphere) | 2
 Governance BC ⟷ C2-03 Governance &amp; DAO Service | 2
 C2-03 Proposal &amp; Voting\n(quorum • threshold • sublinear weights) | 2
 Contribution &amp; Evaluation BC ⟷ C2-02 PoC • C2-01 Resonance • C2-08 Ethics | 2
@@ -40,29 +64,10 @@ C2-01 Resonance Engine\n(weight W_i • SRI inputs) | 2
 Identity &amp; Reputation (PoCI) BC ⟷ C2-05 Identity &amp; Reputation | 2
 C2-05 PoCI Identity\n(reputation ledger • attestations) | 2
 Treasury &amp; Funding BC ⟷ C2-04 Treasury &amp; Funding | 2
-C2-04 Quadratic Funding\n(resonant allocation) | 2
-C2-04 Treasury Reserve\n(sound money policy) | 2
-Projects &amp; Local Hubs BC ⟷ C2-06 Local Hub / Federation | 2
-C2-06 Projects &amp; Grants\n(lifecycle • milestones) | 2
-C2-06 Local Hubs\n(semi-autonomous units) | 2
-Meta-Governance &amp; Audit BC ⟷ C2-03 Governance • C2-10 Security &amp; Audit | 2
-Rule Versioning\n(λ, α, q, θ) | 2
-Audits &amp; Anomaly Detection | 2
-Metrics &amp; Observability BC ⟷ C2-07 Metrics • C2-12 UI | 2
-C2-07 KPI System\n(A_j • R_j • CP_i • W_i • SRI) | 2
-C2-12 Resonance Board UI\n(live dashboards) | 2
-Manifesto &amp; Ethics Guard BC ⟷ C2-08 Ethics Guard | 2
-Knowledge Graph / Collective Intelligence BC ⟷ C2-09 Knowledge Graph | 2
-Core Subdomains | 2
-C2-03 Governance and DAO | 2
-C2-04 Treasury and Funding | 2
-C2-08 Manifesto and Ethics Guard | 2
-Supporting Subdomains | 2
-C2-05 Identity and Reputation PoCI | 2
 
 ## C1
 
-Term | Appears in
+Term | Sources
 --- | ---
 C1-01 Coherosphere System (Sphere of Coherence) | assets/.mermaid_clean/C1_system/C1_System_Context_Diagram.mmd, assets/diagrams/C1_system/C1_System_Context_Diagram.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C1_system/C1_System_Context_Diagram.mmd, docs.coherosphere.io/static/assets/diagrams/C1_system/C1_System_Context_Diagram.mmd
 C2-01 Resonance Service&lt;br&gt;(impact × alignment × time decay) | assets/.mermaid_clean/C1_system/C1_System_Context_Diagram.mmd, assets/diagrams/C1_system/C1_System_Context_Diagram.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C1_system/C1_System_Context_Diagram.mmd, docs.coherosphere.io/static/assets/diagrams/C1_system/C1_System_Context_Diagram.mmd
@@ -121,7 +126,7 @@ C1-03 AI Systems / Agents | assets/.mermaid_clean/C1_system/C1_Trust_Boundaries.
 
 ## C2
 
-Term | Appears in
+Term | Sources
 --- | ---
 C1-01 Coherosphere System (Sphere of Coherence) | assets/.mermaid_clean/C2_containers/C2_Container_Diagram.mmd, assets/diagrams/C2_containers/C2_Container_Diagram.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C2_containers/C2_Container_Diagram.mmd, docs.coherosphere.io/static/assets/diagrams/C2_containers/C2_Container_Diagram.mmd
 C2-01 Resonance Service&lt;br&gt;(C3-01.xx: Resonance Engine • SRI • Anomaly) | assets/.mermaid_clean/C2_containers/C2_Container_Diagram.mmd, assets/diagrams/C2_containers/C2_Container_Diagram.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C2_containers/C2_Container_Diagram.mmd, docs.coherosphere.io/static/assets/diagrams/C2_containers/C2_Container_Diagram.mmd
@@ -249,7 +254,7 @@ Local Hub Node\n(sync w/ chain) | assets/diagrams/C2_containers/C2_On_Off_Chain_
 
 ## C3
 
-Term | Appears in
+Term | Sources
 --- | ---
 C2-01 — Resonance Service | assets/.mermaid_clean/C3_states/State_Machines_Overview..mmd, assets/diagrams/C3_states/State_Machines_Overview..mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_states/State_Machines_Overview..mmd, docs.coherosphere.io/static/assets/diagrams/C3_states/State_Machines_Overview..mmd
 SM-01.01 Resonance Calculation State\nEntity: RESONANCE_SAMPLE\nEvents: ResonanceRequested • ResonanceUpdated • AnomalyDetected | assets/.mermaid_clean/C3_states/State_Machines_Overview..mmd, assets/diagrams/C3_states/State_Machines_Overview..mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_states/State_Machines_Overview..mmd, docs.coherosphere.io/static/assets/diagrams/C3_states/State_Machines_Overview..mmd
@@ -437,7 +442,7 @@ C3-12.07 Notification &amp; Alert Manager | assets/diagrams/C3_containers/C2-12_
 
 ## C4
 
-Term | Appears in
+Term | Sources
 --- | ---
 Clients (Internet) | assets/diagrams/C4_deployment/C4_Deployment_View.mmd
 Web App — app.coherosphere.com | assets/diagrams/C4_deployment/C4_Deployment_View.mmd
@@ -475,7 +480,7 @@ Hub Ops (programs, events) | assets/diagrams/C4_deployment/C4_Deployment_View.mm
 
 ## DDD
 
-Term | Appears in
+Term | Sources
 --- | ---
 Governance BC ⟷ C2-03 Governance &amp; DAO Service | assets/diagrams/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/diagrams/ddd/DDD_Domain_Context_Map.mmd
 C2-03 Proposal &amp; Voting\n(quorum • threshold • sublinear weights) | assets/diagrams/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/diagrams/ddd/DDD_Domain_Context_Map.mmd
@@ -537,252 +542,9 @@ Generic and Infrastructure Subdomains | assets/diagrams/ddd/DDD_Subdomain_Map.mm
 Ops and Deployment Layer (non C2) | assets/diagrams/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/diagrams/ddd/DDD_Subdomain_Map.mmd
 Bitcoin and Hard Asset Layer (external) | assets/diagrams/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/diagrams/ddd/DDD_Subdomain_Map.mmd
 
-## Docs
-
-Term | Appears in
---- | ---
-Diagram Color System | assets/docs/diagramcolors.md, docs.coherosphere.io/static/assets/docs/diagramcolors.md
-Color Semantics Overview | assets/docs/diagramcolors.md, docs.coherosphere.io/static/assets/docs/diagramcolors.md
-Reading a Diagram | assets/docs/diagramcolors.md, docs.coherosphere.io/static/assets/docs/diagramcolors.md
-Architecture Consistency Audit | assets/docs/consistency_audit.md
-Summary | assets/docs/consistency_audit.md
-Findings | assets/docs/consistency_audit.md
-A. Items missing in Manifest.md | assets/docs/consistency_audit.md
-B. Names used across multiple layers (potential consistency hot-spots) | assets/docs/consistency_audit.md
-C. C3 Components linked in C4 Sequences | assets/docs/consistency_audit.md
-Recommendations | assets/docs/consistency_audit.md
-Architecture Manifest | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-1. System Overview | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-2. Domain Architecture (C2) | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-3. Parameter Governance | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-4. AI Build Automation | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-5. Documentation and Index Generation | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-6. Validation &amp; Integrity | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-7. Versioning and Evolution | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-8. Governance Model | assets/docs/Manifest.md, docs.coherosphere.io/static/assets/docs/Manifest.md
-SLO/SLA Targets | assets/docs/slo_table.md, docs.coherosphere.io/static/assets/docs/slo_table.md
-To-Do List | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-1. C4 Sequences (Behavioral Flows) | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-2. Event Specifications (Specs / JSON Schemas) | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-3. Docs &amp; Publishing | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-4. CI/CD &amp; Validation | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-5. AI Build Readiness | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-6. Architecture Assets | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-7. Infrastructure Alignment | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-8. Runtime Navigation (New) | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-Priority Summary | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-Verdict | assets/docs/architecture_todo.md, docs.coherosphere.io/static/assets/docs/architecture_todo.md
-Architecture Status Report | assets/docs/architecture_status.md, docs.coherosphere.io/static/assets/docs/architecture_status.md
-1. Executive Summary | assets/docs/architecture_status.md
-2. Scorecard | assets/docs/architecture_status.md
-3. Architecture Overview | assets/docs/architecture_status.md
-4. Architecture Artifacts | assets/docs/architecture_status.md
-5. Workstreams (kept + extended) | assets/docs/architecture_status.md
-5.1 Docs System | assets/docs/architecture_status.md
-5.2 Specs System | assets/docs/architecture_status.md
-5.3 Governance &amp; Parameters | assets/docs/architecture_status.md
-5.4 Observability KPIs | assets/docs/architecture_status.md
-6. CI / CD Workflows (full list preserved + clarified) | assets/docs/architecture_status.md
-7. Architecture Invariants (unchanged) | assets/docs/architecture_status.md
-8. Risks &amp; Mitigations (expanded, none removed) | assets/docs/architecture_status.md
-9. Decision Log (kept + added) | assets/docs/architecture_status.md
-10. Milestones | assets/docs/architecture_status.md
-11. Appendix | assets/docs/architecture_status.md
-11.1 Notation | assets/docs/architecture_status.md
-11.2 Useful Paths | assets/docs/architecture_status.md
-Parameter Governance SOP | assets/docs/param_governance.md, docs.coherosphere.io/static/assets/docs/param_governance.md
-1. Parameter Registry | assets/docs/param_governance.md, docs.coherosphere.io/static/assets/docs/param_governance.md
-2. Roles &amp; Responsibilities | assets/docs/param_governance.md, docs.coherosphere.io/static/assets/docs/param_governance.md
-3. Change Procedure | assets/docs/param_governance.md, docs.coherosphere.io/static/assets/docs/param_governance.md
-4. Rollback Strategy | assets/docs/param_governance.md, docs.coherosphere.io/static/assets/docs/param_governance.md
-5. Audit &amp; Transparency | assets/docs/param_governance.md, docs.coherosphere.io/static/assets/docs/param_governance.md
-6. References | assets/docs/param_governance.md, docs.coherosphere.io/static/assets/docs/param_governance.md
-Event Schema Catalog | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Index | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Shared JSON Schema Fragments | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Example: PoC — ContributionSubmitted.v1 | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-JSON Schema | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-CloudEvent Example | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Ethics — AlignmentChecked.v1 | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Resonance — ResonanceUpdated.v1 | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Metrics — KPIUpdated.v1 / SRIComputed.v1 | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Governance — ProposalCreated / VoteCast / DecisionRecorded / PolicyChanged | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Treasury — FundingAllocated / RoundOpened / RoundClosed / StreamCreated | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Security — IncidentOpened / TransparencyReportPublished | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-Validation &amp; Tooling | assets/docs/event_schema_catalog.md, docs.coherosphere.io/static/assets/docs/event_schema_catalog.md
-AI Build Guide | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-1. Build Philosophy | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-2. Build Flow Overview | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-3. C-ID Mapping | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-4. Parameter Governance Integration | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-5. Dynamic Asset Generation | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-6. CI Workflows Summary | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-7. Deployment Process | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-8. SBOM and Integrity Verification | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-9. Version History | assets/docs/ai_guide.md, docs.coherosphere.io/static/assets/docs/ai_guide.md
-1) Executive Summary | docs.coherosphere.io/static/assets/docs/architecture_status.md
-2) Scorecard | docs.coherosphere.io/static/assets/docs/architecture_status.md
-3) Workstreams (kept + extended) | docs.coherosphere.io/static/assets/docs/architecture_status.md
-3.1 Docs System | docs.coherosphere.io/static/assets/docs/architecture_status.md
-3.2 Specs System | docs.coherosphere.io/static/assets/docs/architecture_status.md
-3.3 Governance &amp; Parameters | docs.coherosphere.io/static/assets/docs/architecture_status.md
-3.4 Observability KPIs | docs.coherosphere.io/static/assets/docs/architecture_status.md
-4) CI / CD Workflows (full list preserved + clarified) | docs.coherosphere.io/static/assets/docs/architecture_status.md
-5) Architecture Invariants (unchanged) | docs.coherosphere.io/static/assets/docs/architecture_status.md
-6) Risks &amp; Mitigations (expanded, none removed) | docs.coherosphere.io/static/assets/docs/architecture_status.md
-7) Decision Log (kept + added) | docs.coherosphere.io/static/assets/docs/architecture_status.md
-8) Milestones | docs.coherosphere.io/static/assets/docs/architecture_status.md
-9) Appendix | docs.coherosphere.io/static/assets/docs/architecture_status.md
-9.1 Notation | docs.coherosphere.io/static/assets/docs/architecture_status.md
-9.2 Useful Paths | docs.coherosphere.io/static/assets/docs/architecture_status.md
-Tutorial Intro | docs.coherosphere.io/docs/intro.md
-Getting Started | docs.coherosphere.io/docs/intro.md
-What you'll need | docs.coherosphere.io/docs/intro.md
-Generate a new site | docs.coherosphere.io/docs/intro.md
-Start your site | docs.coherosphere.io/docs/intro.md
-Create a Document | docs.coherosphere.io/docs/tutorial-basics/create-a-document.md
-Create your first Doc | docs.coherosphere.io/docs/tutorial-basics/create-a-document.md
-Hello | docs.coherosphere.io/docs/tutorial-basics/create-a-document.md
-Configure the Sidebar | docs.coherosphere.io/docs/tutorial-basics/create-a-document.md
-Congratulations! | docs.coherosphere.io/docs/tutorial-basics/congratulations.md
-What's next? | docs.coherosphere.io/docs/tutorial-basics/congratulations.md
-Deploy your site | docs.coherosphere.io/docs/tutorial-basics/deploy-your-site.md
-Build your site | docs.coherosphere.io/docs/tutorial-basics/deploy-your-site.md
-Create a Blog Post | docs.coherosphere.io/docs/tutorial-basics/create-a-blog-post.md
-Create your first Post | docs.coherosphere.io/docs/tutorial-basics/create-a-blog-post.md
-Create a Page | docs.coherosphere.io/docs/tutorial-basics/create-a-page.md
-Create your first React Page | docs.coherosphere.io/docs/tutorial-basics/create-a-page.md
-Create your first Markdown Page | docs.coherosphere.io/docs/tutorial-basics/create-a-page.md
-My Markdown page | docs.coherosphere.io/docs/tutorial-basics/create-a-page.md
-Translate your site | docs.coherosphere.io/docs/tutorial-extras/translate-your-site.md
-Configure i18n | docs.coherosphere.io/docs/tutorial-extras/translate-your-site.md
-Translate a doc | docs.coherosphere.io/docs/tutorial-extras/translate-your-site.md
-Start your localized site | docs.coherosphere.io/docs/tutorial-extras/translate-your-site.md
-Add a Locale Dropdown | docs.coherosphere.io/docs/tutorial-extras/translate-your-site.md
-Build your localized site | docs.coherosphere.io/docs/tutorial-extras/translate-your-site.md
-Manage Docs Versions | docs.coherosphere.io/docs/tutorial-extras/manage-docs-versions.md
-Create a docs version | docs.coherosphere.io/docs/tutorial-extras/manage-docs-versions.md
-Add a Version Dropdown | docs.coherosphere.io/docs/tutorial-extras/manage-docs-versions.md
-Update an existing version | docs.coherosphere.io/docs/tutorial-extras/manage-docs-versions.md
-
-## Events
-
-Term | Appears in
---- | ---
-DDD-EVT-77 | assets/specs/events/DDD-EVT-77.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-77.json
-DDD-EVT-50 | assets/specs/events/DDD-EVT-50.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-50.json
-DDD-EVT-78 | assets/specs/events/DDD-EVT-78.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-78.json
-DDD-EVT-73 | assets/specs/events/DDD-EVT-73.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-73.json
-DDD-EVT-38 | assets/specs/events/DDD-EVT-38.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-38.json
-DDD-EVT-62 | assets/specs/events/DDD-EVT-62.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-62.json
-DDD-EVT-45 | assets/specs/events/DDD-EVT-45.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-45.json
-DDD-EVT-03 | assets/specs/events/DDD-EVT-03.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-03.json
-DDD-EVT-06 | assets/specs/events/DDD-EVT-06.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-06.json
-DDD-EVT-83 | assets/specs/events/DDD-EVT-83.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-83.json
-DDD-EVT-44 | assets/specs/events/DDD-EVT-44.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-44.json
-DDD-EVT-74 | assets/specs/events/DDD-EVT-74.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-74.json
-DDD-EVT-43 | assets/specs/events/DDD-EVT-43.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-43.json
-DDD-EVT-16 | assets/specs/events/DDD-EVT-16.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-16.json
-DDD-EVT-60 | assets/specs/events/DDD-EVT-60.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-60.json
-DDD-EVT-10 | assets/specs/events/DDD-EVT-10.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-10.json
-DDD-EVT-55 | assets/specs/events/DDD-EVT-55.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-55.json
-DDD-EVT-63 | assets/specs/events/DDD-EVT-63.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-63.json
-DDD-EVT-20 | assets/specs/events/DDD-EVT-20.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-20.json
-DDD-EVT-21 | assets/specs/events/DDD-EVT-21.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-21.json
-DDD-EVT-91 | assets/specs/events/DDD-EVT-91.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-91.json
-DDD-EVT-49 | assets/specs/events/DDD-EVT-49.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-49.json
-DDD-EVT-52 | assets/specs/events/DDD-EVT-52.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-52.json
-DDD-EVT-59 | assets/specs/events/DDD-EVT-59.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-59.json
-DDD-EVT-53 | assets/specs/events/DDD-EVT-53.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-53.json
-DDD-EVT-66 | assets/specs/events/DDD-EVT-66.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-66.json
-DDD-EVT-11 | assets/specs/events/DDD-EVT-11.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-11.json
-DDD-EVT-79 | assets/specs/events/DDD-EVT-79.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-79.json
-DDD-EVT-68 | assets/specs/events/DDD-EVT-68.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-68.json
-DDD-EVT-02 | assets/specs/events/DDD-EVT-02.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-02.json
-DDD-EVT-42 | assets/specs/events/DDD-EVT-42.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-42.json
-DDD-EVT-28 | assets/specs/events/DDD-EVT-28.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-28.json
-DDD-EVT-41 | assets/specs/events/DDD-EVT-41.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-41.json
-DDD-EVT-47 | assets/specs/events/DDD-EVT-47.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-47.json
-DDD-EVT-40 | assets/specs/events/DDD-EVT-40.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-40.json
-DDD-EVT-04 | assets/specs/events/DDD-EVT-04.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-04.json
-DDD-EVT-86 | assets/specs/events/DDD-EVT-86.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-86.json
-DDD-EVT-05 | assets/specs/events/DDD-EVT-05.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-05.json
-DDD-EVT-19 | assets/specs/events/DDD-EVT-19.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-19.json
-DDD-EVT-18 | assets/specs/events/DDD-EVT-18.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-18.json
-DDD-EVT-37 | assets/specs/events/DDD-EVT-37.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-37.json
-DDD-EVT-22 | assets/specs/events/DDD-EVT-22.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-22.json
-DDD-EVT-01 | assets/specs/events/DDD-EVT-01.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-01.json
-DDD-EVT-90 | assets/specs/events/DDD-EVT-90.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-90.json
-Coherosphere Event Schemas (v1) | assets/specs/events/README.md, docs.coherosphere.io/static/assets/specs/events/README.md
-Index | assets/specs/events/README.md, docs.coherosphere.io/static/assets/specs/events/README.md
-DDD-EVT-65 | assets/specs/events/DDD-EVT-65.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-65.json
-DDD-EVT-14 | assets/specs/events/DDD-EVT-14.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-14.json
-DDD-EVT-23 | assets/specs/events/DDD-EVT-23.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-23.json
-DDD-EVT-64 | assets/specs/events/DDD-EVT-64.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-64.json
-DDD-EVT-84 | assets/specs/events/DDD-EVT-84.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-84.json
-DDD-EVT-35 | assets/specs/events/DDD-EVT-35.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-35.json
-DDD-EVT-82 | assets/specs/events/DDD-EVT-82.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-82.json
-DDD-EVT-88 | assets/specs/events/DDD-EVT-88.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-88.json
-DDD-EVT-07 | assets/specs/events/DDD-EVT-07.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-07.json
-DDD-EVT-08 | assets/specs/events/DDD-EVT-08.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-08.json
-DDD-EVT-80 | assets/specs/events/DDD-EVT-80.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-80.json
-DDD-EVT-36 | assets/specs/events/DDD-EVT-36.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-36.json
-DDD-EVT-92 | assets/specs/events/DDD-EVT-92.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-92.json
-DDD-EVT-72 | assets/specs/events/DDD-EVT-72.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-72.json
-DDD-EVT-75 | assets/specs/events/DDD-EVT-75.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-75.json
-DDD-EVT-27 | assets/specs/events/DDD-EVT-27.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-27.json
-DDD-EVT-69 | assets/specs/events/DDD-EVT-69.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-69.json
-DDD-EVT-61 | assets/specs/events/DDD-EVT-61.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-61.json
-DDD-EVT-85 | assets/specs/events/DDD-EVT-85.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-85.json
-DDD-EVT-26 | assets/specs/events/DDD-EVT-26.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-26.json
-DDD-EVT-54 | assets/specs/events/DDD-EVT-54.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-54.json
-DDD-EVT-87 | assets/specs/events/DDD-EVT-87.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-87.json
-DDD-EVT-57 | assets/specs/events/DDD-EVT-57.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-57.json
-DDD-EVT-81 | assets/specs/events/DDD-EVT-81.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-81.json
-DDD-EVT-58 | assets/specs/events/DDD-EVT-58.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-58.json
-DDD-EVT-17 | assets/specs/events/DDD-EVT-17.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-17.json
-DDD-EVT-89 | assets/specs/events/DDD-EVT-89.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-89.json
-DDD-EVT-67 | assets/specs/events/DDD-EVT-67.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-67.json
-DDD-EVT-30 | assets/specs/events/DDD-EVT-30.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-30.json
-DDD-EVT-71 | assets/specs/events/DDD-EVT-71.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-71.json
-DDD-EVT-24 | assets/specs/events/DDD-EVT-24.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-24.json
-DDD-EVT-29 | assets/specs/events/DDD-EVT-29.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-29.json
-DDD-EVT-76 | assets/specs/events/DDD-EVT-76.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-76.json
-DDD-EVT-70 | assets/specs/events/DDD-EVT-70.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-70.json
-DDD-EVT-13 | assets/specs/events/DDD-EVT-13.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-13.json
-DDD-EVT-12 | assets/specs/events/DDD-EVT-12.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-12.json
-DDD-EVT-48 | assets/specs/events/DDD-EVT-48.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-48.json
-DDD-EVT-51 | assets/specs/events/DDD-EVT-51.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-51.json
-DDD-EVT-39 | assets/specs/events/DDD-EVT-39.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-39.json
-DDD-EVT-56 | assets/specs/events/DDD-EVT-56.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-56.json
-DDD-EVT-46 | assets/specs/events/DDD-EVT-46.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-46.json
-Ethics.AttestationIssued | assets/specs/events/ethics/AttestationIssued.v1.json, docs.coherosphere.io/static/assets/specs/events/ethics/AttestationIssued.v1.json
-Ethics.AlignmentChecked | assets/specs/events/ethics/AlignmentChecked.v1.json, docs.coherosphere.io/static/assets/specs/events/ethics/AlignmentChecked.v1.json
-Metrics.KPIUpdated | assets/specs/events/metrics/KPIUpdated.v1.json, docs.coherosphere.io/static/assets/specs/events/metrics/KPIUpdated.v1.json
-Metrics.SRIComputed | assets/specs/events/metrics/SRIComputed.v1.json, docs.coherosphere.io/static/assets/specs/events/metrics/SRIComputed.v1.json
-Common Fragments | assets/specs/events/_meta/common.json, docs.coherosphere.io/static/assets/specs/events/_meta/common.json
-Coherosphere — Event Schemas (v2) | assets/specs/events/_meta/README.md, docs.coherosphere.io/static/assets/specs/events/_meta/README.md
-Coherosphere Event Schemas Index | assets/specs/events/_meta/index.json, docs.coherosphere.io/static/assets/specs/events/_meta/index.json
-Treasury.RoundClosed | assets/specs/events/treasury/RoundClosed.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/RoundClosed.v1.json
-Treasury.StreamCreated | assets/specs/events/treasury/StreamCreated.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/StreamCreated.v1.json
-Treasury.FundingAllocated | assets/specs/events/treasury/FundingAllocated.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/FundingAllocated.v1.json
-Treasury.RoundOpened | assets/specs/events/treasury/RoundOpened.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/RoundOpened.v1.json
-Resonance.ResonanceUpdated | assets/specs/events/resonance/ResonanceUpdated.v1.json, docs.coherosphere.io/static/assets/specs/events/resonance/ResonanceUpdated.v1.json
-Security.IncidentOpened | assets/specs/events/security/IncidentOpened.v1.json, docs.coherosphere.io/static/assets/specs/events/security/IncidentOpened.v1.json
-Security.TransparencyReportPublished | assets/specs/events/security/TransparencyReportPublished.v1.json, docs.coherosphere.io/static/assets/specs/events/security/TransparencyReportPublished.v1.json
-PoC.CPUpdated | assets/specs/events/poc/CPUpdated.v1.json, docs.coherosphere.io/static/assets/specs/events/poc/CPUpdated.v1.json
-PoC.ContributionSubmitted | assets/specs/events/poc/ContributionSubmitted.v1.json, docs.coherosphere.io/static/assets/specs/events/poc/ContributionSubmitted.v1.json
-Hubs.ProjectCreated | assets/specs/events/hubs/ProjectCreated.v1.json, docs.coherosphere.io/static/assets/specs/events/hubs/ProjectCreated.v1.json
-Hubs.SyncMerged | assets/specs/events/hubs/SyncMerged.v1.json, docs.coherosphere.io/static/assets/specs/events/hubs/SyncMerged.v1.json
-Hubs.MilestoneReported | assets/specs/events/hubs/MilestoneReported.v1.json, docs.coherosphere.io/static/assets/specs/events/hubs/MilestoneReported.v1.json
-Gov.VoteCast | assets/specs/events/gov/VoteCast.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/VoteCast.v1.json
-Gov.DecisionRecorded | assets/specs/events/gov/DecisionRecorded.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/DecisionRecorded.v1.json
-Gov.PolicyChanged | assets/specs/events/gov/PolicyChanged.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/PolicyChanged.v1.json
-Gov.ProposalCreated | assets/specs/events/gov/ProposalCreated.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/ProposalCreated.v1.json
-
 ## Overview
 
-Term | Appears in
+Term | Sources
 --- | ---
 C1 — System Context | assets/diagrams/overview/Architecture_Stack.mmd, assets/diagrams/overview/C4_Layers_Summary.mmd, docs.coherosphere.io/static/assets/diagrams/overview/Architecture_Stack.mmd, docs.coherosphere.io/static/assets/diagrams/overview/C4_Layers_Summary.mmd
 Stakeholders &amp; Trust Boundaries | assets/diagrams/overview/C4_Layers_Summary.mmd, docs.coherosphere.io/static/assets/diagrams/overview/C4_Layers_Summary.mmd
@@ -848,6 +610,180 @@ Service Mesh / Policies | assets/diagrams/overview/Architecture_Stack.mmd, docs.
 Metrics &amp; Logs (C2-07, C2-10) | assets/diagrams/overview/Architecture_Stack.mmd, docs.coherosphere.io/static/assets/diagrams/overview/Architecture_Stack.mmd
 Transparency Reports | assets/diagrams/overview/Architecture_Stack.mmd, docs.coherosphere.io/static/assets/diagrams/overview/Architecture_Stack.mmd
 
+## Events
+
+Term | Sources
+--- | ---
+DDD-EVT-77 | assets/specs/events/DDD-EVT-77.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-77.json
+DDD-EVT-50 | assets/specs/events/DDD-EVT-50.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-50.json
+DDD-EVT-78 | assets/specs/events/DDD-EVT-78.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-78.json
+DDD-EVT-73 | assets/specs/events/DDD-EVT-73.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-73.json
+DDD-EVT-38 | assets/specs/events/DDD-EVT-38.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-38.json
+DDD-EVT-62 | assets/specs/events/DDD-EVT-62.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-62.json
+DDD-EVT-45 | assets/specs/events/DDD-EVT-45.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-45.json
+DDD-EVT-03 | assets/specs/events/DDD-EVT-03.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-03.json
+DDD-EVT-06 | assets/specs/events/DDD-EVT-06.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-06.json
+DDD-EVT-83 | assets/specs/events/DDD-EVT-83.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-83.json
+DDD-EVT-44 | assets/specs/events/DDD-EVT-44.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-44.json
+DDD-EVT-74 | assets/specs/events/DDD-EVT-74.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-74.json
+DDD-EVT-43 | assets/specs/events/DDD-EVT-43.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-43.json
+DDD-EVT-16 | assets/specs/events/DDD-EVT-16.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-16.json
+DDD-EVT-60 | assets/specs/events/DDD-EVT-60.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-60.json
+DDD-EVT-10 | assets/specs/events/DDD-EVT-10.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-10.json
+DDD-EVT-55 | assets/specs/events/DDD-EVT-55.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-55.json
+DDD-EVT-63 | assets/specs/events/DDD-EVT-63.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-63.json
+DDD-EVT-20 | assets/specs/events/DDD-EVT-20.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-20.json
+DDD-EVT-21 | assets/specs/events/DDD-EVT-21.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-21.json
+DDD-EVT-91 | assets/specs/events/DDD-EVT-91.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-91.json
+DDD-EVT-49 | assets/specs/events/DDD-EVT-49.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-49.json
+DDD-EVT-52 | assets/specs/events/DDD-EVT-52.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-52.json
+DDD-EVT-59 | assets/specs/events/DDD-EVT-59.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-59.json
+DDD-EVT-53 | assets/specs/events/DDD-EVT-53.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-53.json
+DDD-EVT-66 | assets/specs/events/DDD-EVT-66.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-66.json
+DDD-EVT-11 | assets/specs/events/DDD-EVT-11.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-11.json
+DDD-EVT-79 | assets/specs/events/DDD-EVT-79.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-79.json
+DDD-EVT-68 | assets/specs/events/DDD-EVT-68.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-68.json
+DDD-EVT-02 | assets/specs/events/DDD-EVT-02.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-02.json
+DDD-EVT-42 | assets/specs/events/DDD-EVT-42.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-42.json
+DDD-EVT-28 | assets/specs/events/DDD-EVT-28.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-28.json
+DDD-EVT-41 | assets/specs/events/DDD-EVT-41.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-41.json
+DDD-EVT-47 | assets/specs/events/DDD-EVT-47.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-47.json
+DDD-EVT-40 | assets/specs/events/DDD-EVT-40.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-40.json
+DDD-EVT-04 | assets/specs/events/DDD-EVT-04.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-04.json
+DDD-EVT-86 | assets/specs/events/DDD-EVT-86.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-86.json
+DDD-EVT-05 | assets/specs/events/DDD-EVT-05.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-05.json
+DDD-EVT-19 | assets/specs/events/DDD-EVT-19.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-19.json
+DDD-EVT-18 | assets/specs/events/DDD-EVT-18.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-18.json
+DDD-EVT-37 | assets/specs/events/DDD-EVT-37.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-37.json
+DDD-EVT-22 | assets/specs/events/DDD-EVT-22.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-22.json
+DDD-EVT-01 | assets/specs/events/DDD-EVT-01.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-01.json
+DDD-EVT-90 | assets/specs/events/DDD-EVT-90.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-90.json
+Coherosphere Event Schemas (v1) | assets/specs/events/README.md
+Index | assets/specs/events/README.md
+DDD-EVT-65 | assets/specs/events/DDD-EVT-65.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-65.json
+DDD-EVT-14 | assets/specs/events/DDD-EVT-14.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-14.json
+DDD-EVT-23 | assets/specs/events/DDD-EVT-23.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-23.json
+DDD-EVT-64 | assets/specs/events/DDD-EVT-64.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-64.json
+DDD-EVT-84 | assets/specs/events/DDD-EVT-84.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-84.json
+DDD-EVT-35 | assets/specs/events/DDD-EVT-35.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-35.json
+DDD-EVT-82 | assets/specs/events/DDD-EVT-82.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-82.json
+DDD-EVT-88 | assets/specs/events/DDD-EVT-88.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-88.json
+DDD-EVT-07 | assets/specs/events/DDD-EVT-07.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-07.json
+DDD-EVT-08 | assets/specs/events/DDD-EVT-08.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-08.json
+DDD-EVT-80 | assets/specs/events/DDD-EVT-80.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-80.json
+DDD-EVT-36 | assets/specs/events/DDD-EVT-36.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-36.json
+DDD-EVT-92 | assets/specs/events/DDD-EVT-92.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-92.json
+DDD-EVT-72 | assets/specs/events/DDD-EVT-72.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-72.json
+DDD-EVT-75 | assets/specs/events/DDD-EVT-75.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-75.json
+DDD-EVT-27 | assets/specs/events/DDD-EVT-27.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-27.json
+DDD-EVT-69 | assets/specs/events/DDD-EVT-69.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-69.json
+DDD-EVT-61 | assets/specs/events/DDD-EVT-61.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-61.json
+DDD-EVT-85 | assets/specs/events/DDD-EVT-85.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-85.json
+DDD-EVT-26 | assets/specs/events/DDD-EVT-26.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-26.json
+DDD-EVT-54 | assets/specs/events/DDD-EVT-54.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-54.json
+DDD-EVT-87 | assets/specs/events/DDD-EVT-87.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-87.json
+DDD-EVT-57 | assets/specs/events/DDD-EVT-57.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-57.json
+DDD-EVT-81 | assets/specs/events/DDD-EVT-81.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-81.json
+DDD-EVT-58 | assets/specs/events/DDD-EVT-58.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-58.json
+DDD-EVT-17 | assets/specs/events/DDD-EVT-17.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-17.json
+DDD-EVT-89 | assets/specs/events/DDD-EVT-89.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-89.json
+DDD-EVT-67 | assets/specs/events/DDD-EVT-67.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-67.json
+DDD-EVT-30 | assets/specs/events/DDD-EVT-30.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-30.json
+DDD-EVT-71 | assets/specs/events/DDD-EVT-71.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-71.json
+DDD-EVT-24 | assets/specs/events/DDD-EVT-24.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-24.json
+DDD-EVT-29 | assets/specs/events/DDD-EVT-29.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-29.json
+DDD-EVT-76 | assets/specs/events/DDD-EVT-76.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-76.json
+DDD-EVT-70 | assets/specs/events/DDD-EVT-70.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-70.json
+DDD-EVT-13 | assets/specs/events/DDD-EVT-13.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-13.json
+DDD-EVT-12 | assets/specs/events/DDD-EVT-12.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-12.json
+DDD-EVT-48 | assets/specs/events/DDD-EVT-48.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-48.json
+DDD-EVT-51 | assets/specs/events/DDD-EVT-51.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-51.json
+DDD-EVT-39 | assets/specs/events/DDD-EVT-39.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-39.json
+DDD-EVT-56 | assets/specs/events/DDD-EVT-56.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-56.json
+DDD-EVT-46 | assets/specs/events/DDD-EVT-46.json, docs.coherosphere.io/static/assets/specs/events/DDD-EVT-46.json
+Ethics.AttestationIssued | assets/specs/events/ethics/AttestationIssued.v1.json, docs.coherosphere.io/static/assets/specs/events/ethics/AttestationIssued.v1.json
+Ethics.AlignmentChecked | assets/specs/events/ethics/AlignmentChecked.v1.json, docs.coherosphere.io/static/assets/specs/events/ethics/AlignmentChecked.v1.json
+Metrics.KPIUpdated | assets/specs/events/metrics/KPIUpdated.v1.json, docs.coherosphere.io/static/assets/specs/events/metrics/KPIUpdated.v1.json
+Metrics.SRIComputed | assets/specs/events/metrics/SRIComputed.v1.json, docs.coherosphere.io/static/assets/specs/events/metrics/SRIComputed.v1.json
+Common Fragments | assets/specs/events/_meta/common.json, docs.coherosphere.io/static/assets/specs/events/_meta/common.json
+Coherosphere — Event Schemas (v2) | assets/specs/events/_meta/README.md
+Coherosphere Event Schemas Index | assets/specs/events/_meta/index.json, docs.coherosphere.io/static/assets/specs/events/_meta/index.json
+Treasury.RoundClosed | assets/specs/events/treasury/RoundClosed.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/RoundClosed.v1.json
+Treasury.StreamCreated | assets/specs/events/treasury/StreamCreated.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/StreamCreated.v1.json
+Treasury.FundingAllocated | assets/specs/events/treasury/FundingAllocated.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/FundingAllocated.v1.json
+Treasury.RoundOpened | assets/specs/events/treasury/RoundOpened.v1.json, docs.coherosphere.io/static/assets/specs/events/treasury/RoundOpened.v1.json
+Resonance.ResonanceUpdated | assets/specs/events/resonance/ResonanceUpdated.v1.json, docs.coherosphere.io/static/assets/specs/events/resonance/ResonanceUpdated.v1.json
+Security.IncidentOpened | assets/specs/events/security/IncidentOpened.v1.json, docs.coherosphere.io/static/assets/specs/events/security/IncidentOpened.v1.json
+Security.TransparencyReportPublished | assets/specs/events/security/TransparencyReportPublished.v1.json, docs.coherosphere.io/static/assets/specs/events/security/TransparencyReportPublished.v1.json
+PoC.CPUpdated | assets/specs/events/poc/CPUpdated.v1.json, docs.coherosphere.io/static/assets/specs/events/poc/CPUpdated.v1.json
+PoC.ContributionSubmitted | assets/specs/events/poc/ContributionSubmitted.v1.json, docs.coherosphere.io/static/assets/specs/events/poc/ContributionSubmitted.v1.json
+Hubs.ProjectCreated | assets/specs/events/hubs/ProjectCreated.v1.json, docs.coherosphere.io/static/assets/specs/events/hubs/ProjectCreated.v1.json
+Hubs.SyncMerged | assets/specs/events/hubs/SyncMerged.v1.json, docs.coherosphere.io/static/assets/specs/events/hubs/SyncMerged.v1.json
+Hubs.MilestoneReported | assets/specs/events/hubs/MilestoneReported.v1.json, docs.coherosphere.io/static/assets/specs/events/hubs/MilestoneReported.v1.json
+Gov.VoteCast | assets/specs/events/gov/VoteCast.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/VoteCast.v1.json
+Gov.DecisionRecorded | assets/specs/events/gov/DecisionRecorded.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/DecisionRecorded.v1.json
+Gov.PolicyChanged | assets/specs/events/gov/PolicyChanged.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/PolicyChanged.v1.json
+Gov.ProposalCreated | assets/specs/events/gov/ProposalCreated.v1.json, docs.coherosphere.io/static/assets/specs/events/gov/ProposalCreated.v1.json
+
+## Config & Domains
+
+Term | Sources
+--- | ---
+Governance BC ⟷ C2-03 Governance &amp; DAO Service | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-03 Proposal &amp; Voting\n(quorum • threshold • sublinear weights) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Contribution &amp; Evaluation BC ⟷ C2-02 PoC • C2-01 Resonance • C2-08 Ethics | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-02 Proof of Contribution\nR = I × A × e^(−λ·Δt)\nContribution Points CP_i | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-08 Resonance Filters\n(alignment checks) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-01 Resonance Engine\n(weight W_i • SRI inputs) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Identity &amp; Reputation (PoCI) BC ⟷ C2-05 Identity &amp; Reputation | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-05 PoCI Identity\n(reputation ledger • attestations) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Treasury &amp; Funding BC ⟷ C2-04 Treasury &amp; Funding | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-04 Quadratic Funding\n(resonant allocation) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-04 Treasury Reserve\n(sound money policy) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Projects &amp; Local Hubs BC ⟷ C2-06 Local Hub / Federation | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-06 Projects &amp; Grants\n(lifecycle • milestones) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-06 Local Hubs\n(semi-autonomous units) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Meta-Governance &amp; Audit BC ⟷ C2-03 Governance • C2-10 Security &amp; Audit | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Rule Versioning\n(λ, α, q, θ) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Audits &amp; Anomaly Detection | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Metrics &amp; Observability BC ⟷ C2-07 Metrics • C2-12 UI | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-07 KPI System\n(A_j • R_j • CP_i • W_i • SRI) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+C2-12 Resonance Board UI\n(live dashboards) | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Manifesto &amp; Ethics Guard BC ⟷ C2-08 Ethics Guard | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Knowledge Graph / Collective Intelligence BC ⟷ C2-09 Knowledge Graph | assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+Core Subdomains | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-03 Governance and DAO | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-02 Proof of Contribution | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-01 Resonance Service | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-04 Treasury and Funding | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-08 Manifesto and Ethics Guard | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+Supporting Subdomains | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-05 Identity and Reputation PoCI | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-06 Local Hub and Federation | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-07 Metrics and Analytics | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-09 Knowledge Graph and Collective Intelligence | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+Generic and Infrastructure Subdomains | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-11 Public API Gateway | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-10 Security and Audit | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-12 Resonance Board UI | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+Ops and Deployment Layer (non C2) | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+Bitcoin and Hard Asset Layer (external) | assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+C2-08 Manifesto &amp; Ethics Guard | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C3-08.02 Rubric Manager (versioning) | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C3-08.01 Alignment Evaluator | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C3-08.03 Ethics Policy Engine (allow/deny) | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C3-08.04 Attestation Issuer | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C3-08.05 Appeals Handler / Re-evaluation | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C3-08.06 Ethics Data Store | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C3-08.07 Governance Guidance Feed | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C2-02 PoC Service | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C2-03 Governance Service | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C2-09 Knowledge Graph | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C2-05 Identity (PoCI) | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C2-07 Metrics / Analytics | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C2-12 Resonance Board / UI | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+C2-10 Security &amp; Audit | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+
 ## Other
 
 ### -
@@ -856,34 +792,10 @@ Transparency Reports | assets/diagrams/overview/Architecture_Stack.mmd, docs.coh
 - **--&gt; Published Language with DDD EVT and C4** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
 - **--- Shared Kernel** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
 - **-. Anti Corruption Layer .-&gt;** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
-### 1
-- **1) DNS &amp; TLS** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 2
-- **2) Environment / Config** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 3
-- **3) CORS &amp; Cookies** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 4
-- **4) Auth** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 5
-- **5) Realtime** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 6
-- **6) Performance** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 7
-- **7) Security Headers (baseline)** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 8
-- **8) Observability** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-### 9
-- **9) CI/CD** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
 ### A
-- **Allowed Origins (production)** — _appears in:_ assets/config/cors/README.md, docs.coherosphere.io/static/assets/config/cors/README.md
 - **API Gateway and UI Team\ntype Platform** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **API Layer** — _appears in:_ assets/specs/Canonical-Domain-Manifest.md, docs.coherosphere.io/static/assets/specs/Canonical-Domain-Manifest.md
-- **App Layer** — _appears in:_ assets/specs/Canonical-Domain-Manifest.md, docs.coherosphere.io/static/assets/specs/Canonical-Domain-Manifest.md
 - **Audit-DB** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd
-- **Audits &amp; Anomaly Detection** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
 ### B
-- **Base44 Integration — Coherosphere** — _appears in:_ assets/config/base44/README.md, docs.coherosphere.io/static/assets/config/base44/README.md
-- **Bitcoin and Hard Asset Layer (external)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
 - **Bounded Contexts and Subdomains** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 ### C
 - **C1-02 Member / Contributor** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
@@ -891,55 +803,44 @@ Transparency Reports | assets/diagrams/overview/Architecture_Stack.mmd, docs.coh
 - **C1-06 Bitcoin / Hard Asset Layer** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd
 - **C1-07 Developers / Architects** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd
 - **C2-01 Resonance** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-01 Resonance Engine\n(weight W_i • SRI inputs)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **C2-01 Resonance Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
-- **C2-02 PoC Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
-- **C2-02 Proof of Contribution** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-02 Proof of Contribution\nR = I × A × e^(−λ·Δt)\nContribution Points CP_i** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+- **C2-01 Resonance Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
+- **C2-02 PoC Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
+- **C2-02 Proof of Contribution** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 - **C2-02 Proof-of-Contribution (PoC) Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd
 - **C2-03 Governance** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd
 - **C2-03 Governance &amp; DAO** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
 - **C2-03 Governance &amp; DAO Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd
-- **C2-03 Governance and DAO** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-03 Governance Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
-- **C2-03 Proposal &amp; Voting\n(quorum • threshold • sublinear weights)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **C2-04 Quadratic Funding\n(resonant allocation)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+- **C2-03 Governance and DAO** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
+- **C2-03 Governance Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd
 - **C2-04 Treasury** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd
 - **C2-04 Treasury &amp; Funding** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd
 - **C2-04 Treasury &amp; Funding Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd
-- **C2-04 Treasury and Funding** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-04 Treasury Reserve\n(sound money policy)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+- **C2-04 Treasury and Funding** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 - **C2-05 Identity &amp; Reputation Service (PoCI)** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd
-- **C2-05 Identity (PoCI)** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
-- **C2-05 Identity and Reputation PoCI** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-05 PoCI Identity\n(reputation ledger • attestations)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+- **C2-05 Identity (PoCI)** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
+- **C2-05 Identity and Reputation PoCI** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 - **C2-06 Local Hub / Federation** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd
 - **C2-06 Local Hub / Federation Service** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd
 - **C2-06 Local Hub Adapter** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd
-- **C2-06 Local Hub and Federation** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
+- **C2-06 Local Hub and Federation** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 - **C2-06 Local Hubs** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd
 - **C2-06 Local Hubs / Projects** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd
-- **C2-06 Local Hubs\n(semi-autonomous units)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **C2-06 Projects &amp; Grants\n(lifecycle • milestones)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **C2-07 KPI System\n(A_j • R_j • CP_i • W_i • SRI)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **C2-07 Metrics / Analytics** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
+- **C2-07 Metrics / Analytics** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
 - **C2-07 Metrics / SRI** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd
-- **C2-07 Metrics and Analytics** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
+- **C2-07 Metrics and Analytics** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 - **C2-07 Resonance Metric Stack / Analytics** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd
 - **C2-08 Ethics Guard** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd
-- **C2-08 Manifesto &amp; Ethics Guard** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
-- **C2-08 Manifesto and Ethics Guard** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-08 Resonance Filters\n(alignment checks)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **C2-09 Knowledge Graph** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
+- **C2-08 Manifesto &amp; Ethics Guard** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
+- **C2-08 Manifesto and Ethics Guard** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
+- **C2-09 Knowledge Graph** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
 - **C2-09 Knowledge Graph / Collective Intelligence** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd
-- **C2-09 Knowledge Graph and Collective Intelligence** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-10 Security &amp; Audit** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd
+- **C2-09 Knowledge Graph and Collective Intelligence** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
+- **C2-10 Security &amp; Audit** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd
 - **C2-10 Security &amp; Audit Layer** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-04_Treasury_Funding_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd
-- **C2-10 Security and Audit** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-11 Public API Gateway** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-12 Resonance Board / UI** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
-- **C2-12 Resonance Board UI** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **C2-12 Resonance Board UI\n(live dashboards)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
+- **C2-10 Security and Audit** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
+- **C2-11 Public API Gateway** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
+- **C2-12 Resonance Board / UI** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-03_Governance_DAO_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-05_Identity_Reputation_PoCI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-06_Local_Hub_Federation_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-11_Public_API_Gateway.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
+- **C2-12 Resonance Board UI** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 - **C3-01.01 API Controller** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd
 - **C3-01.02 Schema &amp; Policy Guard** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd
 - **C3-01.03 Command Handler** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd
@@ -996,13 +897,6 @@ Transparency Reports | assets/diagrams/overview/Architecture_Stack.mmd, docs.coh
 - **C3-07.06 Dashboard Feed / Stream API** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd
 - **C3-07.07 Metrics Data Store** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd
 - **C3-07.08 Batch Snapshot Worker** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-07_Resonance_Metric_Stack.mmd
-- **C3-08.01 Alignment Evaluator** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
-- **C3-08.02 Rubric Manager (versioning)** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
-- **C3-08.03 Ethics Policy Engine (allow/deny)** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
-- **C3-08.04 Attestation Issuer** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
-- **C3-08.05 Appeals Handler / Re-evaluation** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
-- **C3-08.06 Ethics Data Store** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
-- **C3-08.07 Governance Guidance Feed** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
 - **C3-09.01 Ontology Manager** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd
 - **C3-09.02 Graph Ingest Pipeline** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd
 - **C3-09.03 Embedding Generator** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-09_Knowledge_Graph_Collective_Intelligence.mmd
@@ -1033,66 +927,33 @@ Transparency Reports | assets/diagrams/overview/Architecture_Stack.mmd, docs.coh
 - **C3-12.05 Accessibility &amp; i18n Layer** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
 - **C3-12.06 Local Cache / State Store** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
 - **C3-12.07 Notification &amp; Alert Manager** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-12_Resonance_Board_UI.mmd
-- **Canonical source** — _appears in:_ assets/config/dns/README.md, docs.coherosphere.io/static/assets/config/dns/README.md
-- **Coherosphere — Base44 Hosting Checklist (app.coherosphere.com)** — _appears in:_ assets/config/base44/Base44-Hosting-Checklist.md, docs.coherosphere.io/static/assets/config/base44/Base44-Hosting-Checklist.md
-- **Coherosphere — Canonical Domain Configuration (FINAL)** — _appears in:_ assets/specs/Canonical-Domain-Manifest.md, docs.coherosphere.io/static/assets/specs/Canonical-Domain-Manifest.md
-- **Coherosphere — Unified CORS Policy (v1.2.0)** — _appears in:_ assets/config/cors/README.md, docs.coherosphere.io/static/assets/config/cors/README.md
-- **Contribution &amp; Evaluation BC ⟷ C2-02 PoC • C2-01 Resonance • C2-08 Ethics** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **Core Subdomains** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+- **Core Subdomains** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
 ### D
 - **DevOps and Platform Eng\ntype Platform** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **DNS Config Bundle (v1)** — _appears in:_ assets/config/dns/README.md, docs.coherosphere.io/static/assets/config/dns/README.md
-- **Docs Layer** — _appears in:_ assets/specs/Canonical-Domain-Manifest.md, docs.coherosphere.io/static/assets/specs/Canonical-Domain-Manifest.md
 ### E
-- **Environments** — _appears in:_ assets/config/cors/README.md, docs.coherosphere.io/static/assets/config/cors/README.md
 - **External Oracles / Repos** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-02_Proof_of_Contribution.mmd
-- **Extras (staging only)** — _appears in:_ assets/config/cors/README.md, docs.coherosphere.io/static/assets/config/cors/README.md
 ### F
 - **Federation and Hubs Team\ntype Stream aligned** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **File** — _appears in:_ assets/config/cors/README.md, docs.coherosphere.io/static/assets/config/cors/README.md
-- **Folders** — _appears in:_ assets/config/base44/README.md, docs.coherosphere.io/static/assets/config/base44/README.md
 ### G
 - **Generic and Infrastructure** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
-- **Generic and Infrastructure Subdomains** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
-- **Governance BC ⟷ C2-03 Governance &amp; DAO Service** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
 - **Governance Team\ntype Stream aligned** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 ### I
-- **Identity &amp; Reputation (PoCI) BC ⟷ C2-05 Identity &amp; Reputation** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
 - **IR-DB** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd
-### K
-- **Knowledge Graph / Collective Intelligence BC ⟷ C2-09 Knowledge Graph** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
 ### L
-- **Landing / Marketing** — _appears in:_ assets/specs/Canonical-Domain-Manifest.md, docs.coherosphere.io/static/assets/specs/Canonical-Domain-Manifest.md
 - **Legend** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
 ### M
-- **Manifesto &amp; Ethics Guard BC ⟷ C2-08 Ethics Guard** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **Meta-Governance &amp; Audit BC ⟷ C2-03 Governance • C2-10 Security &amp; Audit** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **Methods / Headers** — _appears in:_ assets/config/cors/README.md, docs.coherosphere.io/static/assets/config/cors/README.md
-- **Metrics &amp; Observability BC ⟷ C2-07 Metrics • C2-12 UI** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
 - **Metrics and Knowledge Team\ntype Stream aligned** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-### N
-- **Notes** — _appears in:_ assets/config/dns/README.md, docs.coherosphere.io/static/assets/config/dns/README.md
 ### O
-- **Ops and Deployment Layer (non C2)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
 - **Ops and Deployment Layer\nnot a C2 container** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 ### P
 - **PoC and Identity Team\ntype Stream aligned** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **Projects &amp; Local Hubs BC ⟷ C2-06 Local Hub / Federation** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
-- **Providers** — _appears in:_ assets/config/dns/README.md, docs.coherosphere.io/static/assets/config/dns/README.md
 ### R
-- **README Patch Hints (Domains)** — _appears in:_ assets/specs/README-Patch-Hints.md, docs.coherosphere.io/static/assets/specs/README-Patch-Hints.md
-- **Required GitHub secrets** — _appears in:_ assets/config/base44/README.md, docs.coherosphere.io/static/assets/config/base44/README.md
-- **Reserved (optional)** — _appears in:_ assets/specs/Canonical-Domain-Manifest.md, docs.coherosphere.io/static/assets/specs/Canonical-Domain-Manifest.md
 - **Resonance Core Team\ntype Complicated subsystem** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **Rule Versioning\n(λ, α, q, θ)** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
 ### S
 - **Security and Audit Team\ntype Enabling** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
 - **SIEM-Store** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-10_Security_Audit_Layer.mmd
 - **Snapshot Store** — _appears in:_ assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-01_Resonance_Service.mmd.mmd
-- **Supporting Subdomains** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Subdomain_Map.mmd
+- **Supporting Subdomains** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Contract_Types_Overview.mmd
 ### T
 - **Teams** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-- **Treasury &amp; Funding BC ⟷ C2-04 Treasury &amp; Funding** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Domain_Context_Map.mmd
 - **Treasury Ops Team\ntype Stream aligned** — _appears in:_ assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/ddd/DDD_Team_Context_Alignment.mmd
-### U
-- **Usage** — _appears in:_ assets/config/cors/README.md, c4_schema_alignment/README.md, docs.coherosphere.io/static/assets/config/cors/README.md, scripts/README_FIX_OPENAPI.md
