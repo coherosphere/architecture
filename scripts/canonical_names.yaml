@@ -1,30 +1,33 @@
-# Optional canonical names and synonyms
-# - Put canonical forms under 'canonical' (key must be lowercase).
-# - Map synonyms to canonical forms under 'synonyms' (keys lowercase).
-# - Optionally tune deny/allow lists.
+
+# (file: scripts/canonical_names.yaml)
 canonical:
   resonance service: Resonance Service
   proposal service: Proposal Service
   funding service: Funding Service
-  identity / poci scs: Identity / PoCI SCs
   identity aggregator (poci): Identity Aggregator (PoCI)
   metrics / sri service: Metrics / SRI Service
   governance scs: Governance SCs
   treasury scs: Treasury SCs
+  identity / poci scs: Identity / PoCI SCs
   meta gov scs: Meta-Gov SCs
-  event bus: Event Bus
   api gateway: API Gateway
   operational db: Operational DB
   analytics lake / warehouse: Analytics Lake / Warehouse
   audit mirror (immutable like): Audit Mirror (immutable-like)
+  resonance metric stack: Resonance Metric Stack
+  resonance board ui: Resonance Board UI
+  governance & dao: Governance & DAO
 
 synonyms:
-  identity / poci smart contracts: Identity / PoCI SCs
-  identity poci scs: Identity / PoCI SCs
-  sri calculator: Metrics / SRI Service
   metrics service: Metrics / SRI Service
+  sri calculator: Metrics / SRI Service
+  identity poci scs: Identity / PoCI SCs
+  identity / poci smart contracts: Identity / PoCI SCs
   web app — app coherosphere com: Web App — app.coherosphere.com
   api gateway — api coherosphere io: API Gateway — api.coherosphere.io
+  c2 07 metrics / analytics: Resonance Metric Stack
+  c2 07 resonance metric stack / analytics: Resonance Metric Stack
+  resonance board / ui: Resonance Board UI
 
 denylist:
   - service
@@ -34,5 +37,12 @@ denylist:
   - note
   - flowchart
   - sequence diagram
+  - readme
+  - license
+  - changelog
+  - contributing
+  - table of contents
+  - breadcrumbs
+  - badges
 
 allowlist: []
