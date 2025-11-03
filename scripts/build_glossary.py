@@ -4,7 +4,7 @@ Builds a repository glossary by scanning Mermaid (.mmd), Markdown (.md),
 and Event spec JSON files under assets/specs/events/**.
 MDX-safe output (self-closing <br />, table cell escaping including braces).
 
-Usage (in GitHub Actions or locally):
+Usage:
   GLOSSARY_OUTPUT="assets/docs/audit/glossary.md" python scripts/build_glossary.py
 """
 
@@ -16,12 +16,12 @@ from collections import defaultdict, Counter
 from datetime import datetime
 
 try:
-    import yaml  # optional; used for canonical names/synonyms
+    import yaml  # optional; for canonical names/synonyms
 except Exception:
     yaml = None
 
 # --- Repo layout -------------------------------------------------------------
-# Script is located at repo_root/scripts/build_glossary.py
+# Script is at repo_root/scripts/build_glossary.py
 ROOT = Path(__file__).resolve().parents[1]
 
 # Output file (relative to repo root). Example: assets/docs/audit/glossary.md
@@ -39,12 +39,12 @@ MD_EXT = {".md"}
 JSON_EXT = {".json"}
 
 # Mermaid patterns (robust label extraction; not a full parser)
-RE_NODE_LABEL       = re.compile(r'[A-Za-z0-9_]+\s*\[\s*"([^"]+)"\s*\]')
-RE_SUBGRAPH_LABEL   = re.compile(r'subgraph\s+[^\["\n]+?\s*\[\s*"([^"]+)"\s*\]', re.I)
-RE_PARTICIPANT      = re.compile(r'participant\s+[A-Za-z0-9_]+\s+as\s+(.+)$', re.I)
-RE_STATE_LABEL      = re.compile(r'state\s+"([^"]+)"', re.I)  # stateDiagram notes
+RE_NODE_LABEL     = re.compile(r'[A-Za-z0-9_]+\s*\[\s*"([^"]+)"\s*\]')
+RE_SUBGRAPH_LABEL = re.compile(r'subgraph\s+[^\["\n]+?\s*\[\s*"([^"]+)"\s*\]', re.I)
+RE_PARTICIPANT    = re.compile(r'participant\s+[A-Za-z0-9_]+\s+as\s+(.+)$', re.I)
+RE_STATE_LABEL    = re.compile(r'state\s+"([^"]+)"', re.I)  # stateDiagram labels
 
-# Markdown headings as “terms”
+# Markdown headings as terms
 RE_H1 = re.compile(r'^\#\s+(.+)$')
 RE_H2 = re.compile(r'^\#\#\s+(.+)$')
 RE_H3 = re.compile(r'^\#\#\#\s+(.+)$')
@@ -149,7 +149,7 @@ def extract_terms_from_md(p: Path):
             for rx in (RE_H1, RE_H2, RE_H3):
                 m = rx.match(line)
                 if m:
-                    terms.append(norm(m.group(1))))
+                    terms.append(norm(m.group(1)))  # <-- fixed (no extra ')')
     except Exception:
         pass
     return terms
