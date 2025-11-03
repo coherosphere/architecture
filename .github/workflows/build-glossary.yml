@@ -10,7 +10,7 @@ on:
       - '.github/workflows/build-glossary.yml'
       - 'scripts/build_glossary.py'
       - 'scripts/canonical_names.yaml'
-      - 'docs/audit/glossary.md'
+      - 'assets/docs/audit/glossary.md'
   pull_request:
     branches: [ main ]
     paths:
@@ -46,7 +46,7 @@ jobs:
 
       - name: Build glossary
         env:
-          GLOSSARY_OUTPUT: docs/audit/glossary.md
+          GLOSSARY_OUTPUT: assets/docs/audit/glossary.md
           MAX_TOP_TERMS: "75"
         run: |
           python scripts/build_glossary.py
