@@ -8,8 +8,8 @@ on:
       - '**/*.md'
       - 'assets/specs/events/**/*.json'
       - '.github/workflows/build-glossary.yml'
-      - '.github/scripts/build_glossary.py'
-      - '.github/scripts/canonical_names.yaml'
+      - '.scripts/build_glossary.py'
+      - '.scripts/canonical_names.yaml'
       - 'docs/audit/glossary.md'
   pull_request:
     branches: [ main ]
