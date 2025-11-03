@@ -2,65 +2,55 @@
 """
 Builds a repository glossary by scanning Mermaid (.mmd), Markdown (.md),
 and Event spec JSON files under assets/specs/events/**.
-MDX-safe output (self-closing <br />, table cell escaping including braces).
 
-Usage:
-  GLOSSARY_OUTPUT="assets/docs/audit/glossary.md" python scripts/build_glossary.py
+Features:
+- MDX-safe output (escapes <, >, |, {, })
+- self-closing <br /> for compatibility
+- "Other" rendered as clean alphabetical bullet list
+- ignores its own output file to avoid recursion
 """
 
 import os
 import re
 import json
+import html
 from pathlib import Path
 from collections import defaultdict, Counter
 from datetime import datetime
 
 try:
-    import yaml  # optional; for canonical names/synonyms
+    import yaml  # optional for canonical names/synonyms
 except Exception:
     yaml = None
 
-# --- Repo layout -------------------------------------------------------------
-# Script is at repo_root/scripts/build_glossary.py
+# ---------------------------------------------------------------------------
+# Repo & Config
+# ---------------------------------------------------------------------------
+
 ROOT = Path(__file__).resolve().parents[1]
-
-# Output file (relative to repo root). Example: assets/docs/audit/glossary.md
 OUT = Path(os.getenv("GLOSSARY_OUTPUT", "assets/docs/audit/glossary.md"))
-
-# Optional canonical/synonym file (relative to repo root)
 CANON_PATH = ROOT / "scripts" / "canonical_names.yaml"
 
-# --- Scanning config ---------------------------------------------------------
 EXCLUDES = {
-    ".git", ".github", "node_modules", ".venv", "dist", "build", ".docusaurus", ".cache"
+    ".git", ".github", "node_modules", ".venv", "dist", "build",
+    ".docusaurus", ".cache"
 }
 MM_EXT = {".mmd"}
 MD_EXT = {".md"}
 JSON_EXT = {".json"}
 
-# Mermaid patterns (robust label extraction; not a full parser)
-RE_NODE_LABEL     = re.compile(r'[A-Za-z0-9_]+\s*\[\s*"([^"]+)"\s*\]')
-RE_SUBGRAPH_LABEL = re.compile(r'subgraph\s+[^\["\n]+?\s*\[\s*"([^"]+)"\s*\]', re.I)
-RE_PARTICIPANT    = re.compile(r'participant\s+[A-Za-z0-9_]+\s+as\s+(.+)$', re.I)
-RE_STATE_LABEL    = re.compile(r'state\s+"([^"]+)"', re.I)  # stateDiagram labels
-
-# Markdown headings as terms
-RE_H1 = re.compile(r'^\#\s+(.+)$')
-RE_H2 = re.compile(r'^\#\#\s+(.+)$')
-RE_H3 = re.compile(r'^\#\#\#\s+(.+)$')
-
-# JSON fields to pick
-JSON_KEYS = ("title", "name", "summary")
-
-# Default deny/allow lists (lowercased)
 DEFAULT_DENY = {
     "service", "api", "gateway", "event bus", "database", "db", "monitoring", "alerts",
-    "participant", "note", "subgraph", "mermaid", "sequence diagram", "flowchart"
+    "participant", "note", "subgraph", "mermaid", "sequence diagram", "flowchart",
+    "readme", "license", "changelog", "contributing"
 }
-DEFAULT_ALLOW = set()  # empty means allow all not-denied
+DEFAULT_ALLOW = set()
 
 
-# --- Helpers -----------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Utility functions
+# ---------------------------------------------------------------------------
+
 def load_canonical():
     """Load canonical forms / synonyms / deny & allow lists from YAML."""
     if CANON_PATH.exists() and yaml is not None:
@@ -115,17 +105,40 @@ def layer_from_path(p: Path) -> str:
         return "Overview"
     if "/assets/specs/events/" in s:
         return "Events"
+    if "/docs/" in s:
+        name = s.split("/docs/")[-1]
+        if name.startswith("c1-"): return "C1"
+        if name.startswith("c2-"): return "C2"
+        if name.startswith("c3-"): return "C3"
+        if name.startswith("c4-"): return "C4"
+        if name.startswith("ddd-"): return "DDD"
+        if "overview" in name: return "Overview"
+        return "Docs"
     return "Other"
 
 
 def iter_files(root: Path):
     """Yield files under root, skipping EXCLUDES."""
-    for dirpath, dirnames, filenames in os.walk(root):
+    for dirpath, _, filenames in os.walk(root):
         rel = Path(dirpath).relative_to(root)
         if any(part in EXCLUDES for part in rel.parts):
             continue
         for fn in filenames:
             yield Path(dirpath) / fn
+
+
+# ---------------------------------------------------------------------------
+# Extractors
+# ---------------------------------------------------------------------------
+
+RE_NODE_LABEL     = re.compile(r'[A-Za-z0-9_]+\s*\[\s*"([^"]+)"\s*\]')
+RE_SUBGRAPH_LABEL = re.compile(r'subgraph\s+[^\["\n]+?\s*\[\s*"([^"]+)"\s*\]', re.I)
+RE_PARTICIPANT    = re.compile(r'participant\s+[A-Za-z0-9_]+\s+as\s+(.+)$', re.I)
+RE_STATE_LABEL    = re.compile(r'state\s+"([^"]+)"', re.I)
+RE_H1 = re.compile(r'^\#\s+(.+)$')
+RE_H2 = re.compile(r'^\#\#\s+(.+)$')
+RE_H3 = re.compile(r'^\#\#\#\s+(.+)$')
+JSON_KEYS = ("title", "name", "summary")
 
 
 def extract_terms_from_mmd(p: Path):
@@ -149,7 +162,7 @@ def extract_terms_from_md(p: Path):
             for rx in (RE_H1, RE_H2, RE_H3):
                 m = rx.match(line)
                 if m:
-                    terms.append(norm(m.group(1)))  # <-- fixed (no extra ')')
+                    terms.append(norm(m.group(1)))
     except Exception:
         pass
     return terms
@@ -187,15 +200,79 @@ def should_keep(term: str) -> bool:
     return True
 
 
-# --- MDX-safe escaping -------------------------------------------------------
-def mdx_cell(s: str) -> str:
-    """Escape content for MDX table cells (HTML + pipe + MDX braces)."""
-    s = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    s = s.replace("|", "&#124;")
-    # Prevent MDX expression evaluation like {id}
-    s = s.replace("{", "&#123;").replace("}", "&#125;")
-    return s
+# ---------------------------------------------------------------------------
+# MDX Escaping and Rendering
+# ---------------------------------------------------------------------------
 
+def _escape_mdx(s: str) -> str:
+    """Make any text safe for Docusaurus MDX tables and lists."""
+    if s is None:
+        return ""
+    s = html.escape(str(s), quote=False)
+    s = s.replace("|", r"\|")
+    s = s.replace("{", r"\{").replace("}", r"\}")
+    s = re.sub(r"\s*\n\s*", "; ", s)
+    s = re.sub(r"[ \t]{2,}", " ", s)
+    return s.strip()
+
+
+def render_table_section(title: str, rows: list, columns: list) -> str:
+    """Render one glossary section as Markdown table."""
+    out = [f"## {title}", ""]
+    header = " | ".join(col[0] for col in columns)
+    sep = " | ".join("---" for _ in columns)
+    out.append(header)
+    out.append(sep)
+    for r in rows:
+        cells = []
+        for label, key in columns:
+            val = r.get(key, "")
+            if isinstance(val, (list, tuple, set)):
+                val = ", ".join(_escape_mdx(x) for x in val)
+            else:
+                val = _escape_mdx(val)
+            cells.append(val)
+        out.append(" | ".join(cells))
+    out.append("")
+    return "\n".join(out)
+
+
+def render_other_section(other_terms: list) -> str:
+    """Render the 'Other' section as alphabetical bullet list."""
+    if not other_terms:
+        return ""
+    normalized = []
+    for r in other_terms:
+        term = _escape_mdx(r.get("term", ""))
+        files = r.get("files") or []
+        notes = _escape_mdx(r.get("notes", ""))
+        files_list = ", ".join(_escape_mdx(f) for f in files)
+        normalized.append((term.lower(), term, files_list, notes))
+
+    normalized.sort(key=lambda x: x[0])
+    out = ["## Other", ""]
+    current_letter = None
+    for _, term, files_list, notes in normalized:
+        first = term[:1].upper() if term else "#"
+        if first != current_letter:
+            current_letter = first
+            out.append(f"### {current_letter}")
+        line = f"- **{term}**"
+        meta = []
+        if files_list:
+            meta.append(f"_appears in:_ {files_list}")
+        if notes:
+            meta.append(f"_notes:_ {notes}")
+        if meta:
+            line += " — " + "; ".join(meta)
+        out.append(line)
+    out.append("")
+    return "\n".join(out)
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 
 def main():
     by_layer = defaultdict(list)
@@ -205,7 +282,7 @@ def main():
     out_rel_norm = str(OUT).replace("\\", "/")
 
     for p in iter_files(ROOT):
-        # Skip generated output to avoid re-ingesting our own file
+        # Skip generated file
         if str(p.resolve()) == str(out_abs):
             continue
         if str(p).replace("\\", "/").endswith(out_rel_norm):
@@ -231,24 +308,34 @@ def main():
             by_layer[layer].append(ct)
             origin_map[(layer, ct)].append(rel_path)
 
-    # Stable dedupe per layer
-    for layer in list(by_layer.keys()):
-        seen, deduped = set(), []
-        for v in by_layer[layer]:
-            if v not in seen:
-                seen.add(v)
-                deduped.append(v)
-        by_layer[layer] = deduped
-
-    # Global counts
-    global_counter = Counter()
+    # Deduplicate
     for layer, terms in by_layer.items():
-        global_counter.update(terms)
+        by_layer[layer] = list(dict.fromkeys(terms))
+
+    # Drop trivial singletons in "Other"
+    filtered_by_layer = defaultdict(list)
+    for layer, terms in by_layer.items():
+        if layer != "Other":
+            filtered_by_layer[layer] = terms
+            continue
+        keep = []
+        for t in terms:
+            if len(set(origin_map[(layer, t)])) > 1:
+                keep.append(t)
+        filtered_by_layer["Other"] = keep
+    by_layer = filtered_by_layer
+
+    # Collect rows per layer
+    layer_rows = {}
+    for layer, terms in by_layer.items():
+        rows = []
+        for t in terms:
+            files = sorted(set(origin_map[(layer, t)]))
+            rows.append({"term": t, "files": files})
+        layer_rows[layer] = rows
 
     # Write MDX-safe Markdown
     (ROOT / OUT).parent.mkdir(parents=True, exist_ok=True)
-    max_top = int(os.getenv("MAX_TOP_TERMS", "50"))
-
     lines = []
     lines.append("# Repository Glossary")
     lines.append("")
@@ -260,28 +347,26 @@ def main():
     lines.append("")
 
     # Overview
+    all_terms = [t for terms in by_layer.values() for t in terms]
+    counts = Counter(all_terms)
     lines.append("## Overview (Top Terms)")
     lines.append("")
     lines.append("Term | Count")
     lines.append("---|---")
-    for term, cnt in global_counter.most_common(max_top):
-        lines.append(f"{mdx_cell(term)} | {cnt}")
+    for term, cnt in counts.most_common(50):
+        lines.append(f"{_escape_mdx(term)} | {cnt}")
     lines.append("")
 
-    # Per layer
-    for layer in sorted(by_layer.keys()):
-        terms = by_layer[layer]
-        lines.append(f"## {layer}")
-        lines.append("")
-        lines.append("Term | Sources")
-        lines.append("---|---")
-        for t in terms:
-            srcs = sorted(set(origin_map[(layer, t)]))[:8]
-            srcs = [mdx_cell(x) for x in srcs]
-            # MDX requires self-closing <br /> inside tables
-            src_str = "<br />".join(srcs)
-            lines.append(f"{mdx_cell(t)} | {src_str}")
-        lines.append("")
+    # Layer sections
+    for layer in sorted(k for k in layer_rows.keys() if k != "Other"):
+        lines.append(render_table_section(
+            layer,
+            layer_rows[layer],
+            [("Term", "term"), ("Appears in", "files")]
+        ))
+
+    # Other as bullet list
+    lines.append(render_other_section(layer_rows.get("Other", [])))
 
     (ROOT / OUT).write_text("\n".join(lines), encoding="utf-8")
     print(f"Wrote {OUT}")
