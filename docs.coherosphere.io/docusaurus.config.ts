@@ -68,49 +68,19 @@ const config: Config = {
 
     navbar: {
       title: 'coherosphere',
-      logo: { alt: 'coherosphere', src: 'img/logo.svg' },
-      items: [
+       items: [
+        { to: '/architecture_todo', label: 'Todo', position: 'left' },
+        { to: '/ai_guide', label: 'AI Build', position: 'left' },
+        { to: '/manifest', label: 'Manifest', position: 'left' },
+        { to: '/diagrams', label: 'Diagrams', position: 'left' },
+        { to: '/specs', label: 'Specs', position: 'left' },
         {
-          label: 'Architecture',
-          position: 'left',
-          items: [
-            { to: '/architecture/overview', label: 'Overview' },
-            { to: '/architecture/diagrams', label: 'Diagrams' },
-          ],
+          href: 'https://github.com/coherosphere/architecture',
+          label: 'GitHub',
+          position: 'right',
         },
-        {
-          label: 'Design',
-          position: 'left',
-          items: [
-            { to: '/architecture/ai-build-guide', label: 'AI Build Guide' },
-            { to: '/architecture/specs', label: 'API & Specs' },
-          ],
-        },
-        {
-          label: 'Governance',
-          position: 'left',
-          items: [
-            { to: '/manifest/manifest', label: 'Vision & Principles' },
-            { to: '/architecture/event-schema-catalog', label: 'Event Schemas' },
-          ],
-        },
-        {
-          label: 'Audit',
-          position: 'left',
-          items: [
-            { to: '/audit/status', label: 'Status' },
-            { to: '/audit/glossary', label: 'Glossary' },
-          ],
-        },
-
-        { type: 'search', position: 'right' },
-        { href: 'https://github.com/coherosphere/architecture', label: 'GitHub', position: 'right' },
-        { type: 'localeDropdown', position: 'right' },
-        { type: 'themeToggle', position: 'right' }, // wenn Plugin aktiv
       ],
     },
-  },
-};
 
     footer: {
   style: 'dark',
