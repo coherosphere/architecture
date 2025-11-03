@@ -8,7 +8,6 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'architecture_todo',              
-        'architecture_status',
         'ai_guide',
         'manifest',
         'event_schema_catalog',
@@ -23,6 +22,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Audit & Glossary',
       items: [
+              'architecture_status',
               'audit/glossary',
               ],
     },
