@@ -1,0 +1,16 @@
+sequenceDiagram
+  autonumber
+  participant SYM as Symbolic Editor (Ontology/Policies/KPIs)
+  participant BR as Bridge (DSL, Registry, Generators)
+  participant CD as CI/CD + Migrations
+  participant RT as Runtime (SCs, Services, Stream, DB)
+  participant OBS as Observability (TSDB, Dashboards)
+
+  SYM->>BR: Commit symbolic change (ontology, policy, KPI model)
+  BR->>BR: Validate DSL and mappings
+  BR->>BR: Generate schemas and guards
+  BR->>CD: Emit build artifacts (contracts, services, pipelines)
+  CD->>RT: Deploy & migrate (versioned rollout)
+  RT-->>OBS: Emit events and metrics
+  OBS-->>SYM: KPIs, radar axes, heatmap trends
+  SYM-->>SYM: Adjust policies or ontology (next loop)

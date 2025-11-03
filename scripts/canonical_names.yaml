@@ -1,0 +1,38 @@
+# Optional canonical names and synonyms
+# - Put canonical forms under 'canonical' (key must be lowercase).
+# - Map synonyms to canonical forms under 'synonyms' (keys lowercase).
+# - Optionally tune deny/allow lists.
+canonical:
+  resonance service: Resonance Service
+  proposal service: Proposal Service
+  funding service: Funding Service
+  identity / poci scs: Identity / PoCI SCs
+  identity aggregator (poci): Identity Aggregator (PoCI)
+  metrics / sri service: Metrics / SRI Service
+  governance scs: Governance SCs
+  treasury scs: Treasury SCs
+  meta gov scs: Meta-Gov SCs
+  event bus: Event Bus
+  api gateway: API Gateway
+  operational db: Operational DB
+  analytics lake / warehouse: Analytics Lake / Warehouse
+  audit mirror (immutable like): Audit Mirror (immutable-like)
+
+synonyms:
+  identity / poci smart contracts: Identity / PoCI SCs
+  identity poci scs: Identity / PoCI SCs
+  sri calculator: Metrics / SRI Service
+  metrics service: Metrics / SRI Service
+  web app — app coherosphere com: Web App — app.coherosphere.com
+  api gateway — api coherosphere io: API Gateway — api.coherosphere.io
+
+denylist:
+  - service
+  - api
+  - participant
+  - subgraph
+  - note
+  - flowchart
+  - sequence diagram
+
+allowlist: []
