@@ -5,7 +5,7 @@ description: Auto-generated glossary across diagrams, docs, and specs (canonical
 sidebar_label: Glossary
 ---
 
-_Generated_: 2025-11-03T15:34:16.063867Z
+_Generated_: 2025-11-04T03:49:44.165698Z
 
 This page is auto-generated from Mermaid (`.mmd`), Markdown (`.md`), and Event specs (`assets/specs/events/*.json`).
 Canonicalization and synonyms are applied from `scripts/canonical_names.yaml`.
@@ -783,6 +783,10 @@ C2-05 Identity (PoCI) | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethi
 C2-07 Metrics / Analytics | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
 C2-12 Resonance Board / UI | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
 C2-10 Security &amp; Audit | assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd, docs.coherosphere.io/static/assets/.mermaid_clean/C3_containers/C2-08_Manifesto_Ethics_Guard_Service.mmd
+Architecture Assets Manifest | assets/diagrams/Manifest.md
+Diagrams | assets/diagrams/Manifest.md
+OpenAPI Specs | assets/diagrams/Manifest.md
+Event Schemas | assets/diagrams/Manifest.md
 
 ## Other
 
