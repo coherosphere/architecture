@@ -3,6 +3,7 @@
 # (file: scripts/build_glossary.py)
 """
 Final build_glossary.py — MDX-safe, canonicalized, consistent sections.
+Fix: Markdown tables now use leading & trailing pipes on header, separator, and rows.
 """
 import os, re, json, html
 from pathlib import Path
@@ -141,18 +142,24 @@ def should_keep(term:str)->bool:
     return True
 
 def _escape_mdx(s:str)->str:
+    """Escape content for MDX tables safely: keep pipes literal by escaping them and collapse newlines."""
     if s is None: return ""
     s = html.escape(str(s), quote=False)
-    s = s.replace("|", r"\|")
+    s = s.replace("|", r"\|")  # ensure table cells don't break
     s = s.replace("{", r"\{").replace("}", r"\}")
     s = re.sub(r"\s*\n\s*", "; ", s)
     s = re.sub(r"[ \t]{2,}", " ", s)
     return s.strip()
 
+def _mk_table_row(cells:list)->str:
+    """Render a table row with leading & trailing pipes."""
+    return "| " + " | ".join(cells) + " |"
+
 def render_table_section(title:str, rows:list, columns:list)->str:
+    """Render a markdown table with proper leading/trailing pipes."""
     out=[f"## {title}",""]
-    header=" | ".join(col[0] for col in columns)
-    sep=" | ".join("---" for _ in columns)
+    header=_mk_table_row([col[0] for col in columns])
+    sep=_mk_table_row([":---" for _ in columns])  # left-align
     out.append(header); out.append(sep)
     for r in rows:
         cells=[]
@@ -163,7 +170,7 @@ def render_table_section(title:str, rows:list, columns:list)->str:
             else:
                 val=_escape_mdx(val)
             cells.append(val)
-        out.append(" | ".join(cells))
+        out.append(_mk_table_row(cells))
     out.append("")
     return "\n".join(out)
 
@@ -265,12 +272,15 @@ def main():
         lines.append("Canonicalization and synonyms are applied from `scripts/canonical_names.yaml`.")
     lines.append("")
 
+    # Overview table with proper pipes
     lines.append("## Overview (Top Terms)")
     lines.append("")
-    lines.append("Term | Count")
-    lines.append("---|---")
+    header = "| Term | Count |"
+    sep    = "| :--- | :---: |"
+    lines.append(header)
+    lines.append(sep)
     for term,cnt in counts.most_common(50):
-        lines.append(f"{_escape_mdx(term)} | {cnt}")
+        lines.append("| " + _escape_mdx(term) + " | " + str(cnt) + " |")
     lines.append("")
 
     SECTION_ORDER=["C1","C2","C3","C4","DDD","Overview","Docs","Events","CI & Tooling","Config & Domains"]
