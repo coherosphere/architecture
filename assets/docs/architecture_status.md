@@ -15,7 +15,7 @@ This document serves as the single source of truth for Coherosphere development 
 
 ## 1. Executive Summary
 
-- **Architecture posture:** stable fundamentals, steady consolidation of docs + specs, improved CI signal.
+- **Architecture posture:** stable fundamentals, steady consolidation of docs & specs, improved CI signal.
 - **Key wins since last report:**  
   - Docs site hardened (broken links removed, asset indexing automated, dynamic listings for `/diagrams` and `/specs`).  
   - CI matrix for **Mermaid / OpenAPI / Event Schemas / Codegen** validated.  
