@@ -1,6 +1,5 @@
 # Architecture Consistency Audit
 
-_Generated_: 2025-11-03T10:23:26.477408Z
 
 ## Summary
 
