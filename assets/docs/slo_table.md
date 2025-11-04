@@ -28,9 +28,9 @@ This document ensures operational reliability and performance transparency acros
 | C2-10 | Security | incident alerting | ≤ 60 s | realtime | SIEM → PagerDuty |
 | C2-12 | Resonance Board / UI | TTFB | ≤ 150 ms | 30d | CDN + SSR enabled |
 
-Error Budgets: 1−SLO per window; alert thresholds at 25%, 50%, and 75% burn.  
-Escalation: Pager rotation; 15-min acknowledgment; 1h mitigation for Sev-1 incidents.  
-Monitoring: Prometheus + OpenTelemetry traces; public status page for SLA-bound endpoints.
+- **Error Budgets:** 1−SLO per window; alert thresholds at 25%, 50%, and 75% burn.
+- **Escalation:** Pager rotation; 15-min acknowledgment; 1h mitigation for Sev-1 incidents.
+- **Monitoring:** Prometheus + OpenTelemetry traces; public status page for SLA-bound endpoints.
 ---
 
 **Prepared by:** the coherosphere collective 
