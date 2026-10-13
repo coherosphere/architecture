@@ -5,7 +5,7 @@ description: Auto-generated glossary across diagrams, docs, and specs (canonical
 sidebar_label: Glossary
 ---
 
-_Generated_: 2026-10-12T11:00:17.479328Z
+_Generated_: 2026-10-13T10:44:00.562916Z
 
 This page is auto-generated from Mermaid (`.mmd`), Markdown (`.md`), and Event specs (`assets/specs/events/*.json`).
 Canonicalization and synonyms are applied from `scripts/canonical_names.yaml`.
