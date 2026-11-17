@@ -1,5 +1,5 @@
 # Architecture Assets Manifest
-_Last update_: 2026-11-16T09:37:58.015082Z
+_Last update_: 2026-11-17T10:41:40.100638Z
 
 ## Diagrams
 
